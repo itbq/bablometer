@@ -1,0 +1,47 @@
+﻿@model NoteListModel
+
+@using Nop.Admin.Models.Notes_Instructions
+@using Telerik.Web.Mvc.UI
+
+@{
+    var gridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+    
+    //page title
+    ViewBag.Title = T("Admin.ContentManagement.Notes").Text;
+}
+
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+        @T("Admin.ContentManagement.Notes").Text
+    </div>
+    <div class="options">
+        <a href="@Url.Action("Create")" class="t-button">@T("Admin.Common.AddNew")</a>
+    </div>
+</div>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<NoteModel>(Model.Notes.Data)
+                    .Name("events-grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Name)
+                            .Title(T("Admin.ContentManagement.Notes.Title").Text);
+                        columns.Bound(x => x.Text)
+                            .Template(x=>x.Locales.Where(y => y.LanguageId == Model.WorkLanguageId).FirstOrDefault() == null ? null : x.Locales.Where(y => y.LanguageId == Model.WorkLanguageId).FirstOrDefault().TextValue)
+                            .Title(T("Admin.ContentManagement.Notes.Text").Text);
+                        columns.Bound(x => x.Name)
+                            .Width(50)
+                            .Centered()
+                            .Template(x => Html.ActionLink(T("Admin.Common.Edit").Text, "Edit", new { name = x.Name }))
+                            .ClientTemplate("<a href=\"Edit/<#= Id #>\">" + T("Admin.Common.Edit").Text + "</a>")
+                            .Title(T("Admin.Common.Edit").Text);
+                    })
+                                                .Pageable(settings => settings.Total(Model.Notes.Total).PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                                                .DataBinding(dataBinding => dataBinding.Ajax().Select("List", "Note"))
+                                                .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
+

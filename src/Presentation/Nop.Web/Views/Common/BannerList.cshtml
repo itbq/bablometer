@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Nop.Web.Models.Banner.BannerModel>
+@foreach (var banner in Model)
+{
+    if (String.IsNullOrEmpty(banner.ImageUrl) && String.IsNullOrEmpty(banner.NetBanner))
+    {
+        continue;
+    }
+
+
+    if (String.IsNullOrEmpty(banner.NetBanner))
+    {
+        if (banner.ImageUrl.IndexOf(".swf", banner.ImageUrl.Length - 5) > 0)
+        {
+            @Html.Raw("<embed width=\"100%\" height=\"100%\" scale=\"tofit\" name=\"plugin\" src=\"" + banner.ImageUrl + "\" type=\"application/x-shockwave-flash\" />")
+        }
+        else
+        {
+            <a href="@banner.Url" target="_blank" onclick=" BannerClick(@banner.Id) "><img src="@banner.ImageUrl" alt="@banner.AltText" title="@banner.TitleText"></a>
+        }
+    }
+    else
+    {
+        @Html.Raw(banner.NetBanner)
+    }
+}
+<script type="text/javascript">
+     function BannerClick(id)
+     {
+         $.ajax({
+             url: "/Common/BannerClick",
+             type: "POST",
+             dataType: "json",
+             data: { bannerId: id, currentUrl : '@Request.Url' },
+         });
+     }
+</script>

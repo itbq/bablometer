@@ -1,0 +1,122 @@
+﻿@model NewsItemListModel
+@using Nop.Web.Extensions;
+@using Nop.Web.Models.News;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("admin.contentmanagement.news").Text);
+}
+<script>
+    $(document).ready(function () {
+        $('body').addClass("newsLanding");
+    });
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+    });
+    </script>
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+
+                    <h1>@T("admin.contentmanagement.news")</h1>
+
+                    <div class="catalogue">
+                        @foreach(var item in Model.NewsItems)
+                        {
+                            <div class="newsBoxOuterWrap">
+                                <div class="newsHeadingOuter">
+                                    <div class="newsHeadingInner">
+                                        <div class="cornerRightBig"></div>
+                                        <h3><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></h3>
+                                    </div>
+                                </div>
+                                <div class="newsBoxOuter">
+                                    <div class="newsBoxInner">
+                                        <div class="newsImage">
+                                            @if (item.CatalogPictureId != 0)
+                                            {
+                                                <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })"><img alt="@item.Title" src="@item.CatalogPicture.ImageUrl"></a>
+                                            }
+                                        </div>
+                                        <div class="newsContent">
+                                            <div class="newsInfo">
+                                                <p class="left">@item.PublishingDate.Value.ToString("D")  
+                                                    @if (item.CompanyId == 0)
+                                                    {
+                                                        <a href="@Url.RouteUrl("SellerNews", new { seName = "Industry" })">@T("Admin.News.DefaultCompany").Text</a>                        
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.Raw(" " + T("etf.companyvendor.by").Text + " ")<a href="@Url.RouteUrl("CompanyInformation",new {seName=item.CompanySeName})">@item.Company</a> 
+                                                    }</p>
+                                                @if (item.CompanyId == 0)
+                                                {
+                                                    <p class="right">@T("News.IndustryNews")</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="right">@T("News.CompanyNews")</p>
+                                                }
+                                            </div>
+                                            <p class="newsText">
+                                                @item.Short
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <a class="newsView" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@T("ReadMore")</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="navBox">
+                        @(Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").ShowFirst(true).ShowLast(true).ShowPrevious(true))
+                    </div>
+                </div>
+                <div class="rightSide">
+                    <div class="ribCategories">
+                        <h1>News category</h1>
+                            <select name="news-category" id="news-category">
+                                <option value="1">@T("News.ShowAll")</option>
+                                <option value="2">@T("News.CompanyNews")</option>
+                                <option value="3">@T("News.IndustryNews")</option>
+                            </select>
+                            <button id="news-category-button">@T("News.Filter")</button>
+                        <div class="arrowBg"></div>
+                    </div>
+
+                    <div class="banners">
+                       @Html.Action("BannerList", "Common", new { bigImage = true, numberOfBanners = 3 })
+                    </div>
+                </div>
+            </div>
+        </div> </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#news-category-button').click(function(){
+            switch ($('#news-category').val()) {
+                case '1': {
+                    window.location.href = "/News";
+                    break;
+                }
+                case '2': {
+                    window.location.href = "/News/CompanyNews";
+                    break;
+                }
+                case '3': {
+                    window.location.href = "/News/Industry";
+                    break;
+                }
+            }
+        });
+    });
+</script>

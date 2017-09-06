@@ -1,0 +1,103 @@
+﻿@model IList<CategoryAttributeModel>
+
+@using Nop.Web.Models.BuyingRequest
+@if (Model.Any())
+{
+    var n = 0;
+    var z = 1;
+    for (int i = 0; i < Model.Count; i++)
+    {
+
+        if (n == 0)
+        {
+            @:<tr>
+        }
+        switch (Model[i].ControlType)
+        {
+
+            case Nop.Core.Domain.Catalog.AttributeControlType.Checkboxes:
+            {
+                if (Model[i].Values.Where(x => x.IsPreSelected).Count() > 0)
+                {
+                    <td><span>@Model[i].Name</span> : @{
+
+                                                           string s = "";
+                                                           if(Model[i].Values.Count == 1)
+                                                           {
+                                                               if(Model[i].Values[0].IsPreSelected)
+                                                               {
+                                                                   s = "Да";
+                                                               }else
+                                                               {
+                                                                   s = "Нет";
+                                                               }
+                                                           }else
+                                                           {
+                                                                for (int j = 0; j < Model[i].Values.Count; j++)
+                                                                {
+                                                                    if (Model[i].Values[j].IsPreSelected)
+                                                                    {
+                                                                        s += Model[i].Values[j].Name + ", ";
+                                                                    }
+                                                                }
+                                                                s = s.Remove(s.Length - 2, 2);
+                                                           }
+                                                       }
+                            @Html.Raw(s)</td>
+                }
+                break;
+            }
+            case Nop.Core.Domain.Catalog.AttributeControlType.DropdownList:
+            {
+                if (Model[i].Values.Where(x => x.IsPreSelected).FirstOrDefault() != null)
+                {
+                    <td><span>@Model[i].Name</span>
+                        : @(Model[i].Values.Where(x => x.IsPreSelected).FirstOrDefault().Name)
+                    </td>
+                }
+                break;
+            }
+            case Nop.Core.Domain.Catalog.AttributeControlType.Money:
+            {
+                if (Model[i].Values.Where(x => x.IsPreSelected).FirstOrDefault() != null)
+                {
+                    <td><span>@Model[i].Name</span>
+                        : @(Model[i].Values.Where(x => x.IsPreSelected).FirstOrDefault().Name) @Model[i].CurrencyCode
+                    </td>
+                }
+                break;
+            }
+            case Nop.Core.Domain.Catalog.AttributeControlType.MoneyRange:
+            {
+                if (Model[i].Values.Where(x => x.IsPreSelected).FirstOrDefault() != null)
+                {
+                    <td><span>@Model[i].Name</span>
+                        : От @(Model[i].Values.Where(x => x.IsPreSelected).FirstOrDefault().Name) @(!String.IsNullOrEmpty(Model[i].Values.Where(x => x.IsPreSelected).FirstOrDefault().NameMax) ? "До " + Model[i].Values.Where(x => x.IsPreSelected).FirstOrDefault().NameMax : "") @Model[i].CurrencyCode
+                    </td>
+                }
+                break;
+            }
+            default:
+            {
+                if (Model[i].SelectedValue != null)
+                {
+
+                    <td><span>@Model[i].Name</span>
+                        : @Model[i].SelectedValue.Name
+                    </td>
+                }
+                break;
+            }
+        }
+        if (n == 1 || z == Model.Count)
+        {
+            @:</tr>
+            n = 0;
+        }
+        else
+        {
+            n++;
+        }
+        z++;
+    }
+}

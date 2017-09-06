@@ -1,0 +1,372 @@
+﻿@model Nop.Web.Models.BuyingRequestModel
+@using Nop.Core.Domain.Customers
+@using Telerik.Web.Mvc.UI
+@{
+    Html.AddTitleParts(T("ETF.Front.Product.Update.UpdatingProduct").Text);
+    Html.AppendScriptParts("~/Scripts/jquery.waitforimages.min.js");
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+}
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.Catalogue })
+<div id="slider-container"></div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.ajax({
+            url: "/BuyingRequest/GetConversionImagesOfCategory",
+            type: "POST",
+            dataType: "json",
+            data: { categoryId: @Model.SelectedCategoryId },
+            success: function (resp_image) {
+                if(resp_image.html != "")
+                {
+                    $('#slider-container').html(resp_image.html).waitForImages(function () {
+                        $("#popSlider").css({ display: "block", visibility: "hidden" });
+                        var mh = 0;
+                        setTimeout(function () {
+                            mh = 0
+                            $("#popSlider img").each(function () {
+                                mh = Math.max(mh, $(this).height());
+                            });
+
+                            if (mh != 0) {
+                                $("#popSlider").css("height", mh + "px");
+                                $("#popSlider .slider").css("height", mh + "px");
+                            }
+                            $("#popSlider").css({ display: "none", visibility: "visible" });
+                            $("#popSlider .prev").css({ top: $(window).height() / 2 + "px" });
+                            $("#popSlider .next").css({ top: $(window).height() / 2 + "px" });
+                        }, 1);
+
+                        mh = "3000";
+                        $("#popSlider").css("height", mh + "px");
+                        $("#popSlider .slider").diyslider({
+                            width: "3000px", // width of the slider
+                            height: mh + "px", // height of the slider
+                            display: 1, // number of slides you want it to display at once
+                            loop: true // disable looping on slides
+                        }); // this is all you need!
+
+                        // use buttons to change slide
+                        $("#popSlider .prev").bind("click", function () {
+                            $("#popSlider .slider").diyslider("move", "back");
+                            return false;
+                        });
+                        $("#popSlider .next").bind("click", function () {
+                            $("#popSlider .slider").diyslider("move", "forth");
+                            return false;
+                        });
+                        $("body").css("cursor", "auto");
+                    });
+                }else
+                {
+                    $('.slOpener').hide();
+                }                     
+            }
+        });
+    });
+</script>
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <ul id="productMenu">
+            <li><a href="/MyCatalogue">@T("Profile.Catalog.ManageItems")</a></li>
+            <li><a href="/Item/Add" class="current">@T("Profile.Catalog.AddItem")</a></li>
+            <li><a href="/MyCatalog/Upload">@T("Profile.Catalog.Upload")</a></li>
+        </ul>
+        @using (Html.BeginForm())
+        {
+            <div class="master-wrapper-main borderedPage addProduct">
+                <div class="step">
+                    <div class="half">
+                          <h1>@T("ETF.Front.Product.Update.UpdatingProduct")</h1>
+                        <p><b>@T("ETF.Front.Product.Update.Choosecataloguelanguageversions"):</b></p>
+                      
+                        <ul class="languages">
+                            @Html.HiddenFor(model => Model.WorkingLanguage)
+                            @for (int i = 0; i < Model.AviableLanguages.Count; i++)
+                            {
+                                @Html.HiddenFor(model => model.AviableLanguages[i].LanguageId)
+                                <li>
+                                    <label for="l@(i)">
+                                        <input id="AviableLanguages_@(i)__Selected" type="checkbox" value="true" name="AviableLanguages[@(i)].Selected" disabled="true" @if(Model.AviableLanguages[i].Selected){@Html.Raw("checked=\"checked\"")}>
+                                       @* @Html.CheckBoxFor(model => model.AviableLanguages[i].Selected, new { disabled = (!Model.AviableLanguages[i].Selected).ToString().ToLower() })*@
+                                        <div class="flag">
+                                            <img src="/@Url.Content("Content/etf/images/flag/flag_" + Model.AviableLanguages[i].LanguageId.ToString() + ".png")" alt="@(Model.AviableLanguages[i].LanguageName)"/>
+                                            <span>@(Model.AviableLanguages[i].LanguageName)</span>
+                                        </div>
+                                    </label>
+                                </li>                
+                            }
+
+
+                        </ul>
+                    </div>
+                    <div class="half">
+                        <p class="important">
+                            @T("ETF.Front.Product.Add.Languagespecificinformationnotification") </p>
+                    </div>
+                </div>
+
+                <div class="step">
+                     <h1>@T("ETF.Front.Product.Add.Information")</h1>
+                    <h2><span>@T("ETF.Front.Product.Add.LanguageSpecificInfo")</span></h2>
+                    @Html.HiddenFor(model => model.ProductId)
+                    <div class="stepCol">
+                        <div class="half inpBox">
+                            @Html.LabelFor(model => model.Title)
+                            <div style="position:relative;">@Html.RequiredHint()</div>
+                            @Html.ValidationMessageFor(model => model.Title)
+                            @Html.EditorFor(model => model.Title)
+                        </div>
+                        <div class="full inpBox">
+                            @Html.LabelFor(model => model.Keywords)
+                            @(Html.Telerik().AutoComplete()
+                                            .Name("Keywords")
+                                            .Encode(false)
+                                            .BindTo(Model.AviableTags.Select(p => p.Name))
+                                            .AutoFill(true)
+                                            .HighlightFirstMatch(true)
+                                            .Filterable(filtering => filtering.FilterMode(AutoCompleteFilterMode.Contains))
+                                            .Multiple(multi =>
+                                            {
+                                                multi.Separator(",")
+                                                    .Enabled(true);
+
+                                            }))
+                        </div>
+                        <div class="full inpBox">
+                            @Html.LabelFor(model => model.FullDescription)
+                            <div style="position:relative;">@Html.RequiredHint()</div>
+                            @Html.ValidationMessageFor(model => model.FullDescription)
+                            @Html.EditorFor(model => model.FullDescription, "RichEditor", new { cols = "30", rows = "10" })
+                        </div>
+                    </div>
+                    <div class="stepCol">
+                        <div class="full inpBox">
+                            @Html.LabelFor(model => model.ShortDescription)
+                            <div style="position:relative;">@Html.RequiredHint()</div>
+                            @Html.ValidationMessageFor(model => model.ShortDescription)
+                            @Html.TextAreaFor(model => model.ShortDescription, new { cols = "30", rows = "10" })
+                            
+                        </div>
+                        <div class="full inpBox">
+                            @Html.LabelFor(model => model.OrderingComments)
+                            @Html.EditorFor(model => model.OrderingComments, "RichEditor", new { cols = "30", rows = "10" })
+                        </div>
+                    </div>
+                    <h2></h2>
+                </div>
+
+                <div class="step">
+                    <div class="quart mtop-15">
+                        <p>@T("Profile.Request.ItemType")</p>
+
+                        @*  <input type="radio" name="step1" value="0" id="r1"> <label for="r1">Product</label>
+                    <input type="radio" name="step1" value="0" id="r2"> <label for="r2">Service</label>*@
+                        @if (_workContext.CurrentCustomer.IsBuyer())
+                        {
+                            @Html.RadioButton("ProductItemTypeId", 5, Model.ProductItemTypeId == (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ProductBuyingRequest, new { id = "ProductItemTypeId_5" })<label for="ProductItemTypeId_5">@T("ETF.Catalog.Product")</label>
+                            @Html.RadioButton("ProductItemTypeId", 6, Model.ProductItemTypeId == (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ServiceBuyingRequest, new { id = "ProductItemTypeId_6" })<label for="ProductItemTypeId_6">@T("ETF.Catalog.Service")</label>
+                        }
+                        else
+                        {
+                            @Html.RadioButton("ProductItemTypeId", 1, Model.ProductItemTypeId == (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product, new { id = "ProductItemTypeId_5" })<label for="ProductItemTypeId_5">@T("ETF.Catalog.Product")</label>
+                            @Html.RadioButton("ProductItemTypeId", 2, Model.ProductItemTypeId == (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service, new { id = "ProductItemTypeId_6" })<label for="ProductItemTypeId_6">@T("ETF.Catalog.Service")</label>
+                        }
+                        @*  @Html.RadioButtonFor(x => x.ProductItemTypeId, 5, new { @checked = true })
+                        @Html.RadioButtonFor(x => x.ProductItemTypeId, 6, new { @checked = false })*@
+                    </div>
+
+                    <div class="imageUploader">
+                        <div class="tools" @if (Model.PictureCount == 6)
+                                           {@Html.Raw("style=\"display:none;\"")}>
+                            <h3>@T("ETF.Front.Product.Add.UploadImage")</h3>
+                            @*  <a class="buttonMini" nohref="nofref">Choose file</a>*@
+                            @Html.EditorFor(model => model.PictureId)
+                            <div class="filetype">JPG, PNG, GIF 0.5Mb max.</div>
+                        </div>
+                        <div id="product-picture-list">
+                            @Html.Action("ProductPictureList", "BuyingRequest", new { productId = Model.ProductId })
+                        </div>
+
+
+                    </div>
+                    <h2></h2>
+                </div>
+
+                <div class="step">
+                    <h1>@T("ETF.Front.Product.Add.ProductCategory")</h1>
+                    @Html.HiddenFor(model => model.SelectedCategoryId)
+                    @Html.Action("EditProductCategorySelector", "Catalogue", new { productCategories = Model.Categories })                  
+                </div>
+
+                <div class="step">
+                    <h1>@T("ETF.Front.Product.Add.ProductAttributes")<a nohref="nohref" class="redRibbon slOpener @if (!Model.HaveConverionsImages)
+                                                                                                                  { @Html.Raw("invisible") }" onclick="showMeSlider();">
+                        <div class="cornerRight"></div>
+                        @T("ETF.ConversionImages")
+
+                    </a></h1>
+                    <script type="text/javascript">
+                        function showMeSlider() {
+                            $("#popUpBg").fadeIn();
+                            $("#popSlider").fadeIn();
+                            scrollTo(0,0);
+                        }
+                    </script>
+
+
+                    <div id="product-attributes" class="attribs">
+                        @if (Model.SelectedCategoryId != 0)
+                        {
+                            @Html.Action("CategoryAttributes", "BuyingRequest", new { categoryId = Model.SelectedCategoryId, productId = (int?)Model.ProductId, selectedAttributes = Model.SelectedAttributes, PostBack = Model.PostBack })
+                        }
+                        else
+                        {
+                            <text>@T("ETF.Front.Product.Add.SelectFinalCategoryNotification")</text>
+                        }
+                    </div>
+                </div>
+                <div class="step">
+                    <h1>@T("ETF.Front.Product.Add.ProductPrices")</h1>
+
+                    @Html.Action("ProductPrices", "BuyingRequest", new { productId = (int?)Model.ProductId, productPrices = Model.ProductPrices })
+
+                </div>
+                <div class="center">
+                    <button id="save-product-button" class="upload" onclick="javascript:$('form').valid(); return PriceValidation();">@T("ETF.Front.Product.Update.Update")</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@(Html.Telerik().StyleSheetRegistrar()
+        .DefaultGroup(group => group
+            .Add("telerik.common.min.css")
+            .Add("telerik.vista.min.css")
+            .Add("telerik.rtl.min.css")
+            ))
+@(Html.Telerik().ScriptRegistrar()
+            .jQuery(false)
+            .jQueryValidation(false)
+            )
+
+<script type="text/javascript">
+    $('form').submit(function () {
+        if ($(this).valid()) {
+            $(this).find(':submit').attr('disabled', 'disabled');
+        }
+    });
+</script> 
+
+<script type="text/javascript">
+   
+    function PriceValidation(){
+        var flag = true;
+        $('.Price').each(function(){
+            var price = $(this).val();
+            price = $.trim(price);
+            var regex = /\d+([\.,])?(\d*)/g;
+            var result = regex.exec(price);
+            if(!(result != null && result[0] == price))
+            {
+                if(flag)
+                    flag = false;
+                $(this).parent().children('span').show();
+            }else{
+                $(this).parent().children('span').hide();
+            }
+        });
+        return flag && addproductcategoryselector_isfinalcategory;
+    }
+
+    $(document).ready(function () {
+        $(document).ajaxStart(function () {
+            $("body").css("cursor", "progress");
+        });
+        $(document).ajaxStop(function () {
+            $("body").css("cursor", "auto");
+        });
+        $("#SelectedCategoryId").change( function () {   
+            $('#product-attributes').html("@T("ETF.Front.Product.Add.SelectFinalCategoryNotification")");            
+            if(addproductcategoryselector_isfinalcategory)
+                LoadAttributes($(this).val());
+        });
+    });
+    function AddProductPicture(id) {
+        $.ajax({
+            url: "/BuyingRequest/AddProductPicture",
+            data: {productId : @Model.ProductId, pictureId : id},
+            type: "POST",
+            dataType:"json",        
+            success: function(resp){             
+                $('#product-picture-list').html(resp.picturesHtml);
+                $('.qq-upload-success').remove();
+                var count = $('#product-picture-list li span').length;
+                if(count == 6)
+                {
+                    $('.imageUploader .tools').hide();
+                }
+            }
+        });
+
+       
+    }
+
+    function DeleteProductPicture(id){
+        $('[onclick="DeleteProductPicture('+id + ')"]').hide();
+        $('[onclick="DeleteProductPicture('+id + ')"]').prev(':first').hide();
+        $('[onclick="DeleteProductPicture('+id + ')"]').next(':first').hide();
+        $.ajax({
+            url: "/BuyingRequest/DeleteProductPicture",
+            data:{pictureId : id, productId : @Model.ProductId},
+            type:"POST",
+            dataType:"json",
+            success:function(resp){               
+                $('#product-picture-list').html(resp.picturesHtml);
+                $('.imageUploader .tools').show();
+            }
+        });
+    }
+
+    function SetDefault(id){
+        $.ajax({
+            url:"/BuyingRequest/SetPictureDefault",
+            data: {pictureId : id, productId : @Model.ProductId},
+            type:"POST",
+            dataType:"json",
+            success:function(resp){
+                $('#product-picture-list').html(resp.picturesHtml);
+            }
+        });
+    }  
+
+    function LoadAttributes(id)
+    {
+        $.ajax({
+            url:"/BuyingRequest/CategoryAttributesEditor",
+            type:"POST",
+            dataType:"json",
+            data:{categoryId:id},
+            success:function(resp){
+                $('#product-attributes').html(resp.htmlString);
+                var params = {
+                    changedEl: "select",
+                    scrollArrows: true
+                }
+                cuSel(params);
+            }
+        });
+       
+    }
+    function CheckCheckbox(id) {
+        var obj = $("input:checkbox[name='SelectedAttributes["+id+"].Id']:first");       
+        if (obj != null)
+        {
+            if (obj.is(":checked"))
+                obj.attr("checked", false);
+            else
+                obj.attr("checked", true);
+        }
+    }
+</script>

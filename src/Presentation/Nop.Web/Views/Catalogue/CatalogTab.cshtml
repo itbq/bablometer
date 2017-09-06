@@ -1,0 +1,78 @@
+﻿@using Nop.Core.Domain.Customers
+@{
+    var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+}
+<div class="tabCatalog">
+    <div class="tabsMenu">
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                ddCat = { ddc: "#dropDownCategories", ddh: "#dropDownHead", width: 0,opened:false };
+
+                ddCat.init = function () {
+                    $(ddCat.ddc).click(function () { ddCat.up(); });
+                    $(ddCat.ddh).click(function () { if (ddCat.opened){ddCat.up();}else{ddCat.down();} });
+                    //$(ddCat.ddh).click(function () { ddCat.up(); }); }
+
+                     ddCat.width = $(ddCat.ddc).outerWidth() + 45;
+                    //console.log(ddCat.width);
+                    $(ddCat.ddh).css("width", ddCat.width);
+                    $(ddCat.ddc).css("width", ddCat.width);
+
+                    ddCat.up();
+                }
+
+                ddCat.up = function () {
+                    $(ddCat.ddc).slideUp();
+                    $(ddCat.ddh + " .current").html($(ddCat.ddc + " .ui-tabs-active  a").html());
+                    ddCat.opened = false;
+                    //console.log("up");
+                }
+
+                ddCat.down = function () {
+                    $(ddCat.ddc).slideDown();
+                    ddCat.opened = true;
+                    //console.log("down");
+                }
+
+                ddCat.init();
+            });
+
+        </script>
+        <ul id="dropDownCategories">
+            <li class="transition"><a href="#tabs-1">@T("admin.catalog.products")</a></li>
+            <li class="transition"><a href="#tabs-2">@T("Catalog.Services")</a></li>
+            <li class="transition"><a href="#tabs-3">@T("Catalog.Sellers")</a></li>
+            <li class="transition"><a href="#tabs-4">@T("Catalog.ServiceProviders")</a></li>
+            @if(_workContext.CurrentCustomer.IsRegistered())
+            {
+                <li class="transition"><a href="#tabs-5">@T("Catalog.ProductRequest")</a></li>
+                <li class="transition"><a href="#tabs-6">@T("Catalog.ServiceRequests")</a></li>
+            }
+        </ul>
+        <ul id="dropDownHead" >
+            <li class="current"></li>
+        </ul>
+    </div>
+    <div id="tabs-1" class="tabContainer">
+        @Html.Action("ProductCatalogTab", "Catalogue", new { productItemType = (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product })
+    </div>
+    <div id="tabs-2" class="tabContainer">
+        @Html.Action("ProductCatalogTab", "Catalogue", new { productItemType = (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service })
+    </div>
+    <div id="tabs-3" class="tabContainer">
+        @Html.Action("SellerCatalogTab","Catalogue",new {productItemType = (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product})
+    </div>
+    <div id="tabs-4" class="tabContainer">
+        @Html.Action("SellerCatalogTab","Catalogue",new {productItemType = (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service})
+    </div>
+    @if(_workContext.CurrentCustomer.IsRegistered())
+    {
+        <div id="tabs-5" class="tabContainer">
+            @Html.Action("ProductCatalogTab", "Catalogue", new { productItemType = (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ProductBuyingRequest })
+        </div>
+        <div id="tabs-6" class="tabContainer">
+            @Html.Action("ProductCatalogTab", "Catalogue", new { productItemType = (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ServiceBuyingRequest })
+        </div>
+    }
+</div>

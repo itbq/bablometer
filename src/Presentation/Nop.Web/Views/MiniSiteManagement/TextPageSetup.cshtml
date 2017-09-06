@@ -1,0 +1,39 @@
+﻿@model IList<Nop.Web.Models.MiniSite.MiniSiteTextPagesModel>
+@{
+    Html.AddTitleParts(T("ETF.MiniSite.Setup.Title").Text + ". " + T("ETF.MiniSite.Setup.Options.TextPages").Text);
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.MiniSite })
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <ul id="productMenu">
+            <li><a href="/MiniSiteManagement/MainSetup">@T("ETF.MiniSite.Setup.Options.General")</a></li>
+            <li><a href="/MiniSiteManagement/SliderSetup">@T("ETF.MiniSite.Setup.Options.Slider")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetup">@T("ETF.MiniSite.Setup.Options.Banner")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetupAdd">@T("ETF.MiniSite.Setup.Banner.Add")</a></li>
+            <li><a href="/MiniSiteManagement/TextPageSetup" class="current">@T("ETF.MiniSite.Setup.Options.TextPages")</a></li>
+        </ul>
+        <div class="full">
+        <h3>@T("ETF.MiniSite.TextPage.Language")</h3>
+        <div class="language-selector left">
+                    <a nohref="nohref" onclick="switchDisplay('.otherLangProfile');" ><img src="/@Url.Content("Content/etf/images/flag/flag_" + Model[0].CurrentLanguage.Id + ".png")">@Model[0].CurrentLanguage.Name</a>
+                    <div class="otherLang invisible otherLangProfile">
+                        @foreach(var lang in Model[0].AviableLanguages)
+                        {
+                            if(lang.Id != Model[0].CurrentLanguage.Id)
+                            {
+                                <a href="/MiniSiteManagement/TextPageSetup?languageId=@lang.Id"><img src="/@Url.Content("Content/etf/images/flag/flag_" + lang.Id + ".png")">@lang.Name</a>
+                            }
+                        }   
+                    </div>
+                </div>
+            </div>
+        <div class="regLeftSide fullboxtext">
+            @foreach(var page in Model)
+            {
+                @Html.Partial("TextPageEditor",page)
+            }
+        </div>
+    </div>
+</div>
+

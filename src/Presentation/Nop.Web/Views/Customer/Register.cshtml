@@ -1,0 +1,391 @@
+﻿@model RegisterModel
+@using Nop.Web.Models.Customer;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AppendCssFileParts("~/Themes/ETFTheme/Content/redmond/jquery-ui.css");
+    Html.AppendCssFileParts("~/Themes/ETFTheme/Content/redmond/jquery-ui.min.css");
+    Html.AppendCssFileParts("~/Themes/ETFTheme/Content/redmond/jquery.ui.theme.css");
+    //title
+    Html.AddTitleParts(T("PageTitle.Register").Text);
+}
+@if (ViewBag.Success == true)
+{
+    <script type="text/ecmascript">
+        $('#popAlert h3').text('@T("ITBSFA.Register.Success.Title")');
+        $('#popAlert p').text('@T("TextResource.Registered.Success")');
+        $('#popAlert .ok').click(function () {
+            window.location.href = "@Url.RouteUrl("HomePage")";
+        });
+        showPop("#popAlert");
+    </script>
+}
+<script type="text/javascript">
+    $(function () {
+        // cusel init
+        var params = { changedEl: ".dropdown", scrollArrows: true, visRows: 5 }
+        cuSel(params);
+    });
+    $(document).ready(function () {
+        $('#RegionId').change(function () {
+            var regionId = $(this).attr('value');
+            if (regionId == 0) {
+                $('#citiesBlock').html('<label for="CityId" >@T("ITBSFA.Register.City")</label><select id="CityId" name="CityId" class="dropdown" selected><option value="0">@T("ITBSFA.Register.Choose")</option></select>');
+                var params = { changedEl: "#CityId", scrollArrows: true }
+                cuSel(params);
+            } else {
+                $.ajax('/Customer/GetCities', {
+                    data: { regionId: regionId },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.Success) {
+                            $('#citiesBlock').html(data.resultHtml);
+                            var params = { changedEl: "#CityId", scrollArrows: true }
+                            cuSel(params);
+                        }
+                    }
+                });
+            }
+        });
+        
+    });
+</script>
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        @*<div class="register">
+            @using (Html.BeginForm("Register", "Customer", FormMethod.Post, new {onsubmit="return CheckContactCount();", id="main-register" }))
+            {
+            @Html.AntiForgeryToken()
+            @*<div class="choosing" stye>
+                <h1>@T("ETF.Profile.ChooseAccountType")</h1>
+                <label for="account-buyer">@Html.RadioButton("accounttype", "B", true, new { id = "account-buyer" })<label for="account-buyer"></label><span>@T("ETF.Profile.Buyer")</span></label>
+            </div
+            <div class="regLeftSide">
+                <div class="regInfoBox box">
+                    <input type="hidden" value="B" name="accounttype" />
+                    <h1>@T("Profile.RegistrationInformation")</h1>
+                    <div class="regInfoLeft">
+                        <div class="halfLine">
+                            <label>@T("Account.Login.Fields.UserName") <span class="asterisk"></span></label>
+                            @Html.ValidationMessageFor(model => model.Email)
+                            @Html.EditorFor(model => model.Email)
+                        </div>
+                        <div class="halfLine">
+                            <label>@T("account.fields.password") <span class="asterisk"></span></label>
+                            @Html.ValidationMessageFor(model => model.Password)
+                            @Html.EditorFor(model => model.Password)
+                        </div>
+                        <div class="halfLine">
+                            <label>@T("Account.Fields.ConfirmPassword") <span class="asterisk"></span></label>
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                            @Html.EditorFor(model => model.ConfirmPassword)
+                        </div>
+                    </div>
+
+                    <div class="center" id="buyer-register" style="display:none;"><button class="upload save">@T("account.register")</button></div>
+                </div>
+
+                <div class="regInfoBox box" id="legal-information">
+                    <h1>@T("ITB.Portal.Register.About")</h1>
+                    <div class="regInfoLeft">
+                        <div class="full">
+                            <label>@T("ITB.Portal.Register.FirstName") </label>
+                            @Html.EditorFor(model => model.FirstName)
+                        </div>
+                        <div class="full">
+                            <label>@T("ITB.Portal.Register.LastName")</label>
+                            @Html.EditorFor(model => model.LastName)
+                        </div>
+                        <div class="full">
+                            <label>@T("ITB.Portal.Register.Index")</label>
+                            @Html.EditorFor(model => model.Index)
+                            @Html.ValidationMessageFor(model=>model.Index)
+                        </div>
+                        <div class="full">
+                            <label>@T("ITB.Portal.Register.Income")</label>
+                            @Html.TextBoxFor(model => model.Income)
+                            @Html.ValidationMessageFor(model=>model.Income)
+                        </div>
+                        <div class="full">
+                            <label>@T("ITB.Portal.Register.Address")</label>
+                            @Html.EditorFor(model => model.Address)
+                        </div>
+                        <div class="full">
+                            <label>@T("ITB.Portal.Register.Region")</label>
+                            @Html.DropDownListFor(mode=>Model.RegionId,Model.Regions.Select(x=>new SelectListItem(){Text = x.Title,Value = x.Id.ToString(),Selected = x.Id == Model.RegionId}))
+                        </div>
+
+                        <div class="full" @if(Model.CityId == 0){@Html.Raw("style=\"display:none;\"")} id="citiesBlock">
+                            <label>@T("ITB.Portal.Register.City")</label>
+                            <select id="CityId" name="CityId">
+                                @foreach (var city in Model.Cities)
+                                {
+                                    if (city.Id == Model.CityId)
+                                    {
+                                        <option value="@city.Id" selected>@city.Title</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@city.Id">@city.Title</option>
+                                    }
+                                }
+                            </select>
+                       </div>
+                        <div class="inputs">
+                            <label>@T("Account.Fields.DateOfBirth"):</label>
+                            @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
+                                Html.FieldNameFor(x => x.DateOfBirthMonth),
+                                Html.FieldNameFor(x => x.DateOfBirthYear),
+                                DateTime.Now.Year - 110,
+                                DateTime.Now.Year,
+                                Model.DateOfBirthDay,
+                                Model.DateOfBirthMonth,
+                                Model.DateOfBirthYear)
+                            @Html.ValidationMessageFor(model => model.DateOfBirthDay)
+                            @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
+                            @Html.ValidationMessageFor(model => model.DateOfBirthYear)
+                        </div>
+                       <div class="choosing">
+                            <h1>@T("ITB.Portal.Gender")</h1>
+                            <label for="gender-man">@Html.RadioButton("Gender", "M", Model.Gender == "M", new { id = "gender-man" })<label for="gender-man"></label><span>@T("ITB.Portal.Gender.Man")</span></label>
+                            <label for="gender-woman">@Html.RadioButton("Gender", "W", Model.Gender == "W", new { id = "gender-woman" })<label for="gender-woman"></label><span>@T("ITB.Portal.Gender.Woman")</span></label>
+                       </div>
+                    </div>
+                    <div class="center" id="seller-register"><button class="upload save">@T("account.register")</button></div>
+                </div>
+            </div>
+            }
+        </div>*@
+
+        @using (Html.BeginForm("Register", "Customer"))
+        {
+            @Html.AntiForgeryToken()
+					<div class="topSignup">
+						<div class="whiteBox half">
+							<h4>@T("ITBSFA.Register.AccountType.Choose")</h4>
+							<div class="icoMan">
+								<input type="radio" name="accounttype" id="ut1" checked disabled="disabled" value="B">
+								<label for="ut1"></label>
+								<label  class="man" for="ut1"></label>
+								<label for="ut1">@T("ITBSFA.Register.AccountType.Client")</label>
+							</div>
+							<div class="icoBank">
+								<input type="radio" name="accounttype" id="ut2" disabled="disabled" value="S">
+								<label for="ut2"></label>
+								<label  class="bank" for="ut2"></label>
+								<label for="ut2">@T("ITBSFA.Register.AccountType.Bank")</label>
+							</div>
+						</div>
+						<div class="whiteBox half">
+							<div class="logAs">
+								<h4>@T("Account.LoginAs"):</h4>
+								@Html.Action("ExternalMethods", "ExternalAuthentication")
+							</div>
+						</div>
+					</div>
+
+					<div class="bottomSignUp">
+						<div class="litegreen onethird relative">
+							<h4>@T("ITBSFA.Register.RegistrationData")</h4>
+							<div class="fline">
+								<label for="Email" class="require">@T("ITBSFA.ARegister.Login")</label>
+                                @Html.EditorFor(model=>model.Email,new {placeholder=""})
+                                 @Html.ValidationMessageFor(model=>model.Email)
+								@*<input type="text" placeholder="" value="" id="inp1" name="Email">*@
+							</div>
+							<div class="fline">
+								<label for="Password" class="require">@T("ITBSFA.Register.Password")</label>
+                                @Html.EditorFor(model=>model.Password,new {placeholder=""})
+                                @Html.ValidationMessageFor(model=>model.Password)
+								@*<input type="password" placeholder="" value="" id="inp2" name="Password">*@
+							</div>
+							<div class="fline">
+								<label for="ConfirmPassword" class="require">@T("ITBSFA.Register.ConfirmPassword")</label>
+                                @Html.EditorFor(model=>model.ConfirmPassword,new {placeholder=""})
+                                 @Html.ValidationMessageFor(model=>model.ConfirmPassword)
+								@*<input type="password" placeholder="" value="" id="inp3" name="ConfirmPassword">*@
+							</div>
+
+							<div class="left bottom grey absolute fleft p15">
+								<span class="require"></span>@T("ITBSFA.Register.RequiredFields.Hint")
+							</div>
+						</div>
+
+						<div class="litegreen twothird relative">
+							<h4>@T("ITBSFA.Register.AboutYourself")</h4>
+							<div class="leftSide">
+								<div class="fline">
+									<label for="Gender" >@T("ITBSFA.Register.Gender")</label>
+									<select class="dropdown" name="Gender" id="Gender">
+										<option value="33">@T("IBSFA.Register.Choose")</option>
+										<option value="M" @(Model.Gender == "M" ? "selected" : "")>@T("ITBSFA.Register.Man")</option>
+										<option value="W" @(Model.Gender == "W" ? "selected" : "")>@T("ITBSFA.Register.Woman")</option>
+									</select>
+								</div>
+								<div class="fline">
+									<label for="inp2" >@T("ITBSFA.Register.BirthdayDate")</label>
+                                 
+                                    @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
+                                        Html.FieldNameFor(x => x.DateOfBirthMonth),
+                                        Html.FieldNameFor(x => x.DateOfBirthYear),
+                                        DateTime.Now.Year - 110,
+                                        DateTime.Now.Year,
+                                        Model.DateOfBirthDay,
+                                        Model.DateOfBirthMonth,
+                                        Model.DateOfBirthYear)
+                                    @Html.ValidationMessageFor(model => model.DateOfBirthDay)
+                                    @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
+                                    @Html.ValidationMessageFor(model => model.DateOfBirthYear)
+									@*<select class="dropdown little" name="" id="" class="thirdness">
+										<option value="0">Число</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="2">3</option>
+									</select>
+									<select class="dropdown little" name="" id="" class="thirdness">
+										<option value="0">Месяц</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="2">3</option>
+									</select>
+									<select class="dropdown little" name="" id="" class="thirdness">
+										<option value="0">Год</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="2">3</option>
+									</select>*@
+								</div>
+								<div class="fline currency">
+									<label for="Income" >@T("ITBSFA.Register.Income")</label>					
+									@Html.TextBoxFor(model => model.Income)
+                                    <div class="curencyWidget bestborderthanever">
+                                    @foreach (var currency in Model.AviableCurrencies)
+                                    {
+                                        var currencyClass = "";
+                                        switch (currency.Name)
+                                        {
+                                            case "USD":
+                                                {
+                                                    currencyClass = "dollar";
+                                                    break;
+                                                }
+                                            case "EUR":
+                                                {
+                                                    currencyClass = "euro";
+                                                    break;
+                                                }
+                                            case "RUB":
+                                                {
+                                                    currencyClass = "ruble";
+                                                    break;
+                                                }
+                                        }
+
+                                        string checkedString = "";
+                                        if (Model.CurrencyId == currency.Id)
+                                        {
+                                            checkedString = "checked=\"checked\"";
+                                        }
+                                        else
+                                        {
+                                            if (Model.CurrencyId == 0 && currency.Name == "RUB")
+                                            {
+                                                checkedString = "checked=\"checked\"";
+                                            }
+                                        }
+                                        <input type="radio" name="CurrencyId"  id='@(currency.Id + "-cur")' value="@currency.Id" @checkedString /><label for="@(currency.Id + "-cur")" class="@currencyClass"></label>
+
+                                    }
+                                    </div> 
+                                    @Html.ValidationMessageFor(model=>model.Income,"Доход, должен быть числом больше 0, меньше 4 млн.")
+								</div>
+								<div class="fline">
+									<label for="LastName" >@T("ITBSFA.Register.LastName")</label>
+									@Html.EditorFor(model => model.LastName)
+								</div>
+								<div class="fline">
+									<label for="inp6" >@T("ITBSFA.Register.Firstname")</label>
+									@Html.EditorFor(model => model.FirstName)
+								</div>
+							</div>
+
+							<div class="rightSide">
+								<div class="fline">
+									<label for="inp7" >@T("ITBSFA.Register.Country")</label>
+									<select class="dropdown" name="" id="inp7">
+										@*<option value="0">@T("ITBSFA.Register.Choose")</option>*@
+										<option value="1">Россия</option>
+										@*<option value="2">2</option>
+										<option value="2">3</option>*@
+									</select>
+								</div>
+
+								<div class="fline">
+									<label for="RegionId" >@T("ITBSFA.Register.Region")</label>
+                                    @Html.DropDownListFor(mode => Model.RegionId, Model.Regions.Select(x => new SelectListItem() { Text = x.Title, Value = x.Id.ToString(), Selected = x.Id == Model.RegionId }), new {@class="dropdown" })
+									@*<select class="dropdown" name="" id="inp8">
+										<option value="0">Выберите</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="2">3</option>
+									</select>*@
+								</div>
+
+								<div class="fline" id="citiesBlock">
+									<label for="CityId" >@T("ITBSFA.Register.City")</label>
+                                    <select id="CityId" name="CityId" class="dropdown">
+                                        @foreach (var city in Model.Cities)
+                                        {
+                                            if (city.Id == Model.CityId)
+                                            {
+                                                <option value="@city.Id" selected>@city.Title</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@city.Id">@city.Title</option>
+                                            }
+                                        }
+                                    </select>
+									@*<select class="dropdown" name="" id="inp9">
+										<option value="0">Выберите</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="2">3</option>
+									</select>*@
+								</div>
+
+								<div class="fline">
+									<label for="Index">@T("ITBSFA.Register.Index")</label>
+								
+									@Html.EditorFor(model => model.Index)
+                                    	@Html.ValidationMessageFor(model=>model.Index)
+								</div>
+								<div class="fline">
+									<label for="Address">@T("ITBSFA.Register.Address")</label>
+                                
+									@Html.EditorFor(model => model.Address)
+                                    @Html.ValidationMessageFor(model=>model.Address)
+								</div>
+							</div>
+
+						</div>
+
+						<div class="submit"><span class="btnShadow"><input type="submit" class="signupBtn" value="@T("ITBSFA.Registe.RegisterButton")"></span></div>
+
+
+					</div>
+
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type="password"]').val("");
+
+        $('.cusel').each(function () {
+            if ($(this).parent().children('.field-validation-error').length > 0) {
+                $(this).addClass('input-validation-error');
+            }
+        });
+    });
+</script>

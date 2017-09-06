@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/Administration/Views/Shared/_AdminPopupLayout.cshtml";
+}
+@model Nop.Admin.Models.Reports.ReportModel
+@{    
+    //page title
+    ViewBag.Title = T("ITBSFA.GenerateReport.Title").Text + " - " + Model.ReportName;
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            @T("ITBSFA.GenerateReport.Title") @Model.ReportName
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="@T("ITBSFA.GenerateReport.Button")" />
+        </div>
+    </div>
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.StartDate):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.StartDate)
+                @Html.ValidationMessageFor(model => model.StartDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.EndDate):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.EndDate)
+                @Html.ValidationMessageFor(model => model.EndDate)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.HiddenFor(model=>model.ReportTypeId)
+                @Html.HiddenFor(model=>model.ReferenceId)
+                @Html.HiddenFor(model=>model.ReportName)
+            </td>
+        </tr>
+    </table>
+}

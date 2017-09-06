@@ -1,0 +1,27 @@
+﻿@model Nop.Web.Models.MiniSite.MiniSiteTextPagesModel
+
+@using (Html.BeginForm("TextPageSetup", "MiniSiteManagement", FormMethod.Post, new { name = Model.PageTitle }))
+{
+@Html.HiddenFor(model=>model.SelectedLanguageId)
+@Html.HiddenFor(model=>model.Id)
+    <div class="regInfoBox box fullbox">
+        <h1>@Model.PageTitle</h1>
+            <div class="full">
+                <label>@T("ETF.MiniSite.TextPage.Header") <span class="asterisk"></span>@Html.ValidationMessageFor(model => model.PageTitle)</label>
+                @Html.EditorFor(model=>model.PageTitle)
+            </div>
+            <div class="full">
+                <label>@T("ETF.MiniSite.TextPage.PageTitle") <span class="asterisk"></span>@Html.ValidationMessageFor(model => model.PageTitleTag)</label>
+                @Html.EditorFor(model => model.PageTitleTag)
+            </div>
+            <div class="full">
+                <label>@T("ETF.MiniSite.TextPage.ManuTitle") <span class="asterisk"></span>@Html.ValidationMessageFor(model => model.PageMenuTitle)</label>
+                @Html.EditorFor(model => model.PageMenuTitle)
+            </div>
+            <div class="full">
+                <label>@T("ETF.MiniSite.TextPage.Html") <span class="asterisk"></span>@Html.ValidationMessageFor(model => model.PageHtml)</label>
+                @Html.EditorFor(model => model.PageHtml, "TextPageRichEditor")
+            </div>
+            <div class="center" id="seller-register"><button class="upload save">@T("common.save")</button></div>
+    </div>
+}

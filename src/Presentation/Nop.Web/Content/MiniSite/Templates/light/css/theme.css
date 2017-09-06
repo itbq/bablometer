@@ -1,0 +1,353 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700&subset=latin,cyrillic-ext);
+body                    {background: url("../images/light/bg.png") repeat; font-family: roboto slab, arial, sans-serif;}
+.header                 {background: url("../images/light/header.png") repeat-x; height: 88px; }
+.header .logo           {margin-top: 17px;}
+
+.box                    { border-radius: 10px 10px 10px 10px; overflow: hidden;box-shadow: 0px 2px 6px -4px #000000; border: 1px solid #c2e8d7; padding: 0; height: auto; background: none repeat scroll 0 0 #c2e8d7; }
+.box h2                 {color: #2e3444 !important; width: 100% !important; font-size: 20px !important; margin: 8px 4px; }
+.box .littleSeeAll      {position:relative;color: #ea2e49 !important; width: auto !important; border: 0; margin: 0 14px; font-size: 12px; margin-left: 19px; }
+.box > .boxHead         {overflow: hidden;border: 0; }
+.box > .boxBody         {overflow: auto; width: 100%; position: static; height: 100%; padding-bottom: 0; }
+.boxHead                {background: url("../images/light/head.png") repeat-x; height: 97px;}
+
+.header-links           {margin: 28px 0 0 39px !important; }
+.header-links a         {color: #5fa9b8; font-size: 16px; font-family: roboto slab,arial,sans-serif; text-decoration: none; text-shadow: 0px 1px 1px #FFF; }
+.header-links a:hover   {color: #5fa9b8; font-size: 16px; font-family: roboto slab, arial, sans-serif;}
+
+.language-selector      {border-radius: 10px; padding-left: 5px; padding-bottom: 1px; background-color: #3a4154; MARGIN: 23px 0; }
+.language-selector >a    {font-style: italic; font-family: arial; }
+.language-selector .otherLang   {background: none; color: #FFF;}
+.language-selector .otherLang a   {background-color: #3A4154; color: #FFF; width: 95%;MARGIN-LEFT: 5%; }
+.language-selector .otherLang a:hover   {background-color: #5A6174; color: #FFF; }
+
+.mainSlider                     {border: 1px solid #d3eee2; border-radius: 10px 10px 10px 10px;box-shadow: 0px 1px 8px -4px #000000; overflow: hidden; height: 554px; margin-top: -5px; }
+.nivoSlider                     {border-radius: 11px; overflow: hidden; margin-top: 0; }
+.nivoSlider a                   {font-size: 24px !important; color: #FFF !important ;}
+.nivoSlider a.nivo-imageLink    {}
+.theme-default .nivo-caption    {background: none repeat scroll 0 0 #c0d9ce; border: 1px solid #EEFDF5; border-radius: 10px 0 0 10px; min-height: 65px; margin-top: 4px !important;left: auto; right: 0; padding-right: 40px; bottom: 60px; width: auto; min-width: 160px; }
+.theme-default .nivo-caption div{margin-top: 8px;font-size: 12px; font-style: italic; color: #333333; }
+
+.layout2-2 .mainSlider          {height: 271px !important;}
+.layout2-2 .tabCatalog          {margin-left: 16px !important; margin-right: 0 !important;margin-top: -4px; height: 270px; }
+
+
+.recentlyAdded .goodCaption     {font-size: 12px; margin-top: 0px; margin-bottom: 5px; }
+
+.LatesNews .news                {}
+
+.tabsMenu                       {background: url("../images/light/head.png") repeat-x; height: 98px; margin-bottom: -1px; border-radius: 10px 10px 0 0; }
+.tabCatalog                     {margin-right: 16px !important ;}
+
+.goodLink                       {color: #77C4D4 !important;}
+
+.tabCatalog .tabsMenu ul li a                       {color: #5fa9b8; border-bottom: 1px dotted #5fa9b8;  font-family: arial,sans-serif; font-size: 20px; margin-bottom: 6px; }
+.tabCatalog .tabsMenu ul li.ui-tabs-active a        {color: #2e3444; border: 0; }
+.tabCatalog .tabsMenu ul li a:hover                 {color: #2e3444 !important;  }
+.tabCatalog .tabsMenu ul li.sep                     {color: #2e3444; }
+.tabCatalog .redRibbon                              {left: 21px; font-size: 12px; top: 53px; color: #EA2E49; float: left; clear: both; position: absolute; border-bottom: none; text-align: left;border: none; }
+.tabCatalog .redRibbon a                            {position:relative; font-size: 12px; color: #ea2e49; }
+.tabCatalog .redRibbon a:hover                      {color: #EA2E49; text-decoration: underline;}
+
+.border-line                                        {display: none;}
+.tabCat li a                                        {color: #77c4d4;}
+.tabCat li a:hover                                  {color: #ea2e49;}
+.tabCat li h3 a                                     {color: #222222;}
+.tabCat li h3 a:hover                               {color: #222222;}
+
+.newsHeadline                                       {color: #77c4d4;margin: 3px 0 !important; }
+.newsHeadline:hover                                 {color: #ea2e49; text-decoration: underline;}
+.LatesNews .news .imgNews .newsDate                 {font-style: italic;font-weight: normal; }
+
+.productPicture                                     {height: 100px;border-radius:10px 10px 10px 10px;overflow:hidden;}
+
+.footer                                             {background: url(../images/light/footer.png) repeat-x; box-shadow: none; height: 71px; padding-top: 10px; }
+.footer-menu                                        {color: #d3eee2;}
+.footer-menu a                                      {color: #3f9ec5;font-family: arial, sans-serif; font-size: 12px; font-weight: normal; }
+.footer-menu a:hover                                {color: #EA2E49 ;}
+
+.footer .fline a                                    {color: #3f9ec5; font-size: 12px; font-weight: normal; float: right; text-decoration: underline; }
+.footer .fline a:hover                              {color: #EA2E49 ;}
+.footer .fline span                                 {color: #333;}
+.footer .fline:last-child a {text-decoration:underline;}
+.layout1-3 .recentlyAdded .slideGoods               {margin-left: 35px ;}
+.layout1-3 .arrPrev                                 {top: 0 !important; margin: 188px 5px 0 !important;}
+.layout1-3 .arrNext                                 {top: 0 !important; margin: 188px 5px 0 !important;}
+.recentlyAdded .goods                               {margin-left: 10px;}
+.recentlyAdded .arrPrev                             {background: url(../images/light/arrowPrev.png) no-repeat;margin: 200px 5px 0; height: 15px; width: 7px; top: 0; }
+.recentlyAdded .arrNext                             {background: url(../images/light/arrowNext.png) no-repeat;margin: 50px 5px; height: 15px; width: 7px; }
+
+
+.layout1-3 .box                     {}
+.tabCatalog .tabsMenu ul            {border: none;}
+
+
+
+.language-selector a img {
+    margin: 6px 17px 3px 4px;
+}
+
+.language-selector .otherLang a img {
+    float: left;
+    margin: 4px 17px 3px 5px;
+}
+
+
+
+.master-wrapper-whiteboard          {background: none repeat scroll 0 0 #FFF; border: 1px solid #cdecde !important; box-shadow: none !important;padding: 0 0 20px; width: 940px !important; padding-bottom: 20px; border-radius: 10px; }
+.ribCategories                      {background: url("../images/light/comBg.png") repeat scroll 0 bottom / cover rgba(0, 0, 0, 0); margin-bottom: 63px; padding-top: 1px; position: relative;top: -1px;width: 300px; right: 1px;border-radius: 0 10px 0 13px; border: 1px solid #C2E8D7; }
+.ribCategories h1                   {color: #000000; font-family: Roboto slab, arial,sans-serif; font-size: 24px; text-decoration: none; text-transform: capitalize;  }
+.rightSide button                   {background: url(../images/light/btn.png) repeat; height: 44px; width: 100px; line-height: 44px; color: #FFF; font-family: roboto,sans-serif; font-size: 18px; text-transform: uppercase;margin-top: 7px; border-radius: 10px; margin-bottom: 25px;  float: none; margin: 5px auto 25px; display: block; }
+.rightSide                          {float: right !important; margin: 0 0 0 10px; width: 300px;}
+
+
+
+.leftSide .breadcrumb .head                     {background: none repeat scroll 0 0 transparent !important; color: #000;}
+.leftSide .breadcrumb .tail                     {background: none repeat scroll 0 0 transparent !important; color: #000;}
+.leftSide .breadcrumb li::after                 {content: ">"; position: relative; left: 3px; line-height: 27px;}
+.leftSide .breadcrumb li:last-child a           {color: #333; text-decoration: none;}
+.leftSide .breadcrumb li:last-child:after       {content: "";}
+.leftSide .breadcrumb a                         {background: none !important; width: auto; min-width: 0;color:#4FBFCC;}
+.cat a                                          {color: #ea2e49;}
+.cat li:last-child a                            {color: #333745; text-decoration: none;}
+
+.leftSide .breadcrumb li            {margin-left: 3px;margin-bottom:0px;}
+.leftSide .breadcrumb  .tail        {background:none repeat scroll 0 0 transparent;}
+
+.leftSide h1                        {font-family: roboto slab,arial,sans-serif; font-size: 36px; font-weight: normal;text-transform: capitalize; padding-left: 40px; color: #333;}
+.leftSide .box                      {margin-left: 40px; border: 0;box-shadow: none; float: left; min-width: 92%; width: 93%; background: #FFF; }
+
+.catalogue                          {}
+.catalogue .itemBoxHeading          {
+background: rgb(206,237,223); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(206,237,223,1) 0%, rgba(182,228,207,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(206,237,223,1)), color-stop(100%,rgba(182,228,207,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(206,237,223,1) 0%,rgba(182,228,207,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(206,237,223,1) 0%,rgba(182,228,207,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(206,237,223,1) 0%,rgba(182,228,207,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(206,237,223,1) 0%,rgba(182,228,207,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ceeddf', endColorstr='#b6e4cf',GradientType=0 ); /* IE6-9 */
+ max-height: 95px; padding-left: 249px; margin-left: -209px; margin-top: -1px;padding-bottom:5px;padding-right:15px;}
+.catalogue .itemImage               {left: 0; border: 1px solid #C2E8D7; top: 0; float: left; margin: 16px; background: #FFF; z-index: 2; border-radius: 10px;overflow:hidden; }
+.catalogue .itemBoxOuter            {border: 0; margin: 0; }
+.catalogue .itemBoxOuterWrap        { border: 1px solid #cdecde; position: relative; left: -1px; overflow: hidden; box-shadow: 0; background: #FFF; border-radius: 0 10px 10px 0; }
+.catalogue .cornerLeftBig           {display: none;}
+.catalogue .itemBoxHeading h3       {padding-bottom: 5px;margin-bottom:5px; }
+.catalogue .itemBoxHeading p        {}
+.catalogue .itemBoxInner            {padding-left: 40px; }
+.catalogue .itemBoxInner p          {font-weight: lighter; font-family: roboto, arial, sans-serif; font-size: 13px; }
+.catalogue a.itemView                           {width: auto; background: url(../images/light/moreBtn.png) repeat scroll 0 0 transparent !important; color: #FFF; font-family: roboto,arial,sans-serif; font-size: 13px; height: 9px;line-height: 8px; margin: 3px;border-radius: 10px; font-weight: lighter; padding: 8px; }
+
+.catalogue .itemBoxHeading h3 a     {color: #334; font-family: roboto slab,arial,sans-serif;; font-size: 20px; text-decoration: none;font-weight: normal; text-transform: capitalize; text-shadow: none; }
+.catalogue .itemBoxHeading a        {color: #334; font-size: 14px; text-decoration: none;text-shadow: none; }
+
+.rightSide .banners img             {border: 1px solid #cdecde;border-radius: 8px 0 0 8px; }
+
+.cusel                              {border: 1px solid #EE3656; border-radius: 7px; background: none repeat scroll 0 0 #F2FAF6; }
+.cusel .cusel-scroll-wrap{
+  background: none repeat scroll 0 0 #F2FAF6;
+}
+.navBox a                           {color: #ea2e49;}
+.navBox .active                     {background: none !important;}
+.navCentered ul .nextPage           {background: none !important;}
+.navCentered ul .prevPage           {background: none !important;}
+
+.contactus .rightSide .box          {border: 1px solid #CDECDE; box-shadow: none;float: right; padding: 21px; right: -1px; border-radius: 10px 0 0 10px; }
+.contactus .contactsForm            {border: none;}
+.contactsForm label span            {color: #ea2e49;}
+.contactus .leftSide                {width: 545px;}
+
+.contactsButton input               {background: none; height: 44px; line-height: 40px; color: #F19482; font-family: intro bold; font-size: 18px;margin-top: 0; border: 0; text-shadow: #6DBCDB; }
+
+.itemSingle .leftSide               {width: 625px;}
+
+.textInfo                           {font-family: roboto,arial,sans-serif; }
+.textInfo h3                        {font-family: roboto slab, roboto,arial,sans-serif; color: #77c4a2; font-size: 24px;text-transform: uppercase; font-weight: normal; }
+
+.itemSingle .gallery .thumbnails .galleryImage.current {border: 1px solid #c2e8d7;}
+.itemSingle .bigImg                 {border: 2px solid #c2e8d7; }
+
+.goodInfo                           {width: 214px !important;margin-top: -10px  !important; }
+.goodInfo li                        {line-height: 20px !important; font-size: 13px !important; min-height: 20px !important; }
+.goodInfo li:nth-last-child(2)      {margin: 10px 0;}
+.goodInfo label                     {font-size: 16px; float: left;  margin-top: 10px; }
+.boxHead .itemName                  {width: 100%; color: #4fbfcc !important; ; margin-top: -7px; margin-left: -5px;font-size: 16px; }
+.boxHead .share                     {float: right !important;  margin-left: -5px; }
+.itemSingle .leftSide h1            {margin-bottom: 11px;color: #333; padding-left: 40px; text-transform: capitalize; margin-top: 10px; }
+
+.bucks          {color: #4FBFD1;}
+.icoPDF         {color: #ea2e49;}
+
+.itemSingle .gallery                {}
+
+.itemSingle .keywords a             {COLOR: #4fbfcc;}
+
+.contactsForm textarea              {border-color: #CDECDE;border: 2px solid #CDECDE;overflow:auto; }
+.contactsForm input                 {border-color: #CDECDE !important; }
+
+.goBack a, .eventsSingle .goBack a  {background: none;}
+.newsHeading                        {background: url("../images/light/headBg.png") repeat scroll center center transparent;border-radius: 2px 2px 0 0; }
+.newsSingle .newsBoxOuter           {border: 1px solid #cdecde;}
+.newsHeading .left                  {color: #334;}
+.newsHeading .right                 {color: #334;}
+.newsSingle .aboutBlockOuter        {padding-left: 40px;}
+.newsBoxOuterWrap                   {position: relative;}
+.newsHeadingInner                   {background: url(../images/light/headBg.png) center center; position: relative; height: 72px; border-radius: 3px 3px 0 0; }
+.newsHeadingOuter                   {top: 0;}
+.newsHeadingInner a                 {color: #FFF;}
+
+.newsView                           {width: auto; padding: 8px; background: url(../images/light/moreBtn.png) repeat scroll 0 0 transparent !important; color: #FFF; font-family: roboto,arial,sans-serif; font-size: 13px; height: 9px;line-height: 8px; margin: 4px -6px;border-radius: 10px; font-weight: lighter; }
+.newsView:hover                     {text-decoration: none; color: #EEE;}
+.newsBoxOuter                       {border: 1px solid #cdecde;background: none repeat scroll 0 0 #FFF; border-radius: 0 8px 8px 0; box-shadow: none; margin: 0; overflow: hidden; margin-left: -1px; }
+
+.newsHeadingInner h3{
+    color: #333344;
+    font-size: 20px;
+    font-weight: normal;
+    text-decoration: none;
+    text-transform: capitalize;
+    line-height: 74px;
+}
+
+.newsInfo .left     {color: #77c4d4;}
+
+.newsImage {
+    min-height: 0;
+    padding-top: 85px;
+}
+
+
+.contactsButton                     {width: 80%; }
+.contactsButton input               {background: url(../images/light/btn.png) repeat; height: 44px; width: 105px; line-height: 44px; color: #FFF; font-family: roboto, sans-serif; font-size: 18px;margin-top: 7px; margin-bottom: 25px;  float: none; margin: 5px auto 25px; display: block; font-weight: normal; border-radius: 10px; }
+
+
+.cusel span, .cuselText{
+	color:#000000;
+}
+
+
+.zoomWindowContainer div{
+z-index:1000 !important; 
+}
+
+
+.box .littleSeeAll:hover{
+  color: #ea2e49;
+}
+
+
+.itemSingle .box > .boxHead{
+height:auto;
+}
+
+.leftSide h1{
+  width:auto;
+}
+
+.littleSeeAll span, .tabCatalog .redRibbon a span {
+  font-size: 11px;
+  position: absolute;
+  right: -10px;
+  text-decoration: none;
+}
+
+.layout2-2 .recentlyAdded .slideGoods{
+ margin-left:21px;
+}
+
+.tabCatalog .redRibbon a span{
+  top:-7px;
+}
+
+
+.newsSingle.leftSide h1{
+  width:538px;
+  font-size:30px;
+}
+
+
+.itemSingle .box .boxHead{
+  height:auto;
+}
+
+.box .boxHead h2,h1, h2, h3, h4, h5, h6, .LatesNews .news .newsHeadline, .tabCatalog .tabsMenu ul li a, .nivoSlider a{
+  font-family: Roboto Slab, arial, sans-serif !important;
+}
+
+.master-wrapper-main, .textInfo, .recentlyAdded .goodCaption, .LatesNews .news .imgNews .newsDate{
+  font-family: Tahoma, arial, sans-serif !important;
+}
+
+.box .boxHead h2{
+  font-weight:normal;
+}
+
+.catalogue .itemBoxHeading h3 {
+  max-height: 39px;
+  overflow: hidden;
+  padding-bottom: 5px;
+}
+
+.cat li.last {
+  color: #333745;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 27px;
+  padding-left: 13px;
+  text-transform: none;
+}
+
+.itemSingle .icoPDF{
+  text-align:left;
+  padding-left:20px;
+}
+
+.leftSide .breadcrumb.cat li a.rootLink{
+  text-decoration:underline;
+  color:#4FBFCC;
+}
+
+.itemSingle .leftSide .breadcrumb li:last-child a
+{
+  text-decoration:underline;
+  color: #4FBFCC;
+}
+
+.itemSingle .leftSide .breadcrumb li:last-child a:hover{
+color: #1791c0;
+}
+
+.newsHeadingInner a:hover{
+  text-decoration:underline;
+  color:#000000;
+}
+
+.theme-default .nivo-caption strong{
+  color:#333333 !important;
+}
+
+.theme-default .nivo-caption a{
+  color:#333333 !important;
+}
+
+.itemImage + .itemBoxOuter .itemBoxHeading {
+    left: -200px;
+    margin-left: 0;
+    padding-left: 220px;
+}
+
+.itemImage + .itemBoxOuter .itemBoxInner{
+  padding-left:220px;
+}
+
+
+.master-wrapper-main .master-wrapper-whiteboard .leftSide .p40{
+  font-size:14px;
+  line-height:20px;
+}
+
+
+.master-wrapper-main .master-wrapper-whiteboard .leftSide .p40 h2{
+  color:#77c4a2 !important;
+  font-size:24px !important;
+  margin:0px;
+}

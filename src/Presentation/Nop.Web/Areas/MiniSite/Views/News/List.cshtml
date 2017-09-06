@@ -1,0 +1,61 @@
+﻿@model NewsItemListModel
+@using Nop.Web.Extensions;
+@using Nop.Web.Models.News;
+
+@{
+    Layout = "_RootNoScript";
+    Html.AppendTitleParts(T("admin.contentmanagement.news").Text);
+}
+
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+
+                    <h1>@T("admin.contentmanagement.news")</h1>
+
+                    <div class="catalogue">
+                        @foreach(var newsItem in Model.NewsItems)
+                        {
+                            <div class="newsBoxOuterWrap">
+                                <div class="newsHeadingOuter">
+                                    <div class="newsHeadingInner">
+                                        <div class="cornerRightBig"></div>
+                                        <a href="@Url.RouteUrl("MiniNewsItem", new { SeName = newsItem.SeName })"><h3>@newsItem.Title</h3></a>
+                                    </div>
+                                </div>
+                                <div class="newsBoxOuter">
+                                    <div class="newsBoxInner">
+                                        <div class="newsImage">
+                                            @if (newsItem.CatalogPictureId != 0)
+                                            {
+                                                <a href="@Url.RouteUrl("NewsItem", new { SeName = newsItem.SeName })"><img alt="@newsItem.Title" src="@newsItem.CatalogPicture.ImageUrl"></a>
+                                            }
+                                        </div>
+                                        <div class="newsContent">
+                                            <div class="newsInfo">
+                                                <p class="left">@newsItem.PublishingDate.Value.ToString("D")</p>
+                                            </div>
+                                            <p class="newsText">
+                                                @newsItem.Short
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <a class="newsView" href="@Url.RouteUrl("MiniNewsItem", new { SeName = newsItem.SeName })">@T("ReadMore")</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="navBox">
+                        @(Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").ShowFirst(true).ShowLast(true).ShowPrevious(true))
+                    </div>
+                </div>
+                <div class="rightSide">
+
+                    @Html.Action("Banners","Common")
+                </div>
+            </div>
+
+        </div> </div>
+</div>

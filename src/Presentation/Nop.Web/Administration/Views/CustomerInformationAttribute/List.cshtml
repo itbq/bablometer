@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "List";
+}
+@using Telerik.Web.Mvc.UI;
+@model Telerik.Web.Mvc.GridModel<Nop.Admin.Models.CustomerInformationAttributes.CustomerInformationAttributeModel>
+<div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            @T("Admin.Catalog.Attributes.CategoryProductAttributeGroupModel.EditAttributeDetails")
+        </div>
+</div>
+<table class="adminContent">
+    <tr>
+        <td>
+             @(Html.Telerik().Grid<Nop.Admin.Models.CustomerInformationAttributes.CustomerInformationAttributeModel>()
+                    .Name("customerattributes-grid")
+                       .DataKeys(keys =>
+                       {
+                           keys.Add(x => x.Id);
+                       })
+                       .DataBinding(dataBinding =>
+                       {
+                           dataBinding.Ajax()
+                               .Select("List", "CustomerInformationAttribute")
+                               //.Insert("ProductCategoryInsert", "Product", new { productId = Model.Id })
+                               .Update("Update", "CustomerInformationAttribute");
+                               //.Delete("ProductCategoryDelete", "Product");
+                       })
+                       .Columns(columns =>
+                       {
+                           columns.Bound(x => x.Alias)
+                               .ReadOnly(true)
+                               .Width(50)
+                               .Centered();
+                           columns.Bound(x => x.DisplayOrder)
+                               .Width(15)
+                               .Centered();
+                           columns.Bound(x => x.IncludeEmptyValuesInSearchResults)
+                               .Width(15)
+                               .Template(
+                                    @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.IncludeEmptyValuesInSearchResults.ToString().ToLowerInvariant() + ".gif")" />
+                                )
+                                .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= IncludeEmptyValuesInSearchResults #>.gif' />")
+                                .Centered();
+                           columns.Bound(x => x.IsRequired)
+                               .Width(15)
+                               .Template(
+                                    @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.IsRequired.ToString().ToLowerInvariant() + ".gif")" />
+                                )
+                                .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= IsRequired #>.gif' />")
+                                .Centered();
+                           columns.Bound(x => x.ProductAddControlTypeString)
+                                .Width(150)
+                                .Centered();
+                            columns.Bound(x => x.ProductSearchControlTypeString)
+                                .Width(150)
+                                .Centered();   
+                           columns.Command(commands =>
+                           {
+                               commands.Edit().Text(T("Admin.Common.Edit").Text);
+                           })
+                           .Width(180);
+                       })
+                       //.ClientEvents(events => events.OnEdit("onProductCategoryEdit"))
+                       .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>

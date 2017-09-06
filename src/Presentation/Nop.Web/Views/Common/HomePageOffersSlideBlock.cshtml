@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "HomePageOffersSlideBlock";
+    ViewBag.Layout = null;
+}
+
+@using Nop.Core.Domain.Catalog
+@using Nop.Core.Domain.Customers
+@model Nop.Web.Models.Common.OffersModel
+<div class="offersSlideBox bestborderthanever">
+    <div class="head bestborderthanever">@T("HomePageOffersSlideBlock.NewOffers").Text</div>
+    
+    
+            
+    <script src="@Url.Content("/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+
+    @using (Ajax.BeginForm("HomePageOffersSlideBlock", "Common", new {count=12, partialView = true}, new AjaxOptions
+                                                                                                     {
+                                                                                                         HttpMethod = "GET",
+                                                                                                         InsertionMode = InsertionMode.Replace,
+                                                                                                         UpdateTargetId = "offersSlideBox"
+            
+                                                                                                     }))
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("select:[data-autopostback=true]").change(function () {
+                    $(this).closest("form").submit();
+                });
+            });
+
+
+        </script>
+
+        <select class="dropdown  bestborderthanever" name="categoryId"  data-autopostback="true">
+            <option value="0">Показать все</option>
+            @for (int i = 0; i < Model.Categories.Count; i++)
+            {
+                var t = i + 1;
+                <option value="@Model.Categories[i].CategoryId">@Model.Categories[i].CateogyTitle</option>
+            }
+        </select>
+    }
+     
+    <div id="offersSlideBox">
+        <div class="slideBox" >
+            <div>
+                @if (Model.Products.Any())
+                {
+                    var n = 0;
+                    var i = 1;
+                    foreach (var product in Model.Products)
+                    {
+                        if (n == 0)
+                        {
+                            @:<div>
+                        }
+                        <div class="offerBox bestborderthanever">
+                            <div class="bankLogo">
+                                <img src= "@product.PictureThumbnailUrl"  alt="">
+                            </div>
+                            <div class="percentage">
+                                @if (product.ProductAttributeValue != null)
+                                {
+                                    @Html.Raw(product.ProductAttributeValue.RealValue.GetValueOrDefault().ToString() + "%");
+                                }
+                            </div>
+                            <div class="ratings">
+                                @switch (Convert.ToInt32(product.BankRating))
+                                {
+                                    case 0:
+                                        <div class="ratingBank stars "></div>
+                                        break;
+                                    case 1:
+                                        <div class="ratingBank stars star1"></div>
+                                        break;
+                                    case 2:
+                                        <div class="ratingBank stars star2"></div>
+                                        break;
+                                    case 3:
+                                        <div class="ratingBank stars star3"></div>
+                                        break;
+                                    case 4:
+                                        <div class="ratingBank stars star4"></div>
+                                        break;
+                                    case 5:
+                                        <div class="ratingBank stars star5"></div>
+                                        break;
+                                }
+                                @switch (Convert.ToInt32(product.Rating))
+                                {
+                                    case 0:
+                                        <div class="ratingOffer stars "></div>
+                                        break;
+                                    case 1:
+                                        <div class="ratingOffer stars star1"></div>
+                                        break;
+                                    case 2:
+                                        <div class="ratingOffer stars star2"></div>
+                                        break;
+                                    case 3:
+                                        <div class="ratingOffer stars star3"></div>
+                                        break;
+                                    case 4:
+                                        <div class="ratingOffer stars star4"></div>
+                                        break;
+                                    case 5:
+                                        <div class="ratingOffer stars star5"></div>
+                                        break;
+                                }
+                            </div>
+                            @Html.Raw(product.ShortDescription)
+                            <a href="@Url.RouteUrl("Product", new { seName = product.SeName })" class="more">@T("HomePageOffersSlideBlock.MoreInfo")</a>
+                            <a class="basket" href="@product.OrderingLink" target="_blank" onclick=" OrderProduct(@product.Id) "></a>
+                        </div>
+                        if (n == 3 || i == Model.Products.Count)
+                        {
+                            @:</div>
+                            n = 0;
+                        }
+                        else
+                        {
+                            n++;
+                        }
+                        i++;
+                    }
+                }
+					        
+            </div>
+        </div>
+        
+        <div class="arrowPrev"></div>
+        <div class="arrowNext"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    function OrderProduct(id) {
+        $.ajax({
+            url: "/Catalogue/OrderProduct",
+            type: "POST",
+            dataType: "json",
+            data: { productId: id },
+        });
+    }
+ </script>

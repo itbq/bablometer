@@ -1,0 +1,96 @@
+﻿@model Nop.Web.Models.BuyingRequest.BuyingRequestCatalogListModel
+
+@using Telerik.Web.Mvc.UI
+@using Nop.Web.Extensions
+@using Nop.Core.Domain.Catalog
+@{
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+    switch (Model.ItemType)
+        {
+            case (int)ProductItemTypeEnum.Product:
+                {
+                    Html.AddTitleParts(_localisationService.GetResource("Catalog.Product"));
+                    break;
+                }
+            case (int)ProductItemTypeEnum.Service:
+                {
+                    Html.AddTitleParts(_localisationService.GetResource("Catalog.Service"));
+                    break;
+                }
+        }
+    Layout = "_RootNoScript";
+}
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+                    @switch (Model.ItemType)
+                    {
+                        case (int)ProductItemTypeEnum.Product:
+                            {
+                                <h1>@T("Catalog.Product")</h1>
+                                break;
+                            }
+                        case (int)ProductItemTypeEnum.Service:
+                            {
+                                <h1>@T("Catalog.Service")</h1>
+                                break;
+                            }
+                    }
+                    <ul class="breadcrumb cat">
+                         <li><div class="tail"></div><a href="/Catalogue/@Html.Raw(((ProductItemTypeEnum)Model.ItemType).ToString())" class="rootLink">@T("Products.Breadcrumb.Top")</a><div class="head"></div></li>
+                         @for (int i = 0; i < Model.Categories.Length - 1; i++)
+                         {
+                             if(Model.Categories[i].CurrentCategoryId != 0)
+                             {
+                                 <li><div class="tail"></div><a href="@Url.RouteUrl("MiniCategoryItem", new {seName = Model.Categories[i].Categories.Where(x => x.Id == Model.Categories[i].CurrentCategoryId).First().SeName, itemtype=((ProductItemTypeEnum)Model.ItemType).ToString(),})">@Html.Raw(Model.Categories[i].Categories.Where(x => x.Id == Model.Categories[i].CurrentCategoryId).First().Name)</a><div class="head"></div></li>
+                             }
+                         }
+                        @if(Model.Categories.Length >= 1 && Model.Categories[0].CurrentCategoryId != 0) 
+                        {
+                            <li class="last">@Html.Raw(Model.Categories[Model.Categories.Length - 1].Categories.Where(x => x.Id == Model.Categories[Model.Categories.Length - 1].CurrentCategoryId).First().Name)</li>
+                        }
+                    </ul>
+                    <div class="catalogue">
+                        @foreach(var item in Model.BuyingRequestList)
+                        {
+                            <div class="itemBoxOuterWrap">
+                                @if (item.Picture != null && item.Picture.ImageUrl != ""){
+                                <div class="itemImage">
+                                    <div class="cornerLeftBig"></div>
+                                     <a href="@Url.RouteUrl("MiniProduct", new { seName = item.ProductSeName })"><img src="@item.Picture.ImageUrl" alt="@item.Title" /></a>
+                                </div>
+                                }
+                                <div class="itemBoxOuter">
+                                    <div class="itemBoxHeading">
+                                         <h3><a href="@Url.RouteUrl("MiniProduct", new { seName = item.ProductSeName })">@item.Title</a></h3>
+                                            <p>
+                                                @if(item.Brand != null){<a class="itemName" href="/Catalogue/@Html.Raw(((ProductItemTypeEnum)Model.ItemType).ToString() +"/" + Model.SelectedCategorySeName + "?BrandId="+ item.BrandId)">@item.Brand</a>}
+                                            </p>
+                                    </div>
+                                <div class="itemBoxInner">
+                                    <p class="itemInfo">
+                                        @item.ShortDescription
+                                    </p>
+                                </div>
+                                <a class="itemView" href="@Url.RouteUrl("MiniProduct", new { seName = item.ProductSeName })">@T("Catalog.ViewInfo")</a>
+                                </div>
+                            </div>
+                        }
+                       </div>
+                    <div class="navBox">
+                         @(Html.Pager(Model.PagingContext).Link(x=>"/Catalogue/" + ((ProductItemTypeEnum)Model.ItemType).ToString() +"/" + Model.SelectedCategorySeName + "?pagenumber=" + x.ToString() + (Model.PagingContext.BrandId != 0 ? ("&BrandId=" + Model.PagingContext.BrandId) : "")).QueryParam("pagenumber").ShowFirst(true).ShowLast(true).ShowPrevious(true))
+                    </div>
+
+                </div>
+                <div class="rightSide">
+                     @Html.Action("CategorySelector","Catalogue",new {CatalogUrl = "Catalogue", itemtype=Model.ItemType})
+
+                    @Html.Action("Banners","Common")
+                </div>
+            </div>
+
+        </div> </div>
+</div>
+

@@ -1,0 +1,170 @@
+﻿@model Nop.Web.Models.News.NewsItemModel
+@using Telerik.Web.Mvc.UI;
+
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AddTitleParts(T("Profile.News.Add").Text);
+    var storeSettings = DependencyResolver.Current.GetService<Nop.Core.Domain.StoreInformationSettings>();
+}
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.News })
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+    });
+</script>
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <ul id="productMenu">
+                <li><a href="/news/managenews">@T("Profile.News.Manage")</a></li>
+                <li>@Html.ActionLink(T("Profile.News.Add").Text, "AddNews", null, new { @class = "current" })</li>
+        </ul>
+        <div class="master-wrapper-main borderedPage ">
+            @using (Html.BeginForm())
+            {
+            <div class="addNews">
+                <h1>@T("Profile.News.Add")</h1>
+                    <div class="step">
+                    <p><b>@T("profile.news.add.chooselanguage") </b></p>
+                    <div class="languages">
+                        <ul>
+                            @if (Model.ExtendedProfileDisplay == (int)Nop.Core.Domain.News.NewsDisplayEnum.Main)
+                            {
+                                for (int i = 0; i < Model.AviableLanguages.Count; i++)
+                                {
+                                    if (Model.AviableLanguages[i].Id > 2)
+                                    {
+                                        <li class="hiddenlang"><label for="@Html.Raw("l" + i)"><div class="flag"><img src="/@Url.Content("Content/etf/images/flag/flag_" + Model.AviableLanguages[i].Id + ".png")" alt=""/> <span>@Model.AviableLanguages[i].Name</span></div></label></li>
+                                    }
+                                    else
+                                    {
+                                    }
+                                    <li><label for="@Html.Raw("l" + i)"><div class="flag"><img src="/@Url.Content("Content/etf/images/flag/flag_" + Model.AviableLanguages[i].Id + ".png")" alt=""/> <span>@Model.AviableLanguages[i].Name</span></div></label></li>
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < Model.AviableLanguages.Count; i++)
+                                {
+                                    if (Model.AviableLanguages[i].Id > 2)
+                                    {
+                                        <li style="display:none;" class="hiddenlang"><label for="@Html.Raw("l" + i)"><div class="flag"><img src="/@Url.Content("Content/etf/images/flag/flag_" + Model.AviableLanguages[i].Id + ".png")" alt=""/> <span>@Model.AviableLanguages[i].Name</span></div></label></li>
+                                    }
+                                    else
+                                    {
+                                        <li><label for="@Html.Raw("l" + i)"><div class="flag"><img src="/@Url.Content("Content/etf/images/flag/flag_" + Model.AviableLanguages[i].Id + ".png")" alt=""/> <span>@Model.AviableLanguages[i].Name</span></div></label></li>
+                                    }
+                                }
+                            }
+                        </ul>
+                        @for (int i = 0; i < Model.AviableLanguages.Count; i++)
+                        {
+                            if (Model.ExtendedProfileDisplay == (int)Nop.Core.Domain.News.NewsDisplayEnum.Main)
+                            {
+                                if (Model.AviableLanguages[i].Id > 2)
+                                {
+                                    @Html.RadioButton("Language", Model.AviableLanguages[i].Id, Model.WorkingLanguageId == Model.AviableLanguages[i].Id, new { id = "l" + i })<label for="@Html.Raw("l" + i)" class="hiddenlang"></label>
+                                }
+                                else
+                                {
+                                    @Html.RadioButton("Language", Model.AviableLanguages[i].Id, Model.WorkingLanguageId == Model.AviableLanguages[i].Id, new { id = "l" + i })<label for="@Html.Raw("l" + i)"></label>
+                                }
+                            }
+                            else
+                            {
+                                if (Model.AviableLanguages[i].Id > 2)
+                                {
+                                    @Html.RadioButton("Language", Model.AviableLanguages[i].Id, Model.WorkingLanguageId == Model.AviableLanguages[i].Id, new { id = "l" + i })<label for="@Html.Raw("l" + i)" class="hiddenlang" style="display:none;"></label>
+                                }
+                                else
+                                {
+                                    @Html.RadioButton("Language", Model.AviableLanguages[i].Id, Model.WorkingLanguageId == Model.AviableLanguages[i].Id, new { id = "l" + i })<label for="@Html.Raw("l" + i)"></label>
+                                }
+                            }
+                        }
+                    </div>
+
+                    <div class="fillNews">
+                        <h1>@T("Profile.News.AddInformation")</h1>
+                        <div class="ioBox">
+                            <label>@T("news.manage.list.minisite")</label>
+                            @Html.ValidationMessageFor(model => model.Title)
+                            @if (Model.ExtendedProfileDisplay == 0)
+                            {
+                                @Html.DropDownListFor(model => model.ExtendedProfileDisplay, new List<SelectListItem>()
+                                {
+                                    new SelectListItem(){Selected = Model.ExtendedProfileDisplay == (int)Nop.Core.Domain.News.NewsDisplayEnum.Both,Text = T("News.Manage.MiniSite.Location.Both").Text, Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.Both).ToString()},
+                                    new SelectListItem(){Selected = Model.ExtendedProfileDisplay == (int)Nop.Core.Domain.News.NewsDisplayEnum.Main,Text = storeSettings.StoreName, Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.Main).ToString()},
+                                    new SelectListItem(){Selected = Model.ExtendedProfileDisplay == (int)Nop.Core.Domain.News.NewsDisplayEnum.MiniSite,Text = T("News.Manage.MiniSite.Location.MiniSite").Text, Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.MiniSite).ToString()}
+                                })
+                            }
+                            else
+                            {
+                                 @Html.DropDownListFor(model => model.ExtendedProfileDisplay, new List<SelectListItem>()
+                                {
+                                    new SelectListItem(){Selected = true,Text = T("News.Manage.MiniSite.Location.Both").Text, Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.Both).ToString()},
+                                    new SelectListItem(){Selected = false,Text = storeSettings.StoreName, Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.Main).ToString()},
+                                    new SelectListItem(){Selected = false,Text = T("News.Manage.MiniSite.Location.MiniSite").Text, Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.MiniSite).ToString()}
+                                })
+                            }
+                        </div>
+                        <div class="ioBox">
+                            <label>@T("admin.contentmanagement.topics.fields.title")</label>
+                            @Html.ValidationMessageFor(model => model.Title)
+                            @Html.EditorFor(model => model.Title)
+                        </div>
+                        <div class="ioBox">
+                            <label>@T("products.compare.shortdescription")</label>
+                            @Html.ValidationMessageFor(model => model.Short)
+                            @Html.TextAreaFor(model => model.Short)
+                        </div>
+                        <div class="ioBox">
+                            <label>@T("Profile.Company.Description")</label>
+                            @Html.ValidationMessageFor(model => model.Full)
+                            @Html.EditorFor(model => model.Full, "NewsRichEditorImage")
+                        </div>
+                        <div class="ioBox">
+                        <label class="imagelable">@T("ETF.Profile.News.Image.HomePage")<br />@T("MiniSite.Image.HomaPage")</label>
+                        @Html.EditorFor(model => model.PictureId)
+                            </div>
+                        <div class="ioBox">
+                        <label class="imagelable">@T("ETF.Profile.News.Image.CatalogPage")<br />@T("MiniSite.Image.Details")</label>
+                        @Html.EditorFor(model => model.CatalogPictureId)
+                            </div>
+                    </div>
+
+                    <div class="fillNews center">
+                        <button class="upload save">@T("common.save")</button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+   
+<script type="text/javascript">
+    $('form').submit(function () {
+        if ($(this).valid()) {
+            $(this).find(':submit').attr('disabled', 'disabled');
+        }
+    });
+</script> 
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ExtendedProfileDisplay').change(function () {
+            var val = $('#ExtendedProfileDisplay').val();
+            if(val != @((int)Nop.Core.Domain.News.NewsDisplayEnum.Main)){
+                $('.languages .hiddenlang').hide();
+                $("input[name=language]").prop("checked", false); 
+                $("#l0").prop("checked", true); 
+            }else{
+                $('.languages .hiddenlang').show();
+            }
+        });
+    });
+</script>

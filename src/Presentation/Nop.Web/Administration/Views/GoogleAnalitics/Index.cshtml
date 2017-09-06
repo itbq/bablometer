@@ -1,0 +1,37 @@
+﻿@model List<Nop.Admin.Models.GoogleAnalitics.GoogleAnaliticsStats>
+@using Telerik.Web.Mvc;
+@using Telerik.Web.Mvc.UI
+@{
+    Html.AddTitleParts(T("Admin.Google.Analitics.Statistics").Text);
+}
+<table class="stats">
+    <tbody>
+        <tr>
+            <td>
+                <h2><a href="https://www.google.com/analytics/web/" target="_blank">@T("Admin.Google.Analitics.Detailes")</a></h2>
+            </td>
+        </tr>
+        <tr>
+            <td class="orderaveragereport">
+                <h2>@T("Admin.Google.Analitics.Statistics")</h2>
+                <table class="adminContent">
+                    <tr>
+                        <td>
+                            @(Html.Telerik().Grid<Nop.Admin.Models.GoogleAnalitics.GoogleAnaliticsStats>(Model)
+                                .Name("average-order-report-grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(x => x.Name);
+                                    columns.Bound(x => x.Today);
+                                    columns.Bound(x => x.Weekly);
+                                    columns.Bound(x => x.Mounthly);
+                                    columns.Bound(x => x.Year);
+                                })
+                                .EnableCustomBinding(true))
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

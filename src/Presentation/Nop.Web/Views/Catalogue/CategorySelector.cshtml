@@ -1,0 +1,91 @@
+﻿@model Nop.Web.Models.SellerCatalog.CategorySelectorModel
+
+<div class="ribCategories">
+    <h1>@T("Profile.Catalog.SelectCategory")</h1>
+        <div class="selectoBox">
+        <div class="categories active" id="category-0">
+            <select name="@Html.Raw("EditCategories-0")" onchange="OnFirstCategoryChange" id="EditCategories-0">
+                <option value="0">@T("Profile.Catalog.SelectCategory")</option>
+                @foreach (var category in Model.Categories[0].Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+                </select>
+                <div class="arrowDown"></div>
+            </div>
+        <button id="FilterCategorie">@T("Catalog.Go")</button>
+        </div>
+        @Html.HiddenFor(model => model.SelectedCategoryId)
+        <input type="hidden" id="ItemType" value="@Model.ItemType" />
+        @Html.HiddenFor(model=>model.SelectedCategorySeName)
+    <div class="arrowBg"></div>
+</div>
+
+<script>
+    function OnFirstCategoryChange(e) {
+        $('#SelectedCategoryId').val(e.val());
+        if (e.val() == '0') {
+            e.parents('.categories').nextAll('.categories').remove();
+            return;
+        }
+        $.ajax({
+            url: "/BuyingRequest/GetSubCategories",
+            type: "POST",
+            dataType: "json",
+            data: { categoryId: e.val() },
+            success: function (resp) {
+                if (resp.subCategories) {
+                    $('.arrowDown').show();
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                    $('.categories.active:last').after('<div class="categories inactive" id=category-' + resp.lavel + '></div>');
+                    $('.categories.inactive').html(resp.htmlString);
+
+                } else {
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                    $('.arrowDown').last().hide();
+                }
+                $('#SelectedCategorySeName').val(resp.seName);
+            }
+        });
+    }
+
+    function SelectCategorie() {
+        var categorieId = $('#SelectedCategoryId').val();
+        var itemType = $('#ItemType').val();
+        var seName = $('#SelectedCategorySeName').val();
+        var catalogUrl;
+        if (categorieId != 0) {
+            switch (itemType) {
+                case '@((int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product)':
+                    catalogUrl = '/@Model.CatalogUrl' + '/Product/' +  seName;
+                    break;
+                case '@((int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service)':
+                    catalogUrl = '/@Model.CatalogUrl' + '/Service/' + seName;
+                    break;
+                case '@((int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ProductBuyingRequest)':
+                    catalogUrl = '/@Model.CatalogUrl' + '/ProductBuyingRequest/' + seName;
+                    break;
+                case '@((int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ServiceBuyingRequest)':
+                    catalogUrl = '/@Model.CatalogUrl' + '/ServiceBuyingRequest/' + seName;
+                        break;
+            }
+
+            window.location.href = catalogUrl;
+            return false;
+        }
+    }
+
+    $(document).ready(function () {
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+        document.getElementById("EditCategories-0").onchange = function () {
+            OnFirstCategoryChange($(this));
+        };
+        $('#FilterCategorie').click(SelectCategorie);
+    });
+</script>

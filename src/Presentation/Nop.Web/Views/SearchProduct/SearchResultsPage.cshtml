@@ -1,0 +1,484 @@
+﻿@{
+    ViewBag.Title = "SearchResultsPage";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+}
+@model Nop.Web.Models.SearchProduct.SearchModelFull
+
+@if(Model.LowerButtonClick)
+{
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('html, body').animate({
+            scrollTop: $("#scrollposition").offset().top
+        }, 100);
+    });
+    </script>
+}
+<script type="text/javascript">
+    function switchDisplay(id) {
+        if ($(id).css("display") == "none") { $(id).css("display", "block"); } else { $(id).css("display", "none"); }
+    }
+    function OrderProduct(id) {
+        $.ajax({
+            url: "/Catalogue/OrderProduct",
+            type: "POST",
+            dataType: "json",
+            data: { productId: id },
+        });
+    }
+
+    $(function () {
+        // cusel init
+        var params = { changedEl: ".dropdown", scrollArrows: true, visRows: 5 }
+        cuSel(params);
+
+        //$(".tabFilters").tabs();
+
+        $("#submit").click(function () {
+            if ($(".loginPop").validate().form()) {
+                $("#submit").submit();
+            } else { }
+        });
+
+        $(".opener, .opener + label").click(function () {
+            $(this).parent().toggleClass('open');
+            return false;
+        });
+
+        $(".slideBox").diyslider({
+            width: "682px", // width of the slider
+            height: "200px", // height of the slider
+            display: 1, // number of slides you want it to display at once
+            loop: true // disable looping on slides
+        }); // this is all you need!
+
+
+        // use buttons to change slide
+        $(".offersSlideBox .arrowPrev").bind("click", function () {
+            $(".slideBox").diyslider("move", "back");
+            return false;
+        });
+        $(".offersSlideBox .arrowNext").bind("click", function () {
+            $(".slideBox").diyslider("move", "forth");
+            return false;
+        });
+
+
+
+        /*      SLIDER BY SIX WITH DOTS     */
+
+        $(".dotSlider").diyslider({
+            width: "702px", // width of the slider
+            height: "405px", // height of the slider
+            display: 1, // number of slides you want it to display at once
+            loop: true // disable looping on slides
+        }); // this is all you need!
+        var dotSlidesCount = 0;
+        @if (Model.Products.Any())
+        {
+           @: dotSlidesCount =$(".dotSlider").diyslider("getSlidesCount");
+        }
+        $(".dotSlider").bind("moving.diyslider", function (event, slide, slideNumber, actuallyMoved) {
+            $(".dotSlider + .pagination .dot").removeClass("active");
+            $(".dotSlider + .pagination .dot").eq(slideNumber - 1).addClass("active");
+        });
+
+        $(".dotSlider + .pagination").append('<li><a href="#" class="prev"></a></li>');
+        for (i = 1; i <= dotSlidesCount; i++) {
+            if (i != 1) {
+                $(".dotSlider + .pagination").append('<li onclick=\'$(".dotSlider").diyslider("move", ' + i + ');\'><a class="dot" id="dot_' + i + '" href="#" onclick="return false;"></a></li>');
+            } else {
+                $(".dotSlider + .pagination").append('<li onclick=\'$(".dotSlider").diyslider("move", ' + i + ');\'><a class="dot active" id="dot_' + i + '" href="#" onclick="return false;"></a></li>');
+            }
+        }
+        $(".dotSlider + .pagination").append(' <li><a href="#" class="next"></a></li>');
+
+
+        $(".dotSlider + .pagination .prev").bind("click", function () {
+            $(".dotSlider").diyslider("move", "back");
+            //            $('.dot').removeClass("active");
+            return false;
+        });
+        $(".dotSlider + .pagination .next").bind("click", function () {
+            $(".dotSlider").diyslider("move", "forth");
+            return false;
+        });
+
+
+
+
+
+
+        // tracker control
+        //$(".tracker.toMax").slider({
+        //    orientation: "horizontal",
+        //    range: "max",
+        //    min: 6,
+        //    max: 36,
+        //    value: 6,
+        //    create: function (event, ui) {
+        //        $(this).find(".ui-slider-range").html('<div class="grad"></div>');
+        //        $(this).find(".ui-slider-handle").prepend('<span class="amount">0</span>');
+        //        $(this).append('<div class="scale"><div class="first"></div><div class="quart"></div><div class="middle"></div><div class="middleQuart"></div><div class="last"></div>');
+        //        $(this).append('<span class="min">0</span>');
+        //        $(this).append('<span class="max">0</span>');
+
+        //        $(this).find(".grad").css("width", $(this).parent().width() + "px");
+        //    },
+        //    slide: function (event, ui) {
+        //        $(this).find(".min").html($(this).slider("option", "min") + "%");
+        //        $(this).find(".max").html($(this).slider("option", "max") + "%");
+        //        $(this).find(".amount").html(ui.value + "%");
+        //    }
+
+        //});
+
+        //$(".tracker.toMin").slider({
+        //    orientation: "horizontal",
+        //    range: "min",
+        //    min: 6,
+        //    max: 36,
+        //    value: 6,
+        //    create: function (event, ui) {
+        //        $(this).find(".ui-slider-range").html('<div class="grad"></div>');
+        //        $(this).find(".ui-slider-handle").prepend('<span class="amount">0</span>');
+        //        $(this).append('<div class="scale"><div class="first"></div><div class="quart"></div><div class="middle"></div><div class="middleQuart"></div><div class="last"></div>');
+        //        $(this).append('<span class="min">0</span>');
+        //        $(this).append('<span class="max">0</span>');
+
+        //        $(this).find(".grad").css("width", $(this).parent().width() + "px");
+        //    },
+        //    slide: function (event, ui) {
+        //        $(this).find(".min").html($(this).slider("option", "min") + "%");
+        //        $(this).find(".max").html($(this).slider("option", "max") + "%");
+        //        $(this).find(".amount").html(ui.value + "%");
+        //    }
+
+        //});
+
+        //$(".tracker.both").slider({
+        //    orientation: "horizontal",
+        //    range: true,
+        //    min: 6,
+        //    max: 36,
+        //    value: 6,
+        //    create: function (event, ui) {
+        //        $(this).find(".ui-slider-range").html('<div class="grad"></div>');
+        //        $(this).find(".ui-slider-handle").prepend('<span class="amount">0</span>');
+        //        $(this).append('<div class="scale"><div class="first"></div><div class="quart"></div><div class="middle"></div><div class="middleQuart"></div><div class="last"></div>');
+        //        $(this).append('<span class="min">0</span>');
+        //        $(this).append('<span class="max">0</span>');
+
+        //        $(this).find(".grad").css("width", $(this).parent().width() + "px");
+        //    },
+        //    slide: function (event, ui) {
+        //        $(this).find(".min").html($(this).slider("option", "min") + "%");
+        //        $(this).find(".max").html($(this).slider("option", "max") + "%");
+        //        $(this).find(".amount").html(ui.value + "%");
+        //    }
+
+        //});
+    });
+
+    function ValidateAttributeForm(input) {
+        $('.placeholder').each(function () {
+            var input = this;
+            var $input = $(input);
+            if (input.value == $input.attr('placeholder') && $input.hasClass('placeholder')) {
+                if ($input.data('placeholder-password')) {
+                    $input = $input.hide().next().show().attr('id', $input.removeAttr('id').data('placeholder-id'));
+                    // If `clearPlaceholder` was called from `$.valHooks.input.set`
+                    if (event === true) {
+                        return $input[0].value = value;
+                    }
+                    $input.focus();
+                } else {
+                    input.value = '';
+                    $input.removeClass('placeholder');
+                    //input == safeActiveElement() && input.select();
+                }
+            }
+        });
+        //$(input).parent().validate();
+        if ($(input).parent().valid()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+  
+    function submitForm(action) {
+        document.forms['SearchForm'].action = document.forms['SearchForm'].action + action;
+        document.forms['SearchForm'].submit();
+}  
+</script>
+@using Nop.Core.Domain.Customers
+<div class="master-wrapper-page">
+
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="searchPage">
+                <div class="tabFilters ui-tabs ui-widget ui-widget-content ui-corner-all">
+                    <ul class="tabFilterMenu ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                        @for (int i = 0; i < Model.Categories.Count; i++)
+                        {
+                            <li class="@(Model.Categories[i].CategoryId == Model.SelectedCategoryAttributes.CategoryId ? "ui-tabs-active" : "")"><a href="@Url.RouteUrl("Catalogue", new { CategorySeName = Model.Categories[i].SeName })">@Model.Categories[i].CateogyTitle</a></li>
+                        }
+                    </ul>
+                    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+                        @using (Html.BeginForm("SearchResultsPage", "SearchProduct", FormMethod.Post, new { id = "SearchForm" }))
+                        {
+                            <input type="hidden" value="@Model.SelectedCategoryAttributes.CategoryId" name="SelectedCategoryAttributes.CategoryId" />
+                            <div class="filters">
+                                <div class="selectsBox">
+                                    @Html.Partial("~/Views/SearchProduct/_HomePageAttributesEditor.cshtml", Model.SelectedCategoryAttributes)
+                                    @{Model.CustomerAttributes.CategoryId = Model.SelectedCategoryAttributes.CategoryId;}
+                                    @Html.Partial("~/Views/SearchProduct/_HomePageCustomerInformationEditor.cshtml", Model.CustomerAttributes)
+                                </div>
+                            </div>
+                            <input type="submit" class="findbtn" onclick="return ValidateAttributeForm(this);" value="Найти" />
+                        @*<a class="findbtn" href="#">Найти</a>*@
+                        }
+                        <script type="text/javascript">
+                            $('#SearchForm').validate({
+                                errorPlacement: function (error, element) {
+                                    if (element.parent().hasClass('money-wrapper')) {
+                                        error.insertAfter(element.siblings('.curencyWidget'));
+                                    } else {
+                                        error.insertAfter(element);
+                                    }
+                                }
+                            });
+                        </script>
+                    </div> 
+                </div>
+            
+                <div class="leftCol">
+                    @Html.Partial("~/Views/SearchProduct/_SearchPageAdditionalAttributesEditor.cshtml", Model.SelectedAdditionalCategoryAttributes)
+                  @if(WorkContext.CurrentCustomer.IsAdmin())
+                  {
+                    <div class="offersSlideBox bestborderthanever">
+                        <div class="head bestborderthanever">@T("SearchResultsPage.bestProducts")</div> 
+                        <div class="slideBox">
+                            <div>
+                                @if (Model.BestProducts.Any())
+                                {
+                                    var n = 0;
+                                    var z = 1;
+                                    foreach (var product in Model.BestProducts)
+                                    {
+                                        if (n == 0)
+                                        {
+                                            @:<div>
+                                        }
+                                        <div class="offerBox bestborderthanever">
+                                            <div class="bankLogo">
+                                                <img src= "@product.PictureThumbnailUrl"  alt="">
+                                            </div>
+                                            <div class="percentage">
+                                                @if (product.ProductAttributeValue != null)
+                                                {
+                                                    @Html.Raw(product.ProductAttributeValue.RealValue.GetValueOrDefault().ToString() + "%");
+                                                }
+                                            </div>
+                                            <div class="ratings">
+                                                @switch (Convert.ToInt32(product.BankRating))
+                                                {
+                                                    case 0:
+                                                        <div class="ratingBank stars "></div>
+                                                        break;
+                                                    case 1:
+                                                        <div class="ratingBank stars star1"></div>
+                                                        break;
+                                                    case 2:
+                                                        <div class="ratingBank stars star2"></div>
+                                                        break;
+                                                    case 3:
+                                                        <div class="ratingBank stars star3"></div>
+                                                        break;
+                                                    case 4:
+                                                        <div class="ratingBank stars star4"></div>
+                                                        break;
+                                                    case 5:
+                                                        <div class="ratingBank stars star5"></div>
+                                                        break;
+                                                }
+                                                @switch (Convert.ToInt32(product.Rating))
+                                                {
+                                                    case 0:
+                                                        <div class="ratingOffer stars "></div>
+                                                        break;
+                                                    case 1:
+                                                        <div class="ratingOffer stars star1"></div>
+                                                        break;
+                                                    case 2:
+                                                        <div class="ratingOffer stars star2"></div>
+                                                        break;
+                                                    case 3:
+                                                        <div class="ratingOffer stars star3"></div>
+                                                        break;
+                                                    case 4:
+                                                        <div class="ratingOffer stars star4"></div>
+                                                        break;
+                                                    case 5:
+                                                        <div class="ratingOffer stars star5"></div>
+                                                        break;
+                                                }
+                                            </div>
+                                            @Html.Raw(product.ShortDescription)
+                                            <a href="@Url.RouteUrl("Product", new { seName = product.SeName })" class="more">@T("SearchResultsPage.MoreInfo")</a>
+                                            <a class="basket" href="@product.OrderingLink" target="_blank" onclick=" OrderProduct(@product.Id) "></a>
+                                        </div>
+                                        if (n == 2 || z == Model.BestProducts.Count)
+                                        {
+                                            @:</div>
+                                            n = 0;
+                                        }
+                                        else
+                                        {
+                                            n++;
+                                        }
+                                        z++;
+                                    }
+                                }
+					        
+                            </div>
+                        </div>
+        
+                        <div class="arrowPrev"></div>
+                        <div class="arrowNext"></div>
+                    </div>
+                  }
+             
+                    <div id="scrollposition"></div>
+                    <div class="paginationSearch bestborderthanever">
+                        <div class="head bestborderthanever">@T("SearchResultsPage.additionalOffers")</div>
+                        @if (Model.Products.Any())
+                        {
+                            <div class="paging dotSlider">
+                                <div>
+                                    @{var n = 0;
+                                        var z = 1;
+                                    }
+                                    @foreach (var product in Model.Products)
+                                    {
+                                        if (n == 0)
+                                        {
+                                            @:<div>
+                                        }
+                                        <div class="offerBox bestborderthanever">
+                                            <div class="bankLogo">
+                                                <img src= "@product.PictureThumbnailUrl"  alt="">
+                                            </div>
+                                            <div class="percentage">
+                                                @if (product.ProductAttributeValue != null)
+                                                {
+                                                    @Html.Raw(product.ProductAttributeValue.RealValue.GetValueOrDefault().ToString() + "%");
+                                                }
+                                            </div>
+                                            <div class="ratings">
+                                                @switch (Convert.ToInt32(product.BankRating))
+                                                {
+                                                    case 0:
+                                                        <div class="ratingBank stars "></div>
+                                                        break;
+                                                    case 1:
+                                                        <div class="ratingBank stars star1"></div>
+                                                        break;
+                                                    case 2:
+                                                        <div class="ratingBank stars star2"></div>
+                                                        break;
+                                                    case 3:
+                                                        <div class="ratingBank stars star3"></div>
+                                                        break;
+                                                    case 4:
+                                                        <div class="ratingBank stars star4"></div>
+                                                        break;
+                                                    case 5:
+                                                        <div class="ratingBank stars star5"></div>
+                                                        break;
+                                                }
+                                                @switch (Convert.ToInt32(product.Rating))
+                                                {
+                                                    case 0:
+                                                        <div class="ratingOffer stars "></div>
+                                                        break;
+                                                    case 1:
+                                                        <div class="ratingOffer stars star1"></div>
+                                                        break;
+                                                    case 2:
+                                                        <div class="ratingOffer stars star2"></div>
+                                                        break;
+                                                    case 3:
+                                                        <div class="ratingOffer stars star3"></div>
+                                                        break;
+                                                    case 4:
+                                                        <div class="ratingOffer stars star4"></div>
+                                                        break;
+                                                    case 5:
+                                                        <div class="ratingOffer stars star5"></div>
+                                                        break;
+                                                }
+                                            </div>
+                                            @Html.Raw(product.ShortDescription)
+                                            <a href="@Url.RouteUrl("Product", new { seName = product.SeName })" class="more">@T("SearchResultsPage.MoreInfo")</a>
+                                            <a class="basket" href="@product.OrderingLink" target="_blank" onclick=" OrderProduct(@product.Id) "></a>
+                                        </div>
+                                        if (n == 5 || z == Model.Products.Count)
+                                        {
+                                            @:</div>
+                                            n = 0;
+                                        }
+                                        else
+                                        {
+                                            n++;
+                                        }
+                                        z++;
+                                    }
+                                </div>
+                            </div>
+
+                            <ul class="pagination">
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>@T("ITBSFA.Product.List.EmptyResult")</span>
+                        }
+                    </div>
+
+                            
+                            
+
+                    <div class="otherLinks bestborderthanever">
+                        <div class="head bestborderthanever">@T("SearchResultsPage.additionalParameters")</div>
+                        @if (Model.ProductTags.Any())
+                        {
+                            foreach (var productTag in Model.ProductTags)
+                            {
+                                <p><a href=""  onclick="submitForm('?tag='+@productTag.Id); return false;">@productTag.Name</a></p>
+                            }
+                        }
+                    </div>
+
+                    <div class="bannersMain">
+                        @Html.Action("BannerList", "Common", new { bannerType = Nop.Core.Domain.BannerTypeEnum.CatalogPage, numberOfBanners = 1 })
+                    </div>
+
+
+                </div>
+                <div class="rightCol">
+                    @Html.Partial("~/Views/SearchProduct/_SearchPageAttributesEditor.cshtml", Model.DetailedSelectedCategoryAttributes)
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

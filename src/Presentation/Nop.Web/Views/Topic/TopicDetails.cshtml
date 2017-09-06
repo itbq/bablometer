@@ -1,0 +1,33 @@
+﻿@model TopicModel
+@using Nop.Web.Models.Topics;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AppendTitleParts(Model.Title);
+}
+@{
+    var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+}
+@using Nop.Web.Models.Topics;
+@using Nop.Core.Domain.Customers
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+           <div class="textPage">
+                <div class="leftSide">
+                    <div class="aboutBlockOuter">
+                        <div class="aboutBlockInner">
+                            <h1>@Model.Title</h1>
+                            @Html.Raw(Model.Body)
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="rightSide">
+                    <div class="banners">
+                        @Html.Action("BannerList","Common",new {bannerType = Nop.Core.Domain.BannerTypeEnum.TextPage,numberOfBanners = 3})
+                    </div>
+                </div>
+            </div>
+
+        </div> </div>
+</div>

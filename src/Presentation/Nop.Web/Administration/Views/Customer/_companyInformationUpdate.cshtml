@@ -1,0 +1,49 @@
+﻿@model CompanyInformationModel
+
+@using Nop.Admin.Models.Customers
+@using Telerik.Web.Mvc.UI
+@Html.ValidationSummary(false)
+
+@(Html.LocalizedEditor<CompanyInformationModel, CompanyInformationLocalizedModel>("companytemplate-localized",
+        @<table class="adminContent">
+            <tr>
+                <td class="adminTitle">
+                    @Html.NopLabelFor(model => model.Locales[item].CompanyName):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.Locales[item].CompanyName)
+                    @Html.ValidationMessageFor(model => model.Locales[item].CompanyName)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.NopLabelFor(model => model.Locales[item].CompanyDescription):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.Locales[item].CompanyDescription)
+                    @Html.ValidationMessageFor(model => model.Locales[item].CompanyDescription)
+                </td>
+            </tr>
+         </table>
+    ,
+    @<table class="adminContent">
+        <tr>
+                <td class="adminTitle">
+                    @Html.NopLabelFor(model => model.CompanyName):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.CompanyName)
+                    @Html.ValidationMessageFor(model => model.CompanyName)
+                </td>
+            </tr>
+        <tr>
+                <td class="adminTitle">
+                    @Html.NopLabelFor(model => model.CompanyDescription):
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model => model.CompanyName)
+                    @Html.ValidationMessageFor(model => model.CompanyDescription)
+                </td>
+            </tr>
+     </table>
+    ))

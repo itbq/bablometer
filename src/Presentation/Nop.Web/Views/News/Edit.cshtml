@@ -1,0 +1,93 @@
+﻿@model Nop.Web.Models.News.NewsItemModel
+
+@{
+    Html.AppendTitleParts(T("Admin.ContentManagement.News.NewsItems.EditNewsItemDetails").Text + " - " + Model.Title);
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var storeSettings = DependencyResolver.Current.GetService<Nop.Core.Domain.StoreInformationSettings>();
+}
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.News })
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+    });
+</script>
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <ul id="productMenu">
+                <li><a href="/news/managenews">@T("Profile.News.Manage")</a></li>
+                <li>@Html.ActionLink(T("Profile.News.Add").Text, "AddNews", null, new { @class = "current" })</li>
+        </ul>
+        <div class="master-wrapper-main borderedPage ">
+            @using (Html.BeginForm()){
+                @Html.HiddenFor(model=>model.Id)
+                @Html.HiddenFor(model=>model.CreatedOn)
+                @Html.HiddenFor(model=>model.CustomerId)
+                @Html.HiddenFor(model=>model.Language)
+            <div class="addNews">
+                <h1>@T("Admin.ContentManagement.News.NewsItems.EditNewsItemDetails")</h1>
+                    <div class="step">
+
+                    <div class="fillNews">
+                        <h1>@T("Profile.News.AddInformation")</h1>
+                        @if (Model.Language > 2)
+                        {
+                            @Html.HiddenFor(model=>model.ExtendedProfileDisplay)
+                        }else
+                        {
+                            <div class="ioBox">
+                                <label>@T("news.manage.list.minisite")</label>
+                                @Html.DropDownListFor(model => model.ExtendedProfileDisplay, new List<SelectListItem>()
+                                {
+                                    new SelectListItem(){Selected = Model.ExtendedProfileDisplay == (int)Nop.Core.Domain.News.NewsDisplayEnum.Both,Text = T("News.Manage.MiniSite.Location.Both").Text, Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.Both).ToString()},
+                                    new SelectListItem(){Selected = Model.ExtendedProfileDisplay == (int)Nop.Core.Domain.News.NewsDisplayEnum.Main,Text = storeSettings.StoreName, Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.Main).ToString()},
+                                    new SelectListItem(){Selected = Model.ExtendedProfileDisplay == (int)Nop.Core.Domain.News.NewsDisplayEnum.MiniSite,Text = T("News.Manage.MiniSite.Location.MiniSite").Text, Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.MiniSite).ToString()}
+                                })
+                            </div>
+                        }
+
+                        <div class="ioBox">
+                            <label>@T("admin.contentmanagement.topics.fields.title")</label>
+                            @Html.ValidationMessageFor(model=>model.Title)
+                            @Html.EditorFor(model=>model.Title)
+                        </div>
+                        <div class="ioBox">
+                            <label>@T("products.compare.shortdescription")</label>
+                            @Html.ValidationMessageFor(model=>model.Short)
+                            @Html.TextAreaFor(model=>model.Short)
+                        </div>
+                        <div class="ioBox">
+                            <label>@T("Profile.Company.Description")</label>
+                            @Html.ValidationMessageFor(model=>model.Full)
+                            @Html.EditorFor(model=>model.Full,"NewsRichEditorImage")
+                        </div>
+
+                        <div class="ioBox">
+                        <label class="imagelable">@T("ETF.Profile.News.Image.HomePage")<br />@T("MiniSite.Image.HomaPage")</label>
+                        @Html.EditorFor(model=>model.PictureId)
+                            </div>
+                        <div class="ioBox">
+                        <label class="imagelable">@T("ETF.Profile.News.Image.CatalogPage")<br />@T("MiniSite.Image.Details")</label>
+                        @Html.EditorFor(model=>model.CatalogPictureId)
+                            </div>
+                    </div>
+
+                    <div class="fillNews center">
+                        <button class="upload save">@T("common.save")</button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('form').submit(function () {
+        if ($(this).valid()) {
+            $(this).find(':submit').attr('disabled', 'disabled');
+        }
+    });
+</script> 

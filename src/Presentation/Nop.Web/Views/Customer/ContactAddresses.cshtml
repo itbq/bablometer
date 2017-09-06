@@ -1,0 +1,239 @@
+﻿@model CustomerAddressListModel
+
+@using Nop.Core.Domain.Customers;
+@using Nop.Web.Models.Customer;
+
+    @if (Model.Addresses.Count > 0)
+    {
+        <div class="formsBox">
+        @for (int i = 0; i < Model.Addresses.Count; i++)
+        {
+            @Html.Partial("ContactAddressAdd", Model.Addresses[i])
+            if(i != 0 && (i + 1)%2 == 0)
+            {
+                @Html.Raw(@"</div>
+                <div class=""formsBox"">")
+            }
+        }
+        <div id="new-address" style="display:none;">
+            @Html.Partial("ContactAddressAdd", new Nop.Web.Models.Common.AddressModel() { AvailableCountries = Model.AvailableCountries,LanguageId = Model.LanguageId })  
+        </div>
+        </div>
+    }
+    else
+    {
+        <div class="formsBox">
+            @Html.Partial("ContactAddressAdd", new Nop.Web.Models.Common.AddressModel() { AvailableCountries = Model.AvailableCountries,LanguageId = Model.LanguageId  })  
+        </div>
+    }
+    <a nohref="nohref" class="addNewContactForm" id="add-contact">
+        <span>@T("Profile.Contact.Add")</span>
+    </a>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#add-contact').click(function () {
+            if(!$('#0').is(':visible'))
+            {
+                if($('#add-contact').hasClass('even'))
+                {
+                    $('#add-contact').removeClass('even');
+                }else{
+                    $('#add-contact').addClass('even');
+                }
+                $('#new-address').show();
+            }
+        });
+
+        $('.contactForm:odd').addClass('even');
+        if(($('.contactForm').length - 1)%2 == 0 && $('.contactForm').length != 1)
+        {
+            $('.addNewContactForm').addClass('even');
+        }
+        if(true)
+        { 
+            var contactcount = $('.contactForm form').filter(function(index){
+                return $(this).attr('id') != 0;
+            }).length;
+
+            if(contactcount == 1)
+            {
+                var formId =$('.contactForm form').filter(function(index){
+                    return $(this).attr('id') != 0;
+                }).first().attr('id');
+                $('#remove-' + formId).remove();
+            }
+        }
+        jQuery(document).ready(function(){
+            var params = {
+                changedEl: "select",
+                scrollArrows: true,
+                visRows: 10
+            }
+            cuSel(params);
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    //Check if country is chosen
+    function CheckCountry(id) {
+        var x = $('#' + id + ' #Country-' + id).val();
+        if (x == 0) {
+            $('#' + id + ' span[data-valmsg-for="CountryId"]').html('<span class="" for="CountryId" generated="true">Select country.</span>');
+            $('#' + id + ' span[data-valmsg-for="CountryId"]').removeClass('field-validation-valid');
+            $('#' + id + ' span[data-valmsg-for="CountryId"]').addClass('field-validation-error');
+            return false;
+        }
+        return true;
+    }
+
+    //remove additional phone
+    function RemovePhone(form, number) {
+        var phone = $('#' + form + ' .additional-phone .clear[onclick="RemovePhone(' + form + ',' + number + ')"]').parent();
+        if ($('#' + form + ' .additional-phone.invisible').length > 0) {
+            $('#' + form + ' #add-phone-' + form).before(phone);
+            phone.addClass('invisible');
+            $(phone).children('input').val('');
+        } else {
+            phone.addClass('invisible');
+            $(phone).children('input').val('');
+            $('#' + form + ' #add-phone-' + form).before(phone);
+        }
+        $('#' + form + ' #add-phone-' + form).show();
+    }
+
+    //remove additional email
+    function RemoveEmail(form, number) {
+        var phone = $('#' + form + ' .additional-email .clear[onclick="RemoveEmail(' + form + ',' + number + ')"]').parent();
+        if ($('#' + form + ' .additional-email.invisible').length > 0) {
+            $('#' + form + ' #add-email-' + form).before(phone);
+            phone.addClass('invisible');
+            $(phone).children('input').val('');
+        } else {
+            phone.addClass('invisible');
+            $(phone).children('input').val('');
+            $('#' + form + ' #add-email-' + form).before(phone);
+        }
+        $('#' + form + ' #add-email-' + form).show();
+    }
+
+    //add additional phone
+    function AddPhone(form) {
+        var count = $('#' + form + ' .additional-phone.invisible').length;
+        if (count > 0) {
+            var invisible = $('#' + form + ' .additional-phone.invisible').first();
+            var additionalCount = $('#' + form + ' .additional-phone').not('.invisible').length;
+           
+            if(additionalCount == 0)
+            {
+                invisible.insertAfter('#' + form + ' [name="PhoneNumber"]').removeClass('invisible');
+            }else{
+                var lastPhone = $('#' + form + ' .additional-phone').not('.invisible').last();
+                invisible.insertAfter(lastPhone).removeClass('invisible');
+                //invisible.removeClass('.invisible');
+            }
+        }
+        count = $('#' + form + ' .additional-phone.invisible').length;
+        if (count == 0) {
+            $('#' + form + ' #add-phone-' + form).hide();
+        }
+    }
+
+    //add additional email
+    function AddEmail(form) {
+        var count = $('#' + form + ' .additional-email.invisible').length;
+        if (count > 0) {
+            var invisible = $('#' + form + ' .additional-email.invisible').first();
+            var additionalCount = $('#' + form + ' .additional-email').not('.invisible').length;
+           
+            if(additionalCount == 0)
+            {
+                invisible.insertAfter('#' + form + ' [name="Email"]').removeClass('invisible');
+            }else{
+                var lastPhone = $('#' + form + ' .additional-email').not('.invisible').last();
+                invisible.insertAfter(lastPhone).removeClass('invisible');
+                //invisible.removeClass('.invisible');
+            }
+        }
+        count = $('#' + form + ' .additional-email.invisible').length;
+        if (count == 0) {
+            $('#' + form + ' #add-email-' + form).hide();
+        }
+    }
+    
+    //Remove contact from contact customer contacts
+    function RemoveAddress(id) {
+        if(id == 0)
+        {
+            $('#'+id+' input').filter(function(){return $(this).attr('type') != 'hidden';}).val('');
+            $('#cusel-scroll-Country-0 .cuselActive').removeClass('cuselActive');
+            $('#cuselFrame-Country-0 .cuselText').text($('#cusel-scroll-Country-0 span[val="0"]').text());
+            $('#cusel-scroll-Country-0 span[val="0"]').addClass('cuselActive');
+            return;
+        }
+        if(@Html.Raw(WorkContext.CurrentCustomer.IsRegistered().ToString().ToLower()))
+        {        
+            $('#'+id).hide();
+            var addressId = { Id: id };
+            $.post("/Customer/RemoveAddress", addressId, null, "json");
+            $('#'+id).parent().remove();
+            $('.addNewContactForm').show();
+            $('.contactForm').removeClass('even');
+            $('.contactForm:odd').addClass('even');
+            if($('.addNewContactForm').hasClass('even'))
+            {
+                $('.addNewContactForm').removeClass('even');
+            }else{
+                $('.addNewContactForm').addClass('even');
+            }
+            
+            var contactcount = $('.contactForm form').filter(function(index){
+                return $(this).attr('id') != 0;
+            }).length;
+
+            if(contactcount == 1)
+            {
+                var formId =$('.contactForm form').filter(function(index){
+                    return $(this).attr('id') != 0;
+                }).first().attr('id');
+                $('#remove-' + formId).remove();
+            }
+        }else{
+            $('#'+id).hide();
+            var addressId = { Id: id };
+            $.post("/Customer/RemoveAddress", addressId, null, "json");
+            $('#'+id).parent().remove();
+            $('.addNewContactForm').show();
+            $('.contactForm').removeClass('even');
+            $('.contactForm:odd').addClass('even');
+            if($('.addNewContactForm').hasClass('even'))
+            {
+                $('.addNewContactForm').removeClass('even');
+            }else{
+                $('.addNewContactForm').addClass('even');
+            }
+
+            var contactcount = $('.contactForm form').filter(function(index){
+                return $(this).attr('id') != 0;
+            }).length;
+
+            if(contactcount == 1)
+            {
+                var formId =$('.contactForm form').filter(function(index){
+                    return $(this).attr('id') != 0;
+                }).first().attr('id');
+                $('#remove-' + formId).remove();
+            }
+        }
+    }
+
+    //Check if mex contact count limit exceeded
+    function CheckMaxCount(){
+        if($('.contactForm').length - 1 == @Model.MaxContactCount)
+        {
+            $('.addNewContactForm').hide();
+        }
+    }
+</script>

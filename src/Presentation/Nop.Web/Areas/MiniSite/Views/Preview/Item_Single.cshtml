@@ -1,0 +1,500 @@
+@model Nop.Web.Areas.MiniSite.Models.Preview.PreviewModel
+@{
+    Html.AppendCssFileParts("~/Content/MiniSite/selector.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/css/theme.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/Css/styles1.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/Css/root.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/Css/cusel.css");
+    Html.AppendScriptParts("~/Scripts/jquery.elevatezoom.js");
+    Html.AppendScriptParts("~/Content/MiniSite/js/cusel-fixed-min-2.5.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/validateRun.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/jquery.validate.min.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/jquery.diyslider.min.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/script.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/jquery-1.6.2.js");
+}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ETF</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251" />
+
+    <link rel="shortcut icon" href="/Content/MiniSite/Templates/@Model.CssTemplateName/images/favicon.ico" type="image/x-icon" />
+    @Html.NopCssFiles(this.Url, ResourceLocation.Head)
+    @Html.NopScripts(this.Url, ResourceLocation.Head, false)
+     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var params = {
+                changedEl: "select",
+                scrollArrows: true
+            }
+            cuSel(params);
+
+        $(".sendRequestButton").click(function () {
+            $(".popupLayerOpacity").fadeIn();
+            $(".sendRequest").fadeIn();
+        });
+
+        $(".sendRequest .exit").click(function () {
+            $(".popupLayerOpacity").fadeOut();
+            $(".sendRequest").fadeOut();
+        });
+        // gallery
+        var i = 0;
+        $(".gallery .bigImg img").each(function() {
+            $(this).attr("id", "bi_"+i);
+            i++;
+        })
+        i = 0;
+        $(".gallery .thumbnails img").each(function() {
+            $(this).attr("id", "ti_"+i);
+            i++;
+            $(this).click(function () {
+                set_gallery_img(this);
+            })
+        })
+        function set_gallery_img(el) {
+            var id =  $(el).attr("id").split("_"); id = id[1];
+            $(".gallery .bigImg img").removeClass("current");
+            $(".gallery .thumbnails img").parent().removeClass("current");
+            $(".gallery .bigImg #bi_"+id).addClass("current");
+            $(".gallery .thumbnails #ti_"+id).parent().addClass("current");
+        }
+        $(window).load(function() {
+            $("#popSlider").css({display: "block", visibility: "hidden"});
+            var mh = 0;
+            setTimeout(function() {
+                mh = 0
+                $("#popSlider img").each(function() {
+                    mh = Math.max(mh, $(this).height());
+                });
+
+                if (mh != 0) {
+                    $("#popSlider").css("height", mh+"px");
+                    $("#popSlider .slider").css("height", mh+"px");
+                }
+                $("#popSlider").css({display: "none", visibility: "visible"});
+                $("#popSlider .prev").css({top: $(window).height()/2+"px"});
+                $("#popSlider .next").css({top: $(window).height()/2+"px"});
+            }, 1);
+
+            mh = "3000";
+            $("#popSlider").css("height", mh+"px");
+            $("#popSlider .slider").diyslider({
+                width: "3000px", // width of the slider
+                height: mh+"px", // height of the slider
+                display: 1, // number of slides you want it to display at once
+                loop: true // disable looping on slides
+            }); // this is all you need!
+
+            // use buttons to change slide
+            $("#popSlider .prev").bind("click", function(){
+                $("#popSlider .slider").diyslider("move", "back");
+                return false;
+            });
+            $("#popSlider .next").bind("click", function(){
+                $("#popSlider .slider").diyslider("move", "forth");
+                return false;
+            });
+
+            //initiate the plugin and pass the id of the div containing gallery images
+            $("#zoom-3").elevateZoom({gallery:'gallery_01', cursor: 'pointer', galleryActiveClass: 'active', loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif'}); 
+            setTimeout(function(){
+                ProcessMainImage();
+            }, 500);
+            
+            var image = $('#gallery_01 a');
+            image.click(function(){
+                var img = $(this).children(":first");
+                var src = img.attr('src');
+                var currentImg = $(this);
+                var newImg = new Image();
+                newImg.onload = function() {
+                    height = newImg.height;
+                    width = newImg.width;
+                    $('.zoomContainer').remove();
+                    $('#zoom-3').removeData('elevateZoom');
+                    if(width < 323 || height < 323)
+                    {
+                        if(width > 323 || height > 323)
+                        {
+                            if(height < 323)
+                            {
+                                // Update source for images
+                                $('#zoom-3').attr('src', $(this).src);
+                                $('#zoom-3').data('zoom-image', currentImg.data('zoom-image'));
+                                // Reinitialize EZ
+                                $('#zoom-3').elevateZoom({cursor: 'pointer', zoomWindowWidth:height,zoomWindowHeight:height });
+                                //$('.zoomContainer').css('height',height);
+                            }
+                        }
+                    }else
+                    {
+                        // Update source for images
+                        $('#zoom-3').attr('src', $(this).src);
+                        $('#zoom-3').data('zoom-image', currentImg.data('zoom-image'));
+                        // Reinitialize EZ
+                        $('#zoom-3').elevateZoom({cursor: 'pointer',loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif', zoomWindowWidth:323,zoomWindowHeight:323 });
+                    }
+                }
+                newImg.src = src;
+            });
+        });
+    });
+
+    function ProcessMainImage()
+    {
+        $.noop;
+        var src = $('#zoom-3').attr('src');
+        var currentImg = $('#gallery_01 a.active');
+        $('.zoomContainer').remove();
+        $('#zoom-3').removeData('elevateZoom');
+        var newImg = new Image();
+        newImg.onload = function() {
+            height = newImg.height;
+            width = newImg.width;
+                    
+            if(width < 323 || height < 323)
+            {
+                if(width > 323 || height > 323)
+                {
+                    if(height < 323)
+                    {
+                        // Update source for images
+                        $('#zoom-3').attr('src', src);
+                        $('#zoom-3').data('zoom-image', currentImg.data('zoom-image'));
+                        // Reinitialize EZ
+                        $('#zoom-3').elevateZoom({cursor: 'pointer', zoomWindowWidth:height,zoomWindowHeight:height });
+                    }
+                }
+            }else
+            {
+                // Update source for images
+                $('#zoom-3').attr('src', src);
+                $('#zoom-3').data('zoom-image', currentImg.data('zoom-image'));
+                // Reinitialize EZ
+                $('#zoom-3').elevateZoom({cursor: 'pointer',loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif', zoomWindowWidth:323,zoomWindowHeight:323 });
+            }
+        }
+        newImg.src = src;
+    }
+</script>
+
+</head>
+
+<body class="signedIn">
+
+<div class="popupLayerOpacity invisible"></div>
+<form class="popup sendRequest invisible">
+    <a href="#" class="exit"></a>
+    <h2>Leave your message for <br>the company representative here:</h2>
+    <textarea id="" cols="30" rows="10"></textarea>
+    <button class="button">Send Message</button>
+    <div class="popupArrow"></div>
+</form>
+
+<div class="page-selector">
+    <select id="page-selector">
+        <option value="1" @if (Model.PageName == "1")
+                          {@Html.Raw("selected")}>Home page layout 1</option>
+        <option value="2" @if (Model.PageName == "2")
+                          {@Html.Raw("selected")}>Home page layout 2</option>
+        <option value="3" @if (Model.PageName == "3")
+                          {@Html.Raw("selected")}>Home page layout 3</option>
+        <option value="Catalog" @if (Model.PageName == "Catalog")
+                                {@Html.Raw("selected")}>Catalog page</option>
+        <option value="Item_Single" @if (Model.PageName == "Item_Single")
+                                    {@Html.Raw("selected")}>Single item page</option>
+        <option value="Contacts" @if (Model.PageName == "Contacts")
+                                 {@Html.Raw("selected")}>Contacts page</option>
+        <option value="News_Landing" @if (Model.PageName == "News_Landing")
+                                     {@Html.Raw("selected")}>News landing page</option>
+        <option value="News_Single" @if (Model.PageName == "News_Single")
+                                    {@Html.Raw("selected")}>Single new page</option>
+        <option value="TextPage" @if (Model.PageName == "TextPage")
+                                 {@Html.Raw("selected")}>Text page</option>
+    </select>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#page-selector').change(function () {
+                var val = $('#page-selector').val();
+                if (val == '1') {
+                    window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=1";
+                    return;
+                }
+                if (val == '2') {
+                    window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=2";
+                    return;
+                }
+                if (val == '3') {
+                    window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=3";
+                    return;
+                }
+
+                window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=3&PageName=" + val;
+                return;
+
+            });
+        });
+    </script>
+</div>
+<div class="header">
+    <div class="master-wrapper-page">
+        <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/logo.png" width="73" height="38" class="logo" alt="">
+        <div class="header-links left">
+            <a href="#">About</a>
+            <a href="#">Benefits</a>
+            <a href="#">Contact us</a>
+        </div>
+
+        <div class="language-selector">
+            <a href="#" onclick="switchDisplay('.otherLang');"><img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/flag/flag_3.png">English</a>
+            <div class="otherLang invisible">
+                <a href="#"><img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/flag/flag_1.png">Русский</a>
+                <a href="#"><img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/flag/flag_2.png">Espanol</a>
+                <a href="#"><img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/flag/flag_4.png">Deutsch</a>
+            </div>
+        </div>
+
+        <div class="header-links right">
+            <span class="signed">user_name <a href="#">(logout)</a></span>
+            <a href="#">Dashboard</a>
+            <a href="#">My buying requests <span class="xxTop">36</span></a>
+            <a href="#">My requests <span class="xxTop">6</span></a>
+        </div>
+
+    </div>
+</div>
+<div class="master-wrapper-page itemSingle">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+                    <ul class="breadcrumb">
+                        <li><div class="tail"></div><a href="#">Category</a><div class="head"></div></li>
+                        <li><div class="tail"></div><a href="#">Subcategory</a><div class="head"></div></li>
+                        <li><div class="tail"></div><a href="#">Subcasd asdategory</a><div class="head"></div></li>
+                        <li><div class="tail"></div><a href="#">Subcat asd asd as degory</a><div class="head"></div></li>
+                        <li><div class="tail"></div><a href="#">Subcasdasdategory</a><div class="head"></div></li>
+                        <li><div class="tail"></div><a href="#">Subcategory</a><div class="head"></div></li>
+                        <li><div class="tail"></div><a href="#">Subcasdasdategory</a><div class="head"></div></li>
+                    </ul>
+
+                    @*<h1>PUMA MEN'S THE RUCKHOLZ DASSLER MEN'S BOOTS LEATHER NAVY</h1>
+
+                    <div class="box">
+                        <div class="boxHead">
+                            Rukrolz Dassler
+                            <div class="share">Share this:
+                                <a href="#" class="twitter"></a>
+                                <a href="#" class="facebook"></a>
+                            </div>
+                        </div>
+                        <div class="boxBody">
+                            <div class="gallery">
+                                <div class="bigImg">
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/is_good.png" width="323" height="217" class="current" alt="">
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/is_goodMini_2.jpg" width="323" height="217" alt="">
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/is_goodMini_1.jpg" width="323" height="217" alt="">
+                                </div>
+                                <div class="thumbnails">
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/is_goodMini_1.jpg" class="current" alt="">
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/is_goodMini_2.jpg" alt="">
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/is_goodMini_1.jpg" alt="">
+                                </div>
+                            </div>
+                            <ul class="goodInfo">
+                                <li >Color: <strong class="navy">Navy</strong></li>
+                                <li >Material: Leather</li>
+                                <li ><span class="bucks">$40</span> per one</li>
+                                <li>Size:</li>
+                                <li>
+                                    <ul class="sizes">
+                                        <li>35</li>
+                                        <li>36</li>
+                                        <li>37</li>
+                                        <li>38</li>
+                                        <li>39</li>
+                                        <li class="sizeIsAvailable">40</li>
+                                        <li>41</li>
+                                        <li>42</li>
+                                        <li>43</li>
+                                        <li class="sizeIsAvailable">44</li>
+                                        <li>45</li>
+                                        <li>46</li>
+                                    </ul>
+                                </li>
+                                <li><a href="#" class="textCenter"><div class="icoPDF">Save as brochure</div></a></li>
+                            </ul>
+
+                        </div>
+                        <p class="textInfo">
+                            This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit. <br><br>
+                            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.
+                            <a href="#">Proin condimentum</a>
+                            afermentum nunc. Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim.
+                        </p>
+
+                        <div class="keywords">
+                            Keywords:
+                            <a href="#">puma</a>,
+                            <a href="#">boots</a>,
+                            <a href="#">navy</a>,
+                            <a href="#">leather</a>
+                        </div>
+                    </div>*@
+
+                    <h1>PUMA MEN'S THE RUCKHOLZ DASSLER MEN'S BOOTS LEATHER NAVY</h1>
+
+                    <div class="box">
+                        <div class="boxHead">
+                               <a class="itemName" href="#">Rukrolz Dassler</a>
+                            <div class="share">Share this:
+                                <a href="#" class="twitter"></a>
+                                <a href="#" class="facebook"></a>
+                            </div>
+                        </div>
+                        <div class="boxBody">
+                            <div class="gallery" id="zoom-gallery">
+                                <img id="zoom-3" src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good1.png" data-zoom-image="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good1.png"/>
+
+                                <div id="gallery_01" class="thumbnails">
+                                      <a href="#" class="galleryImage active" data-image="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good1.png" data-zoom-image="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good1.png">
+                                          <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good1.png" />
+                                      </a>  
+                                      <a href="#" class="galleryImage" data-image="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good2.png" data-zoom-image="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good2.png">
+                                          <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good2.png" />
+                                      </a> 
+                                      <a href="#" class="galleryImage active" data-image="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good3.png" data-zoom-image="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good3.png">
+                                          <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/good3.png" />
+                                      </a> 
+                                </div>
+                            </div>
+                            <ul class="goodInfo">
+                                <li >Color: <strong class="navy">Navy</strong></li>
+                                <li >Material: Leather</li>
+                                <li ><span class="bucks">$40</span> per one</li>
+                                <li>Size:</li>
+                                <li>
+                                    <ul class="sizes">
+                                        <li>35</li>
+                                        <li>36</li>
+                                        <li>37</li>
+                                        <li>38</li>
+                                        <li>39</li>
+                                        <li class="sizeIsAvailable">40</li>
+                                        <li>41</li>
+                                        <li>42</li>
+                                        <li>43</li>
+                                        <li class="sizeIsAvailable">44</li>
+                                        <li>45</li>
+                                        <li>46</li>
+                                    </ul>
+                                </li>
+                                <li><a href="#" class="textCenter"><div class="icoPDF">Save as brochure</div></a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="textInfo">
+                            <h3>@T("ETF.Full")</h3>
+                            This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit. <br><br>
+                            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi.
+                            <a href="#">Proin condimentum</a>
+                            <h3>@T("ETF.OrderingComments")</h3>
+                            afermentum nunc. Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim.
+                        </div>
+
+                        <div class="keywords">
+                                <text>@T("ETF.Front.Product.Details.Keywords"):</text>
+                                <a href="#">puma</a>,
+                            <a href="#">boots</a>,
+                            <a href="#">navy</a>,
+                            <a href="#">leather</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="rightSide">
+                    <div class="ribCategories">
+                        <h1>Select category</h1>
+
+                        <form class="selectoBox">
+                            <select name="cat" id="cat">
+                                <option value="1">Category</option>
+                                <option value="1">Category 2</option>
+                                <option value="1">Category 3</option>
+                                <option value="1">Category 4</option>
+                                <option value="1">Category 5</option>
+                            </select>
+                            <div class="arrowDown"></div>
+                            <select name="scat" id="scat">
+                                <option value="1">Sub-Category</option>
+                                <option value="1">Sub-Category 2</option>
+                                <option value="1">Sub-Category 3</option>
+                                <option value="1">Sub-Category 4</option>
+                                <option value="1">Sub-Category 5</option>
+                            </select>
+
+
+                            <button>Go</button>
+                        </form>
+                    </div>
+
+                    <div class="banners">
+                        <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/banner/banner_3.jpg" alt="">
+                        <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/banner/banner_3.jpg" alt="">
+                        <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/banner/banner_3.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="master-wrapper-page">
+        <div class="fLeft">
+            <ul class="footer-menu">
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Services</a></li>
+            </ul>
+            <div class="social">
+                <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/fish.png" alt=""/>
+            </div>
+        </div>
+
+        <div class="fMiddle">
+            <ul class="footer-menu">
+                <li><a href="#">About Company</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Contacts</a></li>
+            </ul>
+            <div class="social"></div>
+        </div>
+
+        <div class="fRight">
+            <div class="fline">
+                <a href="mailto: info@mailbox.com">info@mailbox.com</a>
+            </div>
+            <div class="fline">
+                <span>© 2013</span><a href="#">Company Name</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>

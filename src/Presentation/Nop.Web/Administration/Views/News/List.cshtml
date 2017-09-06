@@ -1,0 +1,87 @@
+﻿@model Telerik.Web.Mvc.GridModel<NewsItemModel>
+@using Telerik.Web.Mvc.UI
+
+@{
+    var gridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+    
+    //page title
+    ViewBag.Title = T("Admin.ContentManagement.News.NewsItems").Text;
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-content.png")" alt="" />
+        @T("Admin.ContentManagement.News.NewsItems")
+    </div>
+    <div class="options">
+        <a href="@Url.Action("Create")" class="t-button">@T("Admin.Common.AddNew")</a>
+    </div>
+</div>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<NewsItemModel>()
+                    .Name("newsitem-grid")
+                    .BindTo(Model.Data)
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Title);
+                        columns.Bound(x => x.LanguageName);
+                        //columns.Bound(x => x.Comments)
+                        //    .Centered()
+                        //    .Template(
+                        //    @<div>
+                        //            @Html.ActionLink(T("Admin.ContentManagement.News.NewsItems.Fields.Comments").Text + " - " + @item.Comments, "Comments", new { filterByNewsItemId = item.Id })
+                        //        </div>
+                        //    )
+                        //    .ClientTemplate("<div><a href=\"Comments?filterByNewsItemId=<#= Id #>\">" + T("Admin.ContentManagement.News.NewsItems.Fields.Comments").Text + " - <#= Comments #>" + "</a></div>")
+                        //    .Filterable(false);
+                        //columns.Bound(x => x.StartDate)
+                        //    .Centered();
+                        //columns.Bound(x => x.EndDate)
+                        //    .Centered()
+                        //    .Filterable(false);
+                        columns.Bound(x => x.Published)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.Published.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= Published #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.MiniSiteString)
+                            .Centered()
+                            .Width(100); 
+                        columns.Bound(x => x.Company)
+                            .Template(x => x.Company == null || x.Company == String.Empty?T("Admin.News.DefaultCompany").Text:x.Company)
+                            .ClientTemplate("<#= Company #>");
+                        columns.Bound(x => x.CreatedOn)
+                            .Centered();
+                        columns.Bound(x => x.Featured)
+                            .Title(T("Admin.News.Featured").Text)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.Featured.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= Featured #>.gif' />");
+                        columns.Bound(x => x.Id)
+                            .Template(x => !x.Featured ? Html.ActionLink(T("Admin.News.Featured.Make").Text, "Feature", new { id = x.Id }).ToString() : T("Admin.News.Featured").Text)
+                            .ClientTemplate("<a href=\"Feature/<#= Id #>\">" + T("Admin.News.Featured.Make").Text + "</a>")
+                            .Width(50)
+                            .Centered()
+                            .HeaderTemplate(T("Admin.News.Featured").Text)
+                            .Filterable(false);
+                        columns.Bound(x => x.Id)
+                            .Template(x => Html.ActionLink(T("Admin.Common.Edit").Text, "Edit", new { id = x.Id }))
+                            .ClientTemplate("<a href=\"Edit/<#= Id #>\">" + T("Admin.Common.Edit").Text + "</a>")
+                            .Width(50)
+                            .Centered()
+                            .HeaderTemplate(T("Admin.Common.Edit").Text)
+                            .Filterable(false);
+                    })
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("List", "News"))
+                    .Pageable(settings => settings.Total(Model.Total).PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                    .Sortable(sorting => sorting
+                        .SortMode(GridSortMode.SingleColumn )
+                        .AllowUnsort(true))
+                    .Filterable())
+        </td>
+    </tr>
+</table>

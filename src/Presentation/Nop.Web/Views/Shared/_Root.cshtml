@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.Head.cshtml";
+}
+@Html.Widget("body_start_html_tag_after")
+@Html.Action("JavaScriptDisabledWarning", "Common")
+<div class="page">
+@Html.Partial("Header")
+        @Html.Widget("content_before")
+            @RenderBody()
+        @Html.Widget("content_after")
+</div>
+@Html.Action("Footer", "Common")
+@Html.Widget("body_end_html_tag_before")

@@ -1,0 +1,44 @@
+﻿@model Nop.Admin.Models.Banner.BannerListModel
+@using Telerik.Web.Mvc.UI;
+
+@{
+    ViewBag.Title = T("Admin.Banner.Title").Text;
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+        @Html.Raw(T("Admin.Banner.Title").Text)
+    </div>
+    <div class="options">
+        <a nohref="nohref" onclick="OpenWindow('@Url.Action("ReportsPopUp", "Reports", new {reportType = 7,referenceId = 0,reportName = T("ITBSFA.Report.BannerView.Title").Text })',800,350,true)" class="t-button">@T("ITBSFA.Reports.BannerView.LinkTitle")</a>
+        <a nohref="nohref" onclick="OpenWindow('@Url.Action("ReportsPopUp", "Reports", new {reportType = 8,referenceId = 0,reportName = T("ITBSFA.Reports.BannerClick.Title").Text })',800,350,true)" class="t-button">@T("ITBSFA.Reports.BannerClick.LinkTitle")</a>
+        <a href="@Url.Action("Add")" class="t-button">@T("Admin.Common.AddNew")</a>
+    </div>
+</div>
+@Html.Telerik().TabStrip().Name("banner-list").Items(x=>
+    {
+        x.Add().Text(T("ITBSFA.Banner.HomePage").Text).Content(HomePage().ToHtmlString()).Selected(true);
+        x.Add().Text(T("ITBSFA.Banner.TextPage").Text).Content(TextPage().ToHtmlString());
+        x.Add().Text(T("ITBSFA.Banner.CatalogPage").Text).Content(CatalogPage().ToHtmlString());
+        x.Add().Text(T("ITBSFA.Banner.ProductPage").Text).Content(Productpage().ToHtmlString());
+        //generate an event
+        EngineContext.Current.Resolve<IEventPublisher>().Publish(new AdminTabStripCreated(x, "banner-list"));
+    })
+
+@helper HomePage()
+{
+    @Html.Partial("_bannerList", Model.HomePageBanners.Where(x=>x.BannerType == Nop.Core.Domain.BannerTypeEnum.HomePage).ToList());
+}
+@helper TextPage()
+{
+    @Html.Partial("_bannerList", Model.HomePageBanners.Where(x=>x.BannerType == Nop.Core.Domain.BannerTypeEnum.TextPage).ToList());
+}
+@helper CatalogPage()
+{
+    @Html.Partial("_bannerList", Model.HomePageBanners.Where(x=>x.BannerType == Nop.Core.Domain.BannerTypeEnum.CatalogPage).ToList());
+}
+
+@helper Productpage()
+{
+    @Html.Partial("_bannerList", Model.HomePageBanners.Where(x=>x.BannerType == Nop.Core.Domain.BannerTypeEnum.Productpage).ToList());
+}

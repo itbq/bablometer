@@ -1,0 +1,49 @@
+﻿@model Telerik.Web.Mvc.GridModel<Nop.Admin.Models.MiniSite.MiniSiteShortModel>
+@{
+    Html.AppendTitleParts("Manage mini sites");
+}
+@using Telerik.Web.Mvc.UI
+@using Telerik.Web.Mvc
+
+@(Html.Telerik().Grid<Nop.Admin.Models.MiniSite.MiniSiteShortModel>(Model.Data)
+        .Name("Grid")
+        .DataKeys(keys => 
+        {
+            keys.Add(p => p.Id);
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.DomainName).Width(210);
+            columns.Bound(p => p.UserName).Width(130).ReadOnly(true);
+            columns.Bound(p => p.Active)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.Active.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= Active #>.gif' />")
+                            .Centered()
+                            .Width(100);
+            columns.Command(commands =>
+            {
+                commands.Edit().ButtonType(GridButtonType.Text);
+                commands.Delete().ButtonType(GridButtonType.Text);
+            }).Width(180).Title("Commands");
+        })
+        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Pageable(paging=>paging.PageSize(15).Total(Model.Total))
+        .DataBinding(dataBinding =>
+        {
+            dataBinding.Ajax()
+                .Update("Edit", "MiniSites")
+                .Delete("Delete", "MiniSites")
+                .Select("List", "MiniSites");
+        })
+        //.Scrollable()
+        .Sortable() 
+        .Filterable()
+        .ClientEvents(x => x.OnError("Grid_onError")))           
+<script type="text/javascript">
+function Grid_onError(e) {
+        alert(e.XMLHttpRequest.responseText);
+        e.preventDefault();
+}
+</script>

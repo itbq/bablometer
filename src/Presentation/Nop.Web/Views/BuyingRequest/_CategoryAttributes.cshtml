@@ -1,0 +1,245 @@
+﻿@model IList<CategoryAttributeModel>
+
+@using Nop.Web.Models.BuyingRequest
+@*<script src="~/Scripts/jquery-1.7.1.min.js"></script>*@
+
+@{ int j = -1; }
+@for (int i = 0; i < Model.Count; i++)
+{
+    switch (Model[i].ControlType)
+    {
+        case Nop.Core.Domain.Catalog.AttributeControlType.ColorSquares:
+            {
+    <div class="inpBox full">
+        <label>@Model[i].Name</label>
+        @if (Model[i].Error)
+        {
+            <span class="field-validation-error">@Html.Raw(Model[i].Name + " " + T("ETF.Required").Text)</span>
+        }
+        <ul class="colorpicker">
+            <script type="text/javascript">
+                $(document).ready(function () { $(".colorpicker .circle").click(function () { if ($(this).hasClass("selected")) $(this).removeClass("selected"); else $(this).addClass("selected") }); });
+            </script>
+            @foreach (var pvaValue in Model[i].Values.OrderBy(l => l.DisplayOrder))
+            {
+                <li>
+                    <input id="@pvaValue.Id" style="display:none" type="checkbox" name="@("SelectedAttributes[" + (++j) + "].Id")" value="@pvaValue.Id" @if (pvaValue.IsPreSelected)
+                                                                                                                                                        {<text>checked="true"</text>} />
+                    <input type="hidden" name="@("SelectedAttributes[" + (j) + "].CategoryAttributeId")" value="@(Model[i].Id.ToString())" />
+
+                    <div class="circle  @if (pvaValue.IsPreSelected)
+                                        {<text>selected</text>}" onclick="CheckCheckbox(@(j))">
+                        <span style="background-color:@(pvaValue.ColorSquaresRgb);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span style="background-color:@(pvaValue.ColorSquaresRgb);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    </div>
+
+                </li>
+            }
+
+        </ul>
+
+    </div>
+            break;
+            }
+        case Nop.Core.Domain.Catalog.AttributeControlType.SizePicker:
+            {
+    <div class="inpBox">
+        <label>@Model[i].Name</label>
+        @if (Model[i].Error)
+        {
+            <span class="field-validation-error">@Html.Raw(Model[i].Name + " " + T("ETF.Required").Text)</span>
+        }
+        @*   <select>
+                                <option value="">EUR</option>
+                                <option value="">USD</option>
+                                <option value="">Chosen</option>
+                                <option value="">Chosen</option>
+                                <option value="">Chosen</option>
+                            </select>*@
+        <script type="text/javascript">
+            $(document).ready(function () { $(".sizes li").click(function () { if ($(this).hasClass("sizeIsAvailable")) $(this).removeClass("sizeIsAvailable"); else $(this).addClass("sizeIsAvailable") }); });
+        </script>
+
+
+        <ul class="sizes">
+            @foreach (var pvaValue in Model[i].Values)
+            {
+                <li onclick="CheckCheckbox(@(++j))" class=" @if (pvaValue.IsPreSelected)
+                                                            {<text>sizeIsAvailable</text>}">
+                    @pvaValue.Name
+                    <input id="@pvaValue.Id"  style="display:none"  type="checkbox" name="@("SelectedAttributes[" + (j) + "].Id")" value="@pvaValue.Id"  @if (pvaValue.IsPreSelected)
+                                                                                                                                                         {<text>checked="checked"</text>}  />
+                    <input type="hidden" name="@("SelectedAttributes[" + j + "].CategoryAttributeId")" value="@(Model[i].Id.ToString())" />
+                </li>
+            }
+        </ul>
+
+    </div>
+    
+            break;
+            }
+        case Nop.Core.Domain.Catalog.AttributeControlType.DropdownList:
+            { <div class="inpBox">
+                <label>@Model[i].Name</label>
+                @if (Model[i].Error)
+                {
+                    <span class="field-validation-error">@Html.Raw(Model[i].Name + " " + T("ETF.Required").Text)</span>
+                }
+                <select id="editor-@i" name="@("SelectedAttributes[" + (++j) + "].Id")" >
+                    <option value="0" selected>@T("ETF.SelectValue")</option>
+                    @foreach (var option in Model[i].Values)
+                    {
+                        if (option.IsPreSelected && Model[i].SelectedValue == null)
+                        {
+                        <option value="@option.Id" selected>@option.Name</option>
+                        }
+                        else
+                        {
+                            if (Model[i].SelectedValue != null && Model[i].SelectedValue.Id == option.Id)
+                            {
+                        <option value="@option.Id" selected>@option.Name</option>
+                            }
+                            else
+                            {
+                        <option value="@option.Id">@option.Name</option>
+                            }
+                        }
+                    }
+                </select>
+                <input type="hidden" name="@("SelectedAttributes[" + j + "].CategoryAttributeId")" value="@(Model[i].Id.ToString())" />
+            </div>
+               
+                    break;
+            }
+        case Nop.Core.Domain.Catalog.AttributeControlType.TextBox:
+            {
+    <div class="inpBox  littleSel">
+        <label>@Model[i].Name</label>
+        @if (Model[i].Error)
+        {
+            <span class="field-validation-error">@Html.Raw(Model[i].Name + " " + T("ETF.Required").Text)</span>
+        }
+        @{ j++;}
+        @if (Model[i].SelectedValue == null)
+        {
+            <input type="text" name="@("SelectedAttributes[" + j + "].Value")" />
+        }
+        else
+        {
+            <input type="text" name="@("SelectedAttributes[" + j + "].Value")" value="@Model[i].SelectedValue.Name"/>
+        }
+        <input type="hidden" name="@("SelectedAttributes[" + j + "].CategoryAttributeId")" value="@(Model[i].Id.ToString())" />
+    </div>
+    
+        break;
+            }
+        default:
+            {
+    <input type="hidden" id="SelectedAttributes[@j]" name="@("SelectedAttributes[" + j + "]")" value="0" />
+                break;
+            }
+        case Nop.Core.Domain.Catalog.AttributeControlType.RadioList:
+            {
+                j++;
+                <div class="inpBox  ">
+                        <label>@Model[i].Name</label>
+                        @if (Model[i].Error)
+                        {
+                            <span class="field-validation-error">@Html.Raw(Model[i].Name + " " + T("ETF.Required").Text)</span>
+                        }
+                        @{
+                        if (Model[i].SelectedValue == null)
+                        {
+                            Model[i].SelectedValue = Model[i].Values.FirstOrDefault();
+                        }
+                        }
+                        @foreach (var option in Model[i].Values)
+                        {
+                            if (option.IsPreSelected && Model[i].SelectedValue == null)
+                            {
+                                <label for="@Html.Raw(i.ToString() + option.Id.ToString())"></label>
+                                @Html.RadioButton("SelectedAttributes[" + (j) + "].Id", option.Id, true, new { id = i.ToString() + option.Id.ToString() })
+                                @*<input type="radio" selected="selected" name="@()" id="@Html.Raw(i.ToString() + option.Id.ToString())" value="@option.Id"/>*@
+                                <label for="@Html.Raw(i.ToString() + option.Id.ToString())">@option.Name</label>
+                            }
+                            else
+                            {
+                                if (Model[i].SelectedValue != null && Model[i].SelectedValue.Id == option.Id)
+                                {
+                                    <label for="@Html.Raw(i.ToString() + option.Id.ToString())"></label>
+                                    @Html.RadioButton("SelectedAttributes[" + (j) + "].Id", option.Id, true, new { id = i.ToString() + option.Id.ToString() })
+                                    @*<input type="radio" selected="selected" name="@()" id="@Html.Raw(i.ToString() + option.Id.ToString())" value="@option.Id"/>*@
+                                    <label for="@Html.Raw(i.ToString() + option.Id.ToString())">@option.Name</label>
+                                }
+                                else
+                                {
+                                        <label for="@Html.Raw(i.ToString() + option.Id.ToString())"></label>
+                                    @Html.RadioButton("SelectedAttributes[" + (j) + "].Id", option.Id, false, new { id = i.ToString() + option.Id.ToString() })
+                                    @*<input type="radio" selected="selected" name="@()" id="@Html.Raw(i.ToString() + option.Id.ToString())" value="@option.Id"/>*@
+                                    <label for="@Html.Raw(i.ToString() + option.Id.ToString())">@option.Name</label>
+                                }
+                            }
+                            <input type="hidden" name="@("SelectedAttributes[" + j + "].CategoryAttributeId")" value="@(Model[i].Id.ToString())" />
+                        }
+                </div>
+                        break;
+            }
+        case Nop.Core.Domain.Catalog.AttributeControlType.Checkboxes:
+            {
+                <div class="inpBox  checkboxClass">
+                        <label class="head-lable">@Model[i].Name</label>
+                        @if (Model[i].Error)
+                        {
+                            <span class="field-validation-error">@Html.Raw(Model[i].Name + " " + T("ETF.Required").Text)</span>
+                        }
+                        @for (var z = 0;  z <= 3; z++)
+                        {
+                            <div class="column">
+                                @for (int kz = 0; kz < ((int)Model[i].Values.Count % 4 == 0 ? (int)Model[i].Values.Count / 4 : (int)Model[i].Values.Count / 4 + 1); kz++)
+                                {
+                                    int index = 0;
+                                    if((int)Model[i].Values.Count%4 != 0)
+                                    {
+                                        if(((int)Model[i].Values.Count/4 + 1)*z + kz >= Model[i].Values.Count)
+                                        {
+                                            break;
+                                        }else
+                                        {
+                                            index = ((int)Model[i].Values.Count / 4 + 1) * z + kz;
+                                        }
+                                    }else
+                                    {
+                                        if (((int)Model[i].Values.Count / 4)*z + kz >= Model[i].Values.Count)
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            index = ((int)Model[i].Values.Count / 4) * z + kz;
+                                        }
+                                    }
+                                    <input type="checkBox"  value="@Model[i].Values[index].Id" @if (Model[i].Values[index].IsPreSelected)
+                                                                                             { @Html.Raw("checked=\"checked\"");
+                                                                                             } name="@("SelectedAttributes[" + (++j) + "].Id")" id="@Html.Raw(i.ToString() + Model[i].Values[index].Id.ToString())"/>
+                                    <label for="@Html.Raw(i.ToString() + Model[i].Values[index].Id.ToString())"><span>@Model[i].Values[index].Name</span></label>
+                                    <input type="hidden" name="@("SelectedAttributes[" + j + "].CategoryAttributeId")" value="@(Model[i].Id.ToString())" />
+                                }
+                            </div>
+                            @*<label for="@Html.Raw(i.ToString() + pvaValue.Id.ToString())"></label>*@
+                            
+                            @*<li onclick="CheckCheckbox(@(++j))" class=" @if (pvaValue.IsPreSelected)
+                                                                        {<text>sizeIsAvailable</text>}">
+                                @pvaValue.Name
+                                <input id="@pvaValue.Id"  style="display:none"  type="checkbox" name="@("SelectedAttributes[" + (j) + "].Id")" value="@pvaValue.Id"  @if (pvaValue.IsPreSelected)
+                                                                                                                                                                     {<text>checked="checked"</text>}  />
+                                <input type="hidden" name="@("SelectedAttributes[" + j + "].CategoryAttributeId")" value="@(Model[i].Id.ToString())" />
+                            </li>*@
+                        }
+                        @*<label for="ca1"></label><input type="checkBox"  name="ra" id="ca1"/><label for="ca1">CheckBox #1</label>
+                        <label for="ca2"></label><input type="checkBox"  name="ra" id="ca2"/><label for="ca2">CheckBox #2</label>*@
+
+                </div>
+                        break;
+            }
+    }
+}

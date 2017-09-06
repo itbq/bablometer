@@ -1,0 +1,10 @@
+﻿
+@using Telerik.Web.Mvc.UI;
+@using Nop.Core.Domain.Customers;
+@using Nop.Services.Catalog;
+
+@{
+    var controlTypeList = CustomerInformationProductAddControlType.CheckBoxes.ToSelectList();
+}
+
+@Html.Telerik().DropDownList().Name("ProductAddControlTypeString").BindTo(controlTypeList)

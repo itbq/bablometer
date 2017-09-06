@@ -1,0 +1,63 @@
+﻿@{
+    var storeSettings = DependencyResolver.Current.GetService<Nop.Core.Domain.StoreInformationSettings>();
+}
+<div class="footer">
+    <div class="master-wrapper-page">
+        <div class="fLeft">
+            <ul class="footer-menu">
+                <li><a href="/Catalogue/Product">@T("admin.catalog.products")</a></li>
+                <li><a href="/Catalogue/Service">@T("Catalog.Services")</a></li>
+            </ul>
+            <div class="social">
+                <div class="socialicon">
+                <div id="fb-root"></div>
+                <script>(function (d, s, id) {
+                            var js, fjs = d.getElementsByTagName(s)[0];
+                            if (d.getElementById(id)) return;
+                            js = d.createElement(s); js.id = id;
+                            js.src = "//connect.facebook.net/@(WorkContext.WorkingLanguage.LanguageCulture.Replace("-","_").Replace("MX","ES"))/all.js#xfbml=1";
+                                            fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'facebook-jssdk'));</script>
+                    <div class="fb-like" data-href="https://www.facebook.com/tradebel" data-width="110" data-layout="button_count" data-show-faces="false" data-send="false"></div>
+                </div>
+                <div class="socialicon">
+                <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+                <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script></div>
+                <div class="socialicon">
+                    <!-- Place this tag where you want the widget to render. -->
+                    <div class="g-follow" data-annotation="bubble" data-height="20" data-href="https://plus.google.com/100454028799464579163" data-rel="publisher"></div>
+                    
+                    <!-- Place this tag after the last widget tag. -->
+                    <script type="text/javascript">
+                        @if(WorkContext.WorkingLanguage.UniqueSeoCode != "en")
+                        {
+                            @Html.Raw("window.___gcfg = {lang: '" + WorkContext.WorkingLanguage.UniqueSeoCode + "'};")
+                        }
+                        (function () {
+                            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                            po.src = 'https://apis.google.com/js/plusone.js';
+                            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+                        })();
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="fMiddle">
+            <ul class="footer-menu">
+                @Html.Action("FooterMenu","Common")
+                <li><a href="@Url.RouteUrl("MiniContacts")">@T("ContactUs")</a></li>
+            </ul>
+        </div>
+
+        <div class="fRight">
+            <div class="fline">
+                <a href="mailto:@WorkContext.CurrentMiniSite.ContactEmail">@WorkContext.CurrentMiniSite.ContactEmail</a>
+            </div>
+            <div class="fline">
+                 <span>© @DateTime.UtcNow.Year</span><a href="@storeSettings.StoreUrl">@storeSettings.StoreName</a>
+            </div>
+        </div>
+
+    </div>
+</div>

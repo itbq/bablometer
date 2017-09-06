@@ -1,0 +1,67 @@
+﻿@model Nop.Web.Models.Request.RequestListModel
+@using Nop.Web.Framework.UI.Paging
+@using Nop.Web.Extensions
+@using Nop.Core.Domain.Customers
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+    Html.AddTitleParts(_localisationService.GetResource("Profile.MyBuyinRequests") + " - " + @T("Profile.Request.History"));
+}
+
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.BuyingRequests })
+
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content buyingRequests">
+        <ul id="productMenu">
+            <li><a href="/MyBuyingRequests" @if(!Model.PagingContext.History){@Html.Raw("class=\"current\"")}>@T("Profile.Requests.Active")</a></li>
+            <li><a href="/MyBuyingRequests/History" @if(Model.PagingContext.History){@Html.Raw("class=\"current\"")}>@T("Profile.Request.History")</a></li>
+        </ul>
+
+        <div class="master-wrapper-main">
+            <table class="anyTable requests">
+                <tr>
+                    <th class="c1">@T("Profile.Company.Description")</th>
+                    <th class="c2">@T("Profile.Request.ItemType")</th>
+                    <th class="c3">@T("Profile.Request.ItemBrand")</th>
+                    <th class="c4">@T("Profile.Request.Date")</th>
+                    <th class="c5">@T("Profile.Request.Company")</th>
+                    <th class="c6and7">@T("Profile.Request.MessagesAndStatus")</th>
+                    <!--<th class="c7"></th>-->
+                </tr>
+                @foreach(var request in Model.Requests)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.RouteUrl("Product",new {seName = request.ProductSeName})">@request.ProductTitle</a>
+                            <p>@request.ProductDescription</p>
+                        </td>
+                        <td>
+                            @if (request.ItemType == Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product || request.ItemType == Nop.Core.Domain.Catalog.ProductItemTypeEnum.ProductBuyingRequest)
+                            {
+                                @Html.Raw(_localisationService.GetResource("admin.currentcarts.product"))
+                            }else{
+                                @Html.Raw(_localisationService.GetResource("Profile.Request.Service"))
+                            }
+                        </td>
+                        <td>@request.BrandName</td>
+                        <td>@request.RequestDate.ToString("d")</td>
+                        <td><a href="@Url.RouteUrl("CompanyInformation",new {seName=request.CompanySeName})">@request.CompanyName</a></td>
+                        <td>
+                            <div class="splashLine">
+                                <div class="messageSplash blue l top"><div class="arrowSplash"></div>@request.RequestComment</div>
+                            </div>
+                            <div class="splashLine rightStrong">
+                                <div class="messageSplash r @if(request.Status.Value){@Html.Raw("green")}else{@Html.Raw("red")}"><div class="arrowSplash"></div>@request.RequestAnswer</div>
+                                 @if(request.Status.Value){@Html.Raw("<strong class=\"green\">" + _localisationService.GetResource("Profile.Request.Accepted") + "</strong>")}else{@Html.Raw("<strong class=\"red\">" + _localisationService.GetResource("Profile.Request.Rejected") + "</strong>")}
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div class="navBox">
+                @(Html.Pager(Model.PagingContext).QueryParam("pagenumber").ShowFirst(true).ShowLast(true).ShowPrevious(true))
+            </div>
+        </div>
+    </div>
+</div>

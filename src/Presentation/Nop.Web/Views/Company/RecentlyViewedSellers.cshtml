@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Nop.Web.Models.CompanyInformation.CompanyInformationModel>
+
+<div class="box">
+    <h4>@T("Company.RecentlyViewedSellers")</h4>
+    <div class="separateLine"></div>
+
+    <div class="logosViewers">
+        @foreach (var company in Model)
+        {
+            <div class="lvBox">
+                @*<div class="recentSellers">*@@if (company.Picture.ImageUrl != null && company.Picture.ImageUrl!= "")
+                {<img src="@company.Picture.ImageUrl" alt="@company.CompanyName"/>}@*
+                else
+                {
+                    @Html.Raw("&nbsp;")
+                }
+                </div>*@
+                <a href="@Url.RouteUrl("CompanyInformation",new {seName = company.CompanySeName})" class="lvLink">
+                    @company.CompanyName
+                </a>
+                <div class="edged"><p>@Html.Raw(company.CompanyDescription)</p></div>
+            </div>
+        }
+    </div>
+</div>

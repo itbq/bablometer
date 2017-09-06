@@ -1,0 +1,7 @@
+﻿@model List<Nop.Web.Models.MiniSite.MiniSiteBannerModel>
+<div class="banners">
+    @foreach (var banner in Model)
+    {
+        <a href="@banner.Url"><img src="@banner.Picture.ImageUrl" title="@banner.TitleTag" alt="@banner.AltTag"/></a>
+    }
+</div>

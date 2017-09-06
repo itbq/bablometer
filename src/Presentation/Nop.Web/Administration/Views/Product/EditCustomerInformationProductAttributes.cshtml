@@ -1,0 +1,175 @@
+﻿@{
+    Layout = "~/Administration/Views/Shared/_AdminPopupLayout.cshtml";
+}
+@model EditProductAttributeListModel
+@{    
+    //page title
+    ViewBag.Title = T("Admin.Catalog.CategoryProductAttributeValueModel.Attributes.Values.AddNew").Text;
+    int i = 0;
+}
+@using Nop.Core.Domain.Customers
+@if (ViewBag.Close == true)
+{
+    <script type="text/javascript">
+        window.close();
+    </script>
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            @T("Admin.Catalog.CategoryProductAttributeValueModel.Attributes.Values.AddNew")
+        </div>
+        <div class="options">
+            @Html.HiddenFor(model => model.ProductId)
+            @Html.HiddenFor(model => model.CategoryId)
+            <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+        </div>
+    </div>
+    <table>
+    @foreach (var attribute in Model.AttributeList)
+    {
+        int j = 0;
+        switch ((CustomerInformationProductAddControlType)attribute.AttributeControlTypeId)
+        {
+            case CustomerInformationProductAddControlType.CheckBoxes:
+                {
+                    <tr>
+                        <td class="adminTitle">
+                            <label>@attribute.AttributeName</label>
+                            <input type="hidden" name="AttributeList[@i].Id" value="@attribute.Id" />
+                            <input type="hidden" name="AttributeList[@i].AttributeName" value="@attribute.AttributeName" />
+                            <input type="hidden" name="AttributeList[@i].AttributeControlTypeId" value="@attribute.AttributeControlTypeId" />
+                        </td>
+                        <td class="adminContent">
+                            @foreach (var value in attribute.AttributeValues)
+                            {
+                                <label><input type="checkbox" @Html.Raw(value.Selected ? "checked" : "") name="AttributeList[@i].AttributeValues[@j].Selected" value="True"/>@value.AttributeValue</label>
+                                <input type="hidden" value="@value.AttributeValue" name="AttributeList[@i].AttributeValues[@j].AttributeValue"/>
+                                <input type="hidden" value="@value.Id" name="AttributeList[@i].AttributeValues[@j].Id"/>
+                                j++;
+                            }
+                            <label>@attribute.ValidationMessage</label>
+                        </td>
+                    </tr>
+                            break;
+                }
+            case CustomerInformationProductAddControlType.TextBox:
+            case CustomerInformationProductAddControlType.NumberTextBoxValue:
+            case CustomerInformationProductAddControlType.NumberTetBoxMore:
+            case CustomerInformationProductAddControlType.NumberTextBoxLess:
+                {
+                        <tr>
+                            <td class="adminTitle">
+                                <label>@attribute.AttributeName</label>
+                                <input type="hidden" name="AttributeList[@i].Id" value="@attribute.Id" />
+                                <input type="hidden" name="AttributeList[@i].AttributeName" value="@attribute.AttributeName" />
+                                <input type="hidden" name="AttributeList[@i].AttributeControlTypeId" value="@attribute.AttributeControlTypeId" />
+                            </td>
+                            <td class="adminContent">
+                                <input type="text" name="AttributeList[@i].AttributeValue" value="@attribute.AttributeValue" />
+                                <label>@attribute.ValidationMessage</label>
+                                <input type="hidden" value="@attribute.AttributeValueId" name="AttributeList[@i].AttributeValueId"/>
+                            </td>
+                        </tr>
+                    break;
+                }
+            case CustomerInformationProductAddControlType.MoneyLess:
+            case CustomerInformationProductAddControlType.MoneyMore:
+                {
+                        <tr>
+                            <td class="adminTitle">
+                                <label>@attribute.AttributeName</label>
+                                <input type="hidden" name="AttributeList[@i].Id" value="@attribute.Id" />
+                                <input type="hidden" name="AttributeList[@i].AttributeName" value="@attribute.AttributeName" />
+                                <input type="hidden" name="AttributeList[@i].AttributeControlTypeId" value="@attribute.AttributeControlTypeId" />
+                            </td>
+                            <td class="adminContent">
+                                <input type="text" name="AttributeList[@i].AttributeValue" value="@attribute.AttributeValue" />
+                                <label>@attribute.ValidationMessage</label>
+                                <input type="hidden" value="@attribute.AttributeValueId" name="AttributeList[@i].AttributeValueId"/>
+                                <select name="AttributeList[@i].CurrencyId">
+                                    @foreach (var currency in Model.AviableCurrencies)
+                                    {
+                                        <option value ="@currency.Id" @(attribute.CurrencyId == currency.Id ? "selected=\"selected\"" : "")>@currency.CurrencyCode</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                                    break;
+                }
+            case CustomerInformationProductAddControlType.MoneyBetween:
+                {
+                        <tr>
+                            <td class="adminTitle">
+                                <label>@attribute.AttributeName</label>
+                                <input type="hidden" name="AttributeList[@i].Id" value="@attribute.Id" />
+                                <input type="hidden" name="AttributeList[@i].AttributeName" value="@attribute.AttributeName" />
+                                <input type="hidden" name="AttributeList[@i].AttributeControlTypeId" value="@attribute.AttributeControlTypeId" />
+                            </td>
+                            <td class="adminContent">
+                                <label>От</label><input type="text" name="AttributeList[@i].AttributeValue" value="@attribute.AttributeValue" />
+                                <label>До</label><input type="text" name="AttributeList[@i].AttributeValueMax" value="@attribute.AttributeValueMax" />
+                                <label>@attribute.ValidationMessage</label>
+                                <input type="hidden" value="@attribute.AttributeValueId" name="AttributeList[@i].AttributeValueId"/>
+                                <select name="AttributeList[@i].CurrencyId">
+                                    @foreach (var currency in Model.AviableCurrencies)
+                                    {
+                                        <option value ="@currency.Id" @(attribute.CurrencyId == currency.Id ? "selected=\"selected\"" : "")>@currency.CurrencyCode</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    break;
+                }
+            case CustomerInformationProductAddControlType.NumberTextBoxRange:
+                {
+                        <tr>
+                            <td class="adminTitle">
+                                <label>@attribute.AttributeName</label>
+                                <input type="hidden" name="AttributeList[@i].Id" value="@attribute.Id" />
+                                <input type="hidden" name="AttributeList[@i].AttributeName" value="@attribute.AttributeName" />
+                                <input type="hidden" name="AttributeList[@i].AttributeControlTypeId" value="@attribute.AttributeControlTypeId" />
+                            </td>
+                            <td class="adminContent">
+                                <label>От</label><input type="text" name="AttributeList[@i].AttributeValue" value="@attribute.AttributeValue" />
+                                <label>До</label><input type="text" name="AttributeList[@i].AttributeValueMax" value="@attribute.AttributeValueMax" />
+                                <label>@attribute.ValidationMessage</label>
+                                <input type="hidden" value="@attribute.AttributeValueId" name="AttributeList[@i].AttributeValueId"/>
+                            </td>
+                        </tr>
+                    break;
+                }
+            case CustomerInformationProductAddControlType.DropDownList:
+                {
+                        <tr>
+                            <td class="adminTitle">
+                                <label>@attribute.AttributeName</label>
+                                <input type="hidden" name="AttributeList[@i].Id" value="@attribute.Id" />
+                                <input type="hidden" name="AttributeList[@i].AttributeName" value="@attribute.AttributeName" />
+                                <input type="hidden" name="AttributeList[@i].AttributeControlTypeId" value="@attribute.AttributeControlTypeId" />
+                            </td>
+                            <td class="adminContent">
+                                <select name="AttributeList[@i].AttributeValueId">
+                                @foreach (var value in attribute.AttributeValues)
+                                {
+                                    <option value="@value.Id" @Html.Raw(attribute.AttributeValueId == value.Id ? "selected" : "")>@value.AttributeValue</option>
+                                }
+                                </select>
+                                @foreach (var value in attribute.AttributeValues)
+                                {
+                                    <input type="hidden" value="@value.AttributeValue" name="AttributeList[@i].AttributeValues[@j].AttributeValue"/>
+                                    <input type="hidden" value="@value.Id" name="AttributeList[@i].AttributeValues[@j].Id"/>
+                                    j++;
+                                }
+                                <label>@attribute.ValidationMessage</label>
+                            </td>
+                        </tr>
+                                break;
+                }
+        }
+        i++;
+    }
+    </table>
+}

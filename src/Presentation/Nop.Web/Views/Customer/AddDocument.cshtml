@@ -1,0 +1,7 @@
+﻿@model Nop.Web.Models.Common.UploadModel
+
+<div class="attachType">@T("Profile.File.Attach")</div>
+    <div id="@(Html.Raw(Model.IsLegal?"add-legal-documents":"add-company-documents"))">@Html.EditorFor(model => model.Id)</div>
+    <div class="filetype">10Mb max.</div>
+    @Html.HiddenFor(model => model.IsLegal)
+

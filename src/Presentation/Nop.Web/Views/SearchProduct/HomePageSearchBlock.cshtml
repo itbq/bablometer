@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "HomaPageSearchBlock";
+    ViewBag.Layout = null;
+}
+
+@model Nop.Web.Models.SearchProduct.SearchProductCategoriesModel
+<script type="text/javascript">
+    $(function() {
+        // cusel init
+        var params = { changedEl: ".linedItem .dropdown", scrollArrows: true, visRows: 5 }
+        cuSel(params);
+        var params = { changedEl: ".bestborderthanever.dropdown", scrollArrows: true }
+        cuSel(params);
+
+        $( ".tabFilters" ).tabs();
+
+		$(".slideBox").diyslider({
+			width: "936px", // width of the slider
+			height: "200px", // height of the slider
+			display: 1, // number of slides you want it to display at once
+			loop: true // disable looping on slides
+		}); // this is all you need!
+
+		// use buttons to change slide
+		$(".offersSlideBox .arrowPrev").bind("click", function(){
+			$(".slideBox").diyslider("move", "back");
+			return false;
+		});
+		$(".offersSlideBox .arrowNext").bind("click", function(){
+			$(".slideBox").diyslider("move", "forth");
+			return false;
+		});
+
+		$("#submit").click(function () {
+			if ($(".loginPop").validate().form()) {
+				$("#submit").submit();
+			} else {}
+		});
+
+	});
+
+</script>
+<div class="tabFilters">
+	<ul class="tabFilterMenu">
+        @for (int i = 0; i < Model.Categories.Count; i++)
+        {
+            <li><a href="#tabs-@i">@Model.Categories[i].CateogyTitle</a></li>
+        }
+		@*<li><a href="#tabs-1">Кредиты</a></li>
+		<li><a href="#tabs-2">Кредитные вклады</a></li>
+		<li><a href="#tabs-3">Вклады</a></li>
+		<li><a href="#tabs-4">Автокредиты</a></li>
+		<li><a href="#tabs-5">Микрозаймы</a></li>
+		<li><a href="#tabs-6">Ипотека</a></li>*@
+	</ul>
+
+    @for (int i = 0; i < Model.Categories.Count; i++)
+    {
+        <div id="tabs-@i">
+        <form action="/catalogue/@Model.Categories[i].SeoName" method="post" novalidate="novalidate" id="CategoryForm-@Model.Categories[i].CategoryId">
+            <input type="hidden" value="@Model.Categories[i].CategoryId" name="SelectedCategoryAttributes.CategoryId" />
+		    <div class="filters">
+                <div class="selectsBox">
+                @Html.Partial("~/Views/SearchProduct/_HomePageAttributesEditor.cshtml", Model.Categories[i])</div>
+                @{Model.CustomerAttributes.CategoryId = Model.Categories[i].CategoryId;}
+		    	@Html.Partial("~/Views/SearchProduct/_HomePageCustomerInformationEditor.cshtml", Model.CustomerAttributes)
+		    </div>
+
+		    <input type="submit" class="findbtn" onclick="return ValidateAttributeForm(this);" value="Найти" />
+            @*<a class="findbtn" href="#">Найти</a>*@
+        </form>
+	</div>
+    <script type="text/javascript">
+        $('#CategoryForm-@Model.Categories[i].CategoryId').validate({
+            errorPlacement: function (error, element) {
+                if (element.parent().hasClass('money-wrapper')) {
+                    error.insertAfter(element.siblings('.curencyWidget'));
+                } else {
+                    if (element.parent().hasClass('currencyItem')) {
+                        error.insertAfter(element.siblings('.curencyWidget'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                }
+            }
+        });
+    </script>
+    }
+
+    <script type="text/javascript">
+        function ValidateAttributeForm(input) {
+            $('.placeholder').each(function () {
+            var input = this;
+            var $input = $(input);
+            if (input.value == $input.attr('placeholder') && $input.hasClass('placeholder')) {
+                if ($input.data('placeholder-password')) {
+                    $input = $input.hide().next().show().attr('id', $input.removeAttr('id').data('placeholder-id'));
+                    // If `clearPlaceholder` was called from `$.valHooks.input.set`
+                    if (event === true) {
+                        return $input[0].value = value;
+                    }
+                    $input.focus();
+                } else {
+                    input.value = '';
+                    $input.removeClass('placeholder');
+                    //input == safeActiveElement() && input.select();
+                }
+            }
+        });
+            $(input).parent().validate();
+            if ($(input).parent().valid()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+</div>

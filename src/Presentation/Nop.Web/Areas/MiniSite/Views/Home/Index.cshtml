@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout1";
+    string classId = "";
+    switch(WorkContext.CurrentMiniSite.LayoutId)
+    {
+        case 1:
+            {
+                classId = "1-1-2";
+                break;
+            }
+        case 2:
+            {
+                classId = "2-2";
+                break;
+            }
+        case 3:
+            {
+                classId = "1-3";
+                break;
+            }  
+    }
+}
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main layout@(classId)">
+            @Html.Action("Index","Slider")
+            @if (WorkContext.CurrentMiniSite.LayoutId == 2)
+            {
+                @Html.Action("CatalogTabs","Catalogue")
+                @Html.Action("RecentlyAdded","Catalogue")
+                @Html.Action("LatestNews","News")
+            }
+            else
+            {
+                @Html.Action("RecentlyAdded","Catalogue")
+                @Html.Action("CatalogTabs","Catalogue")
+                @Html.Action("LatestNews","News")
+            }
+        </div>
+    </div>
+</div>

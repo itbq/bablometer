@@ -1,0 +1,116 @@
+﻿@model Nop.Web.Models.SellerCatalog.CategorySelectorModel
+<ul class="categoryCrumbs">
+
+    @if (Model.Categories.Length > 0)
+    {
+        <li class="dark categories inactive" id="category-0">
+            <label>&nbsp;</label>
+            <select name="@Html.Raw("EditCategories-0")" onchange="OnFirstCategoryChange" id="EditCategories-0">
+                <option value="0">@T("Profile.Catalog.SelectCategory")</option>
+                @foreach (var category in Model.Categories[0].Categories)
+                {
+                    <option  @if (category.Id == Model.Categories[0].CurrentCategoryId)
+                             {<text>selected="selected"</text>}  value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <div class="arrow"></div>
+        </li>
+    }
+    else
+    {
+        @T("ETF.FrontEnd.Product.Add.NoCategoriesCreatedYet")
+    }
+    @**@
+    @if (Model.Categories.Length > 1)
+    {
+        for (int i = 1; i < Model.Categories.Length; i++)
+        {
+        <li class="categories  
+            @if (i + 1 == Model.Categories.Length)
+            {<text> active</text>}
+            else
+            {<text> inactive</text>}
+
+             @if (i > 1)
+             {<text> light</text>}
+             else
+             {<text> dark</text>} " id="category-@i">
+            <label>&nbsp;</label>
+            <select name="@Html.Raw("EditCategories-" + Model.Categories[i].CurrentCategoryId)" onchange="OnFirstCategoryChange" id="@Html.Raw("EditCategories-" + Model.Categories[i].CurrentCategoryId)">
+                <option value="0">Select Subcategorie</option>
+                @foreach (var category in Model.Categories[i].Categories)
+                {
+                    <option   @if (category.Id == Model.Categories[i].CurrentCategoryId)
+                              {<text>selected="selected"</text>}   value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <div class="arrow"></div>
+        </li>
+        <script>
+            document.getElementById("@Html.Raw("EditCategories-" + Model.Categories[i].CurrentCategoryId)").onchange = function () {
+                OnFirstCategoryChange($(this));
+            };
+        </script>
+        }
+    }
+   
+@**@
+
+</ul>
+
+<script>
+    var addproductcategoryselector_isfinalcategory = true;
+    function setaddproductcategoryselector_isfinalcategory(val) {
+        addproductcategoryselector_isfinalcategory = val;
+    }
+
+    function OnFirstCategoryChange(e) {
+        if (e.val() == '0') {
+            e.parents('.categories').nextAll('.categories').remove();
+            return;
+        }
+        if($('#save-product-button').length > 0)
+        {
+            $('#save-product-button').prop("disabled", true);
+        }
+        $.ajax({
+            url: "/BuyingRequest/GetSubCategories",
+            type: "POST",
+            dataType: "json",
+            data: { categoryId: e.val(), IsForAddProduct: 1, NumberInRow: 1 },
+            success: function (resp) {
+                if (resp.subCategories) {
+                    startString = '<li class="categories inactive ';
+                    if (resp.lavel > 1) { startString += 'light"'; } else { startString += 'dark"'; }
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                    $('.categories.active:last').after(startString + ' id=category-' + resp.lavel + '></li>');
+                    $('.categories.inactive').html(resp.htmlString);
+                    setaddproductcategoryselector_isfinalcategory(false);
+                } else {
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                    setaddproductcategoryselector_isfinalcategory(true);
+                    if (resp.haveConversionImages) {
+                        $('.slOpener').show();
+                    } else {
+                        $('.slOpener').hide();
+                    }
+                }
+                $('#SelectedCategoryId').val(e.val()).trigger('change');
+                $('#save-product-button').prop("disabled",false);
+            }
+        });
+
+    }
+    $(document).ready(function () {
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+        document.getElementById("EditCategories-0").onchange = function () {
+            OnFirstCategoryChange($(this));
+        };
+    });
+</script>

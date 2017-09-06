@@ -1,0 +1,21 @@
+﻿@model Nop.Web.Models.Catalog.CategoryNavigationModel
+@using Telerik.Web.Mvc.UI
+
+<select name="@Html.Raw("EditCategories-" + Model.CurrentCategoryId)" onchange="OnFirstCategoryChange" id="@Html.Raw("EditCategories-" + Model.CurrentCategoryId)">
+    <option value="0">@T("ETF.Subcategory.Select")</option>
+    @foreach (var category in Model.Categories)
+    {
+        <option value="@category.Id">@category.Name</option>
+    }
+</select>
+<div class="arrowDown"></div>
+<script>
+    var params = {
+        changedEl: "select",
+        scrollArrows: true
+    }
+    cuSel(params);
+    document.getElementById("@Html.Raw("EditCategories-" + Model.CurrentCategoryId)").onchange = function () {
+        OnFirstCategoryChange($(this));
+    };
+</script>

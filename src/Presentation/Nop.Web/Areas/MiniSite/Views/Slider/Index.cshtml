@@ -1,0 +1,39 @@
+﻿@model IList<Nop.Web.Areas.MiniSite.Models.Slider.SliderItemModel>
+@{
+    Layout = "";
+
+    Html.AddScriptParts("~/Plugins/Widgets.NivoSlider/Scripts/jquery.nivo.slider.js");
+    Html.AddCssFileParts("~/Plugins/Widgets.NivoSlider/Content/nivoslider/nivo-slider.css");
+}
+@using System
+@using Nop.Web.Framework.UI
+
+@helper RenderSliderLine(string pictureUrl, string text, string link, string dataTransition = "")
+{
+    if (!string.IsNullOrEmpty(pictureUrl))
+    {
+        if (!string.IsNullOrEmpty(link))
+        {
+            <a href="@link">
+                <img src="@pictureUrl" data-thumb="@pictureUrl" data-transition="@dataTransition" alt="" title="@text" />
+            </a>
+        }
+        else
+        {
+            <img src="@pictureUrl" data-thumb="@pictureUrl" data-transition="@dataTransition" alt="" title="@text" />
+        }
+    }
+}
+<div class="theme-default mainSlider">
+    <div id="nivo-slider" class="nivoSlider">
+        @foreach(var slide in Model)
+        {
+            @RenderSliderLine(slide.PictureUrl, slide.Title, slide.Url)
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    $(window).load(function () {
+        $('#nivo-slider').nivoSlider();
+    });
+</script>

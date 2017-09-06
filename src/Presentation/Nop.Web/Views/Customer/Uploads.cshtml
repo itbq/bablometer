@@ -1,0 +1,63 @@
+﻿@model Nop.Web.Models.Common.UploadListModel
+@if(Model.Uploads.Count > 0)
+{
+    <ul class="fileList">
+        @foreach(var document in Model.Uploads)
+        {
+            switch (document.FileExtension)
+            {
+                case ".doc":{
+                    <li id="file-@document.DownloadId"><div class="icoWord"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a> <span class="delete button-link" nohref="nohref" onclick="DeleteFile('@document.DownloadId')"></span></li>
+                    break;
+                }
+                 case ".docx":{
+                    <li id="file-@document.DownloadId"><div class="icoWord"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a> <span class="delete button-link" nohref="nohref" onclick="DeleteFile('@document.DownloadId')"></span></li>
+                    break;
+                }
+                 case ".pdf":{
+                    <li id="file-@document.DownloadId"><div class="icoPDF"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a> <span class="delete button-link" nohref="nohref" onclick="DeleteFile('@document.DownloadId')"></span></li>
+                    break;
+                }
+                 case ".xls":{
+                    <li id="file-@document.DownloadId"><div class="icoExcel"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a> <span class="delete button-link" nohref="nohref" onclick="DeleteFile('@document.DownloadId')"></span></li>
+                    break;
+                }
+                 case ".xlsx":
+                 case ".xlsm":{
+                    <li id="file-@document.DownloadId"><div class="icoExcel"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a> <span class="delete button-link" nohref="nohref" onclick="DeleteFile('@document.DownloadId')"></span></li>
+                    break;
+                }
+                case ".jpg":
+                case ".jpeg":
+                case ".png":
+                case ".gif":
+                case ".bmp":
+                    {
+                        <li id="file-@document.DownloadId"><div class="icoImage"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a> <span class="delete button-link" nohref="nohref" onclick="DeleteFile('@document.DownloadId')"></span></li>
+                        break;
+                    }
+                case ".rar":
+                    {
+                        <li id="file-@document.DownloadId"><div class="icoRar"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a> <span class="delete button-link" nohref="nohref" onclick="DeleteFile('@document.DownloadId')"></span></li>
+                        break;
+                    }
+                case ".zip":
+                case ".7zip":
+                    {
+                        <li id="file-@document.DownloadId"><div class="icoZip"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a> <span class="delete button-link" nohref="nohref" onclick="DeleteFile('@document.DownloadId')"></span></li>
+                        break;
+                    }
+            }
+        }
+    </ul>
+}
+<script>
+    $(document).ready(function () {
+        $(document).ajaxStart(function () {
+            $("body").css("cursor", "progress");
+        });
+        $(document).ajaxStop(function () {
+            $("body").css("cursor", "auto");
+        });
+    });
+</script>

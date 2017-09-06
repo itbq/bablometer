@@ -1,0 +1,250 @@
+﻿@model Nop.Web.Models.BuyingRequest.BuyingRequestCatalogListModel
+
+@using Telerik.Web.Mvc.UI
+@using Nop.Core.Domain.Catalog
+@{
+    ViewBag.Title = "BuyingRequestCatalogue";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+
+@*<h2>BuyingRequestCatalogue</h2>
+<div>
+    <h1>Categories</h1>
+    @for (int i = 0; i < Model.Categories.Length; i++)
+    {
+        <div class="categories active" id="category-@i">
+        @(Html.Telerik().ComboBox()
+            .Name("EditCategories-" + i.ToString())
+            .Value(Model.Categories[i].CurrentCategoryId != 0 ? Model.Categories[i].Categories.Where(x => x.Id == Model.Categories[i].CurrentCategoryId).First().Id.ToString():null)
+            .ClientEvents(events => events
+                .OnChange("OnFirstCategoryChange"))
+            .HtmlAttributes(new { style = "width: 200px; float: left; margin-bottom: 30px;" })
+            .DropDownHtmlAttributes(new { style = "height: 200px" })
+            .BindTo(new SelectList(Model.Categories[i].Categories, "Id", "Name")))
+        </div>
+        @Html.HiddenFor(model => model.SelectedCategoryId)
+        @Html.HiddenFor(model=>model.ItemType)
+    }
+</div><br /><br />
+<span class="button-1" id="FilterCategorie">Go</span><br /><br /><br />
+<div class="block">
+    <table>
+        <tr>
+            <th>Image</th>
+            <th>Brand Company</th>
+            <th>Description</th>
+            <th>Details</th>
+        </tr>
+        @foreach (var item in Model.BuyingRequestList)
+        {
+            <tr>
+                <td>
+                    @if(item.Picture != null){<img src="@item.Picture.ImageUrl" />}
+                </td>
+                <td>
+                    @item.Brand by <a href="@Url.RouteUrl("CompanyInformation", new {seName = item.CompanySeName})">@item.CompanyTitle</a>
+                </td>
+                <td>
+                    <h3><a href="@Url.RouteUrl("Product",new {seName = item.ProductSeName})">@item.Title</a></h3>
+                    <p>@Html.Raw(item.ShortDescription)</p>
+                </td>
+                <td>
+                    <a href="@Url.RouteUrl("Product",new {seName = item.ProductSeName})">Details</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<script>
+    function OnFirstCategoryChange(e) {
+        $('#SelectedCategoryId').val(e.value);
+        $.ajax({
+            url: "/BuyingRequest/GetSubCategories",
+            type: "POST",
+            dataType: "json",
+            data: { categoryId: e.value },
+            success: function (resp) {
+                if (resp.subCategories) {
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                    $('.categories.active:last').after('<div class="categories inactive" id=category-' + resp.lavel + '></div>');
+                    $('.categories.inactive').html(resp.htmlString);
+                } else {
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                }
+            }
+        });
+    }
+
+    function SelectCategorie() {
+        var categorieId = $('#SelectedCategoryId').val();
+        var itemType = $('#ItemType').val();
+        var catalogUrl;
+        if (categorieId != 0) {
+            switch (itemType) {
+                case '@((int)ProductItemTypeEnum.ProductBuyingRequest)':
+                    catalogUrl = '/Catalogue/BuyingRequests?CategoryId=' + categorieId;
+                        break;
+            }
+
+            window.location.href = catalogUrl;
+        }
+    }
+
+    $(document).ready(function(){
+        $('#FilterCategorie').click(SelectCategorie);
+    });
+</script>*@
+
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+
+                    <ul class="breadcrumb cat">
+                        <li><div class="tail"></div><a href="#">Category</a><div class="head"></div></li>
+                        <li><div class="tail"></div><a href="#">Subcategory</a><div class="head"></div></li>
+                        <li class="last">Current state</li>
+                    </ul>
+                    <h1>CATALOGUE OF</h1>
+
+                    <div class="catalogue">
+                        <div class="itemBoxOuterWrap">
+                            <div class="itemImage">
+                                <div class="cornerLeftBig"></div>
+                                <img src="images/goods/good_img.png" alt="" />
+                            </div>
+                            <div class="itemBoxOuter">
+                                <div class="itemBoxHeading">
+                                     <h3><a href="#">70-85 BCD, 90 CD, 95 CDE Bra</a></h3>
+                                        <p>
+                                            <a class="itemName" href="#">Y3 Original</a> by <a href="#">Adidas</a>
+                                        </p>
+                                </div>
+                            <div class="itemBoxInner">
+                                <p class="itemInfo">
+                                    This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh
+                                </p>
+                            </div>
+                            <a class="itemView" href="#">View info</a>
+                            </div>
+                        </div>
+                        <div class="itemBoxOuterWrap">
+                            <div class="itemImage">
+                                <div class="cornerLeftBig"></div>
+                                <img src="images/goods/good_img.png" alt="" />
+                            </div>
+                            <div class="itemBoxOuter">
+                                <div class="itemBoxHeading">
+                                    <h3><a href="#">70-85 BCD, 90 CD, 95 CDE Bra</a></h3>
+                                    <p>
+                                        <a class="itemName" href="#">Y3 Original</a> by <a href="#">Adidas</a>
+                                    </p>
+                                </div>
+                                <div class="itemBoxInner">
+                                    <p class="itemInfo">
+                                        This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh
+                                    </p>
+                                </div>
+                                <a class="itemView" href="#">View info</a>
+                            </div>
+                        </div>
+                        <div class="itemBoxOuterWrap">
+                            <div class="itemImage">
+                                <div class="cornerLeftBig"></div>
+                                <img src="images/goods/good_img.png" alt="" />
+                            </div>
+                            <div class="itemBoxOuter">
+                                <div class="itemBoxHeading">
+                                    <h3><a href="#">70-85 BCD, 90 CD, 95 CDE Bra</a></h3>
+                                    <p>
+                                        <a class="itemName" href="#">Y3 Original</a> by <a href="#">Adidas</a>
+                                    </p>
+                                </div>
+                                <div class="itemBoxInner">
+                                    <p class="itemInfo">
+                                        This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh
+                                    </p>
+                                </div>
+                                <a class="itemView" href="#">View info</a>
+                            </div>
+                        </div>
+                        <div class="itemBoxOuterWrap">
+                            <div class="itemImage">
+                                <div class="cornerLeftBig"></div>
+                                <img src="images/goods/good_img.png" alt="" />
+                            </div>
+                            <div class="itemBoxOuter">
+                                <div class="itemBoxHeading">
+                                    <h3><a href="#">70-85 BCD, 90 CD, 95 CDE Bra</a></h3>
+                                    <p>
+                                        <a class="itemName" href="#">Y3 Original</a> by <a href="#">Adidas</a>
+                                    </p>
+                                </div>
+                                <div class="itemBoxInner">
+                                    <p class="itemInfo">
+                                        This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh
+                                    </p>
+                                </div>
+                                <a class="itemView" href="#">View info</a>
+                            </div>
+                        </div>
+                       </div>
+                    <div class="navBox">
+                        <div class="navFirstPage"><a href="#">First page</a></div>
+                        <div class="navCentered">
+                            <ul>
+                                <li class="prevPage"><a href="#">Previous</a></li>
+                                <li><a href="#">1</a></li>
+                                <li class="active">2</li>
+                                <li><a href="#">3</a></li>
+                                <li>...</li>
+                                <li><a href="#">8</a></li>
+                                <li><a href="#">9</a></li>
+                                <li><a href="#">10</a></li>
+                                <li class="nextPage"><a href="#">Next</a></li>
+                            </ul>
+                        </div>
+                        <div class="navLastPage"><a href="#">Last page</a></div>
+                    </div>
+
+                </div>
+                <div class="rightSide">
+                    <div class="ribCategories">
+                        <h1>Select category</h1>
+
+                        <form class="selectoBox">
+                            <select name="cat" id="cat">
+                                <option value="1">Category</option>
+                                <option value="1">Category 2</option>
+                                <option value="1">Category 3</option>
+                                <option value="1">Category 4</option>
+                                <option value="1">Category 5</option>
+                            </select>
+                            <div class="arrowDown"></div>
+                            <select name="scat" id="scat">
+                                <option value="1">Sub-Category</option>
+                                <option value="1">Sub-Category 2</option>
+                                <option value="1">Sub-Category 3</option>
+                                <option value="1">Sub-Category 4</option>
+                                <option value="1">Sub-Category 5</option>
+                            </select>
+
+
+                            <button>Go</button>
+                        </form>
+                        <div class="arrowBg"></div>
+                    </div>
+
+                    <div class="banners">
+                        <img src="images/banner/banner_3.jpg" alt="">
+                        <img src="images/banner/banner_3.jpg" alt="">
+                        <img src="images/banner/banner_3.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+
+        </div> </div>
+</div>

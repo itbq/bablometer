@@ -1,0 +1,33 @@
+﻿@model IList<Nop.Web.Models.News.NewsItemModel>
+<div class="LatesNews box">
+    <div class="boxHead">
+        <h2>@T("News.LatestNews")</h2>
+        <a href="/news" class="littleSeeAll">@T("MiniSite.SeeAll.Lower")<span> ></span></a>
+    </div>
+    <div class="boxBody">
+        <div class="news">
+            @foreach(var item in Model)
+            {
+                <div class="newsBox">
+                    <a href="@Url.RouteUrl("MiniNewsItem", new { SeName = item.SeName })" class="newsHeadline">@item.Title</a>
+                    <p class="newsText">@item.Short</p>
+                    <div class="imgNews">
+                        <div class="cornerRight"></div>
+                        <div class="newsDate">@item.PublishingDate.Value.ToString("dd-MM")</div>
+                        @if (item.Picture != null)
+                        {<img src="@item.Picture.ImageUrl" alt="@item.Title">}
+                    </div>
+                </div>
+                @*<div class="newsBox">
+                    <a href="#" class="newsHeadline">Roger Vivier Fall 2013</a>
+                    <p class="newsText">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni.</p>
+                    <div class="imgNews">
+                        <div class="cornerRight"></div>
+                        <div class="newsDate">05.03</div>
+                        <img src="/Content/MiniSite/Templates/@Model/images/img60.png" alt="">
+                    </div>
+            </div>*@
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@model Nop.Admin.Models.Event.EventListModel
+
+@using Telerik.Web.Mvc.UI
+@using Nop.Admin.Models.Event
+
+@{
+    var gridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+    
+    //page title
+    ViewBag.Title = T("Admin.Event.Title").Text;
+}
+
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+        @T("Admin.Event.Title")
+    </div>
+    <div class="options">
+        <a href="@Url.Action("Create")" class="t-button">@T("Admin.Common.AddNew")</a>
+    </div>
+</div>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<EventModel>(Model.Events.Data)
+                    .Name("events-grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Title)
+                            .Title(T("Event.Title").Text);
+                        columns.Bound(x => x.Id)
+                            .Width(50)
+                            .Centered()
+                            .Template(x => Html.ActionLink(T("Admin.Common.Edit").Text, "Edit", new { id = x.Id }))
+                            .ClientTemplate("<a href=\"Edit/<#= Id #>\">" + T("Admin.Common.Edit").Text + "</a>")
+                            .Title(T("Admin.Common.Edit").Text);
+                    })
+                                                .Pageable(settings => settings.Total(Model.Events.Total).PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                                                .DataBinding(dataBinding => dataBinding.Ajax().Select("List", "Event"))
+                                                .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>

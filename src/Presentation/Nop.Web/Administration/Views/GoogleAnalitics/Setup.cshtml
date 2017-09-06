@@ -1,0 +1,41 @@
+﻿@model Nop.Admin.Models.GoogleAnalitics.AnaliticsSetupModel
+@{
+    Html.AppendTitleParts(T("Admin.ContentManagement.GoogleAnalitics.Setup").Text);
+}
+<h2>@T("Admin.ContentManagement.GoogleAnalitics.Setup")</h2>
+@using (Html.BeginForm())
+{
+<table>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.AccountId)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.AccountId)
+            @Html.ValidationMessageFor(model=>model.AccountId)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.ClientId)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.ClientId)
+            @Html.ValidationMessageFor(model=>model.ClientId)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.PrivateKeyDownnloadId)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.PrivateKeyDownnloadId)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="submit" value ="@T("Admin.Common.Save")" />
+        </td>
+    </tr>
+</table>
+}

@@ -1,0 +1,26 @@
+﻿@model string
+@{
+    Layout = "_RootNoScript";
+    Html.AddTitleParts("About Us");
+}
+
+<div class="master-wrapper-page itemSingle">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+                    <div class="box p40">
+                        <h1>Header 1</h1>
+                        @Html.Raw(Model)
+                    </div>
+                </div>
+
+                <div class="rightSide">
+                    @Html.Action("Banners","Common")
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

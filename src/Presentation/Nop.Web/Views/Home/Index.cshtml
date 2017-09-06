@@ -1,0 +1,83 @@
+﻿@model IList<Nop.Web.Models.Banner.BannerModel>
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+}
+@using Nop.Core.Domain.Customers
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+      
+            @Html.Action("HomePageOffersSlideBlock","Common",new{count=12})
+        
+            @Html.Action("HomePageSearchBlock","SearchProduct")
+
+            <div class="bannersMain">
+                @Html.Action("BannerList","Common",new {bannerType = Nop.Core.Domain.BannerTypeEnum.HomePage,numberOfBanners = 4})
+            </div>
+
+            @*
+        <div class="master-wrapper-main">
+            <div class="mainSlider">
+                @Html.Widget("home_page_top")
+                <div class="redRibbon sliderRibbon">
+                    <div class="cornerRight"></div>
+                </div>
+            </div>
+
+            @Html.Action("CatalogTab", "Catalogue")
+
+            <div class="recentlyAdded box">
+                <div class="boxHead">
+                    <h2>@T("Home.RecentlyAddedProducts")</h2>
+                    <a href="/Catalogue/Product" class="littleSeeAll">@T("SeeAll.Lower")</a>
+                </div>
+                <div class="boxBody">
+                    @Html.Action("RecentlyAddedProducts", "Common", new { count = 15 })
+                </div>
+            </div>
+
+            @if (!_workContext.CurrentCustomer.IsRegistered())
+            {
+            <div class="joinUs box">
+                    <div class="boxHead">
+                        <h2>@T("Home.JoinUs")</h2>
+                    </div>
+
+                    <div class="boxBody">
+                        <p>@T("TextResource.JoinUs")</p>
+                        <a href="@Url.RouteUrl("Topic", new { SystemName = "benefits" })" class="button">@T("Home.BecomeSeller")</a>
+                        <a href="@Url.RouteUrl("Topic", new { SystemName = "benefits" })" class="button orange">@T("Home.BecomeBuyer")</a>
+                    </div>
+                </div>
+
+
+                <div class="banner w300h231">
+                    @Html.Action("BannerList", "Common", new { bigImage = true, numberOfBanners = 1 })
+                </div>
+                <div class="banner w220x131x131 two">
+                    @Html.Action("BannerList", "Common", new { bigImage = false, numberOfBanners = 2 })
+                </div>
+            }
+            else
+            {
+                <div class="recentlyAdded recentlyViewed box">
+                    <div class="boxHead">
+                        <h2>@T("Home.RecentlyViewedItems")</h2>
+                        <a href="/Catalogue/Product" class="littleSeeAll">@T("SeeAll.Lower")</a>
+                    </div>
+                    <div class="boxBody">
+                      @Html.Action("RecentlyViewedItems", "Common", new { count = 15 })
+                    </div>
+                </div>
+                <div class="banner w220x131x131 four">
+                    @Html.Action("BannerList", "Common", new { bigImage = false, numberOfBanners = 4 })
+                </div>
+            }
+
+            @Html.Action("LatestNews", "News")
+
+            @Html.Action("LatestEvents", "Event")
+
+        </div>*@
+        </div>
+</div>

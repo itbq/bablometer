@@ -1,0 +1,74 @@
+﻿@model Nop.Web.Models.MiniSite.MiniSiteBannerModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AddTitleParts(T("ETF.MiniSite.Setup.Title").Text + ". " + T("ETF.MiniSite.Setup.Options.Banner").Text);
+}
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <ul id="productMenu">
+           <li><a href="/MiniSiteManagement/MainSetup">@T("ETF.MiniSite.Setup.Options.General")</a></li>
+            <li><a href="/MiniSiteManagement/SliderSetup">@T("ETF.MiniSite.Setup.Options.Slider")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetup">@T("ETF.MiniSite.Setup.Options.Banner")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetupAdd" class="current">@T("ETF.MiniSite.Setup.Banner.Add")</a></li>
+            <li><a href="/MiniSiteManagement/TextPageSetup">@T("ETF.MiniSite.Setup.Options.TextPages")</a></li>
+        </ul>
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(model=>model.Id)
+            <div class="master-wrapper-main borderedPage addProduct">
+                <div class="step">
+                    <div class="half">
+                        <h1>@T("MiniSite.Banner.Add")</h1>
+                        <p><b>@T("MiniSite.Banner.LanguageChoose"):</b></p>
+                        @Html.ValidationMessageFor(model=>model.WorkingLanguage)
+                        @Html.HiddenFor(model=>model.WorkingLanguage)
+                        <ul class="languages">
+                            @for (int i = 0; i < Model.Languages.Count; i++)
+                            {
+                                @Html.HiddenFor(model => model.Languages[i].LanguageId)
+                                <li>
+                                    <label for="l@(i)">
+                                        <input id="Languages_@(i)__Selected" type="checkbox" value="true" name="Languages[@(i)].Selected" disabled="true" @if(Model.Languages[i].Selected){@Html.Raw("checked=\"checked\"")}>
+                                        <div class="flag">
+                                            <img src="/@Url.Content("Content/etf/images/flag/flag_" + Model.Languages[i].LanguageId.ToString() + ".png")" alt="@(Model.Languages[i].LanguageName)"/>
+                                            <span>@(Model.Languages[i].LanguageName)</span>
+                                        </div>
+                                    </label>
+                                </li>                
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h1>@T("MiniSite.Banner.Add.Information")</h1>
+                    <div class="stepCol">
+                        <div class="full inpBox">
+                            @Html.LabelFor(model => model.TitleTag)
+                            @Html.ValidationMessageFor(model => model.TitleTag)
+                            @Html.EditorFor(model => model.TitleTag)
+                        </div>
+                        <div class="full inpBox">
+                            @Html.LabelFor(model => model.AltTag)
+                            @Html.ValidationMessageFor(model => model.AltTag)
+                            @Html.EditorFor(model => model.AltTag)
+                        </div>
+                        <div class="full inpBox">
+                            @Html.LabelFor(model => model.Url)
+                            @Html.ValidationMessageFor(model => model.Url)
+                            @Html.EditorFor(model => model.Url)
+                        </div>
+                        <div class="full inpBox hundred">
+                            <label>@T("Plugins.Widgets.NivoSlider.Picture") @Html.Raw("(300x230)")<span class="asterisk"></span></label>
+                            @Html.ValidationMessageFor(model => model.PictureId)
+                            @Html.EditorFor(model => model.PictureId)
+                        </div>
+                        <div class="center">
+                            <button id="save-product-button" class="upload" onclick="javascript:$('form').valid(); return PriceValidation();">@T("ETF.Front.Product.Add.Save")</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        }
+        </div>
+    </div>

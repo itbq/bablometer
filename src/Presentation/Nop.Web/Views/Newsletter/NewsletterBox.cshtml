@@ -1,0 +1,66 @@
+﻿@model NewsletterBoxModel
+@using Nop.Web.Models.Newsletter;
+<div class="weeklyLetters box">
+    <div class="boxHead">
+        <h2>@T("NewsLetter.weekly")</h2>
+    </div>
+    <div class="boxBody" id="newsletter-subscribe-block">
+        <h3>@T("NewsLetter.Email"):</h3>
+        @Html.HiddenFor(x => x.LanguageId, new { id = "newsletter-language" })
+        <input type="email" value="" id="newsletter-email">
+        <h4>@T("NewsLetter.Informatil"):</h4>
+        <label for="prod"><input type="checkbox" id="newsletter-prod"> – @T("NewsLetter.NewProduct")</label>
+        <label for="req"><input type="checkbox" id="newsletter-req" > – @T("NewsLetter.newBuyingRequest")</label>
+    
+        <a nohref="nohref" class="button" id="newsletter-subscribe-button">@T("Newsletter.Button").Text</a>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#newsletter-subscribe-button').click(function () {
+            var email = $("#newsletter-email").val();
+            var lang = $("#newsletter-language").val();
+            if ($('#newsletter-prod').prop('checked')) {
+                var newproduct = 'True';
+            } else {
+                var newproduct = 'False';
+            }
+            if ($('#newsletter-req').prop('checked')) {
+                var newrequest = 'True';
+            } else {
+                var newrequest = 'False';
+            }
+            var subscribeProgress = $("#subscribe-loading-progress");
+            subscribeProgress.show();
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "@(Url.RouteUrl("SubscribeNewsletter"))",
+                data: { "email": email, "languageid": lang, "newProduct": newproduct, "newBuyingRequest": newrequest },
+                success: function (data) {
+                    subscribeProgress.hide();
+                    $("#newsletter-result-block").html(data.Result);
+                    if (data.Success) {
+                        $('#firstPopOk h2').text('');
+                        $('#firstPopOk p').text('@T("ETF.Subscription.Message")');
+                        showPop("firstPopOk");
+                        
+                     }
+                     else {
+                        $('#newsletter-result-block').fadeIn("slow").delay(2000).fadeOut("slow");
+                        $('#firstPopOk h2').text('');
+                        $('#firstPopOk p').html(data.Result);
+                        showPop("firstPopOk");
+                     }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#firstPopOk h2').text('');
+                    $('#firstPopOk p').html('@T("ETF.Subscription.Fail")');
+                    showPop("firstPopOk");
+                    subscribeProgress.hide();
+                }  
+            });                
+            return false;
+        });
+    });
+</script>

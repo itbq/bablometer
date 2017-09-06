@@ -1,0 +1,41 @@
+﻿@model Nop.Web.Models.Customer.CustomerAddressListModel
+
+@foreach(var address in Model.Addresses)
+    {
+        <div class="box">
+            <h4>@address.FirstName</h4>
+            <div class="half">
+                <span>@address.PhoneNumber</span>
+                @if (!String.IsNullOrEmpty(address.PhoneNumber1))
+                {
+                    <span>@address.PhoneNumber1</span>
+                }
+                @if (!String.IsNullOrEmpty(address.PhoneNumber2))
+                {
+                    <span>@address.PhoneNumber2</span>
+                }
+                @if (!String.IsNullOrEmpty(address.PhoneNumber3))
+                {
+                    <span>@address.PhoneNumber3</span>
+                }
+            </div>
+            <div class="half">
+                <span>@(address.Address1 + " " + address.City  + ", " + address.CountryName)</span>
+            </div>
+            <div class="full">
+                <a href="mailto:@address.Email">@address.Email</a>
+                @if (!String.IsNullOrEmpty(address.Email1))
+                { 
+                    <a href="mailto:@address.Email">@address.Email1</a>
+                }
+                 @if (!String.IsNullOrEmpty(address.Email2))
+                { 
+                    <a href="mailto:@address.Email">@address.Email2</a>
+                }
+                 @if (!String.IsNullOrEmpty(address.Email3))
+                { 
+                    <a href="mailto:@address.Email">@address.Email2</a>
+                }
+            </div>
+        </div>
+    }

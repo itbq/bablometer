@@ -1,0 +1,359 @@
+@model Nop.Web.Areas.MiniSite.Models.Preview.PreviewModel
+@{
+    Html.AppendCssFileParts("~/Content/MiniSite/selector.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/css/theme.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/Css/styles3.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/Css/root.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/Css/cusel.css");
+    Html.AppendScriptParts("~/Content/MiniSite/js/cusel-fixed-min-2.5.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/validateRun.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/jquery.validate.min.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/jquery.diyslider.min.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/script.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/jquery-1.6.2.js");
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ETF</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251" />
+
+    <link rel="shortcut icon" href="/Content/MiniSite/Templates/@Model/images/favicon.ico" type="image/x-icon" />
+    @Html.NopCssFiles(this.Url, ResourceLocation.Head)
+    @Html.NopScripts(this.Url,ResourceLocation.Head,false)
+     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+</head>
+<script type="text/javascript">
+    function switchDisplay(id) {
+        if ($(id).css("display") == "none") {$(id).css("display", "block");} else {$(id).css("display", "none");}
+    }
+
+
+
+    $(function() {
+        $( ".tabCatalog" ).tabs();
+    });
+
+    $(document).ready(function() {
+        $(".goods").diyslider({
+            width: "220px", // width of the slider
+            height: "200px", // height of the slider
+            display: 2, // number of slides you want it to display at once
+            loop: true // disable looping on slides
+        }); // this is all you need!
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+        // use buttons to change slide
+        $("#go-left").bind("click", function(){
+            $(".goods").diyslider("move", "back");
+            return false;
+        });
+        $("#go-right").bind("click", function(){
+            $(".goods").diyslider("move", "forth");
+            return false;
+        });
+
+        $("#submit").click(function () {
+            if ($(".loginPop").validate().form()) {
+                $("#submit").submit();
+            } else {}
+        });
+
+    })
+
+
+</script>
+
+<body>
+
+<div class="signUp invisible">
+    <div class="fullScreenLoginPop" onclick="switchDisplay('.signUp');"></div>
+</div>
+
+    <div class="page-selector">
+    <select id="page-selector">
+        <option value="1" @if(Model.PageName == "1"){@Html.Raw("selected")}>Home page layout 1</option>
+        <option value="2" @if(Model.PageName == "2"){@Html.Raw("selected")}>Home page layout 2</option>
+        <option value="3" @if(Model.PageName == "3"){@Html.Raw("selected")}>Home page layout 3</option>
+        <option value="Catalog" @if (Model.PageName == "Catalog"){@Html.Raw("selected")}>Catalog page</option>
+        <option value="Item_Single" @if (Model.PageName == "Item_Single"){@Html.Raw("selected")}>Single item page</option>
+        <option value="Contacts" @if (Model.PageName == "Contacts"){@Html.Raw("selected")}>Contacts page</option>
+        <option value="News_Landing" @if (Model.PageName == "News_Landing"){@Html.Raw("selected")}>News landing page</option>
+        <option value="News_Single" @if (Model.PageName == "News_Single"){@Html.Raw("selected")}>Single new page</option>
+        <option value="TextPage" @if (Model.PageName == "TextPage"){@Html.Raw("selected")}>Text page</option>
+    </select>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#page-selector').change(function () {
+                var val = $('#page-selector').val();
+                if (val == '1') {
+                    window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=1";
+                    return;
+                }
+                if (val == '2') {
+                    window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=2";
+                    return;
+                }
+                if (val == '3') {
+                    window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=3";
+                    return;
+                }
+
+                window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=3&PageName=" + val;
+                return;
+
+            });
+        });
+    </script>
+</div>
+<div class="header">
+    <div class="master-wrapper-page">
+        <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/logoProto.png" width="99" height="38" class="logo" alt="">
+        <div class="header-links left">
+            <a href="#">About</a>
+            <a href="#">Benefits</a>
+            <a href="#">Contact us</a>
+        </div>
+
+        <div class="language-selector">
+            <a href="#" onclick="switchDisplay('.otherLang');"><img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/flag/flag_3.png">English</a>
+            <div class="otherLang invisible">
+                <a href="#"><img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/flag/flag_1.png">Русский</a>
+            </div>
+        </div>
+
+
+        <div class="header-links right">
+            <a href="#" onclick="switchDisplay('.signUp'); switchDisplay('.loginPop');">Log in</a>
+            <a href="#">Register</a>
+
+            <form class="loginPop invisible" action="#" method="post">
+                <div class="rib"><div class="loginH" onclick="switchDisplay('.signUp');">Log in</div></div>
+                <!--<div class="loginH" onclick="switchDisplay('.signUp');">Log in</div>-->
+                <div class="inputs">
+                    <input type="text" value="" name="login" id="login" placeholder="username or email" class="required">
+                    <input type="password" value="" name="pswd" id="pswd" placeholder="password" class="required">
+                </div>
+
+                <div class="line">
+                    <a href="#" class="forgot">Trouble Logging in</a>
+                    <input type="submit" value="Login" id="submit">
+                    <!--<a href="#" class="submit" onclick="alert(">Login</a>-->
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main layout1-3">
+            <div class="mainSlider">
+                <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/sliderImgProto.png" width="940" height="529" alt="">
+                <div class="redRibbon sliderRibbon">
+                    <div class="cornerRight"></div>
+                    <strong>Milavitsa</strong>
+                    <div class="usual">new 2013 collection</div>
+                </div>
+            </div>
+            <div class="recentlyAdded box">
+                <div class="boxHead">
+                    <h2>New in catalog</h2>
+                    <a href="#" class="littleSeeAll">see all</a>
+                </div>
+                <div class="boxBody">
+                    <div class="slideGoods">
+                        <a  href="#" class="arrPrev" id="go-left"><div class="cornerLeft"></div></a>
+                        <a href="#" class="arrNext" id="go-right"><div class="cornerRight"></div></a>
+
+                        <div class="goods">
+                            <div>
+                                <div class="goodBox">
+                                    <a href="#" class="goodCaption">Milavitsa</a>
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/goodItem_4.jpg" alt="">
+                                    <a href="#" class="goodLink">
+                                        70-85 BCDEFG, 90 CDEF, 95 CDE Bra
+                                    </a>
+                                </div>
+                                <div class="goodBox">
+                                    <a href="#" class="goodCaption">Milavitsa</a>
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/goodItem_3.jpg" alt="">
+                                    <a href="#" class="goodLink">
+                                        70-85 BCDEFG, 90 CDEF, 95 CDE Bra
+                                    </a>
+                                </div>
+                                <div class="goodBox">
+                                    <a href="#" class="goodCaption">Milavitsa</a>
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/goodItem_2.jpg" alt="">
+                                    <a href="#" class="goodLink">
+                                        70-85 BCDEFG, 90 CDEF, 95 CDE Bra
+                                    </a>
+                                </div>
+                                <div class="goodBox">
+                                    <a href="#" class="goodCaption">Milavitsa</a>
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/goodItem_1.jpg" alt="">
+                                    <a href="#" class="goodLink">
+                                        70-85 BCDEFG, 90 CDEF, 95 CDE Bra
+                                    </a>
+                                </div>
+                                <div class="goodBox">
+                                    <a href="#" class="goodCaption">Milavitsa</a>
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/goodItem_4.jpg" alt="">
+                                    <a href="#" class="goodLink">
+                                        70-85 BCDEFG, 90 CDEF, 95 CDE Bra
+                                    </a>
+                                </div>
+                                <div class="goodBox">
+                                    <a href="#" class="goodCaption">Milavitsa</a>
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/goodItem_3.jpg" alt="">
+                                    <a href="#" class="goodLink">
+                                        70-85 BCDEFG, 90 CDEF, 95 CDE Bra
+                                    </a>
+                                </div>
+                                <div class="goodBox">
+                                    <a href="#" class="goodCaption">Milavitsa</a>
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/goodItem_2.jpg" alt="">
+                                    <a href="#" class="goodLink">
+                                        70-85 BCDEFG, 90 CDEF, 95 CDE Bra
+                                    </a>
+                                </div>
+                                <div class="goodBox">
+                                    <a href="#" class="goodCaption">Milavitsa</a>
+                                    <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/goods/goodItem_1.jpg" alt="">
+                                    <a href="#" class="goodLink">
+                                        70-85 BCDEFG, 90 CDEF, 95 CDE Bra
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabCatalog box">
+                <div class="boxHead">
+                <div class="tabsMenu">
+                    <ul>
+                        <li  class="firstTab"><a href="#tabs-1"><div class="ifActive"></div>Products</a></li>
+                        <li class="sep">/</li>
+                        <li><a href="#tabs-2"><div class="ifActive"></div>Services</a></li>
+                    </ul>
+                </div>
+                    </div>
+                <div class="boxBody">
+                <div id="tabs-1" class="tabContainer">
+                    <div class="w650">
+                        <ul class="tabCat">
+                            <li><h3><a href="#">Men</a></h3></li>
+                            <li><a href="#">T-Shirts</a></li>
+                            <li><a href="#">Sweats & Hoodies</a></li>
+                        </ul>
+
+                        <ul class="tabCat">
+                            <li><h3><a href="#">Women</a></h3></li>
+                            <li><a href="#">Women's Apparel</a></li>
+                            <li><a href="#">Sweats & Hoodies</a></li>
+                        </ul>
+                    </div>
+
+
+                    <a href="#" class="rssRibbon"><div class="cornerRight"></div>RSS</a>
+                    <div class="redRibbon tabSeeAll">
+                        <div class="cornerRight"></div>
+                        <a href="#">See All</a>
+                    </div>
+
+                </div>
+                <div id="tabs-2">
+                    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+                </div>
+                    </div>
+            </div>
+
+            <div class="LatesNews box">
+                <div class="boxHead">
+                    <h2>Latest News</h2>
+                    <a href="#" class="littleSeeAll">see all</a>
+                    <a class="rssRibbon" href="#"><div class="cornerRight"></div>RSS</a>
+                </div>
+                <div class="boxBody">
+                    <div class="hotNews">
+                        <div class="hotImg">
+                            <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/news/actNews.jpg" width="219" height="138" alt="">
+                        </div>
+                        <div class="newsDate">05.03.12</div>
+                        <a href="#"><div class="newsHeadline">LAS VEGAS TRADE SHOWS: THE TRENDS  <div class="cornerLeft"></div></div></a>
+                        <div class="newsText"><div class="cornerLeft"></div>Buyers and vendors are still playing it safe as the hobbling economy, political intransigence and weather concerns have them sidestepping the riskiest fashions.</div>
+                    </div>
+
+                    <div class="news">
+                        <div class="newsBox">
+                            <a href="#" class="newsHeadline">Roger Vivier Fall 2013</a>
+                            <p class="newsText">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni.</p>
+                            <div class="imgNews">
+                                <div class="cornerRight"></div>
+                                <div class="newsDate">05.03</div>
+                                <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/img60.png" alt="">
+                            </div>
+                        </div>
+                        <div class="newsBox">
+                            <a href="#" class="newsHeadline">Roger Vivier Fall 2013</a>
+                            <p class="newsText">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni.</p>
+                            <div class="imgNews">
+                                <div class="cornerRight"></div>
+                                <div class="newsDate">05.03</div>
+                                <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/img60.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="master-wrapper-page">
+        <div class="fLeft">
+            <ul class="footer-menu">
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Services</a></li>
+            </ul>
+            <div class="social">
+                <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/fish.png" alt=""/>
+            </div>
+        </div>
+
+        <div class="fMiddle">
+            <ul class="footer-menu">
+                <li><a href="#">About Company</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Contacts</a></li>
+            </ul>
+            <div class="social"></div>
+        </div>
+
+        <div class="fRight">
+            <div class="fline">
+                <a href="mailto: info@mailbox.com">info@mailbox.com</a>
+            </div>
+            <div class="fline">
+                <span>© 2013</span><a href="#">Company Name</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

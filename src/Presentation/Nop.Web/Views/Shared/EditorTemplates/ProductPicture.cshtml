@@ -1,0 +1,85 @@
+﻿@model int
+@using Nop.Core;
+@using Nop.Web.Framework.UI;
+@{
+    //register CSS and JS
+    Html.AddCssFileParts("~/Administration/Content/fileuploader.css");
+    Html.AddScriptParts("~/Administration/Scripts/fileuploader.js");
+
+    //other variables
+    var random = CommonHelper.GenerateRandomInteger();
+    var clientId = "picture" + random;
+    var pictureService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Media.IPictureService>();
+    var picture = pictureService.GetPictureById(Model);
+}
+<div id="@clientId">
+    <noscript>
+        <p>
+            Please enable JavaScript to use file uploader.</p>
+        <!-- or put a simple form for upload here -->
+    </noscript>
+</div>
+<div id="@(clientId + "value")">
+    @Html.HiddenFor(x => x)
+</div>
+<div class="filetype">JPG, PNG, GIF 0.5Mb max.</div>
+<div class="fileLogo" id="@(clientId + "image")">
+    @if (picture != null)
+    {
+        <span id="@(clientId + "remove")" class="delete button-link"></span>
+    }
+    else
+    {
+        <span id="@(clientId + "remove")" class="delete button-link" style="display:none;"></span>
+    }
+@if (picture != null)
+{
+    <img src="@(pictureService.GetPictureUrl(Model, 100, true))" />
+}
+</div>
+<br />
+<script type="text/javascript">
+    $(function () {
+        $(function () {
+            var uploader@(clientId) = new qq.FileUploader({
+                element: document.getElementById('@clientId'),
+                action: '@(Url.Content("~/Picture/AsyncUpload"))',
+                sizeLimit: 5.24e5,
+                onComplete: function (id, fileName, responseJSON) {
+                    if (responseJSON.success) {
+                        $('#@(clientId + "image") img').remove();
+                        $("#@(clientId + "image") ").children("#@(clientId + "remove")").after('<img width="100px;" src="' + responseJSON.imageUrl + '"/>');
+                        $("#@(clientId + "value") input").val(responseJSON.pictureId);
+                        $("#@(clientId + "remove")").show();
+                        $('.qq-upload-list').hide();
+                    } else {
+                        $('.qq-upload-list').hide();
+                        $('.qq-upload-fail').hide();
+                        $('#firstPopOk h2').text('@T("ETF.Profile.Error")');
+                        $('#firstPopOk p').text(responseJSON.imageUrl);
+                        showPop("firstPopOk");
+                    }
+                },
+                messages: {
+                    typeError: "@T("ETF.File.Extension.Error")",
+                    sizeError: "@T("ETF.File.Size.Error")",
+                    minSizeError: "@T("ETF.File.Min.Size.Error")",
+                    emptyError: "@T("ETF.File.Emplty.Error")",
+                    onLeave: "@T("ETF.File.Common.Error")"
+                },
+                strings: {
+                    upload: "@T("Common.FileUploader.Upload")",
+                    drop: "@T("Common.FileUploader.DropFiles")",
+                    cancel: "@T("Common.FileUploader.Cancel")",
+                    failed: "@T("Common.FileUploader.Failed")"
+                }
+            });
+
+            $("#@(clientId + "remove")").click(function (e) {
+                $("#@(clientId + "image") img").remove();@*html("<img src='@pictureService.GetDefaultPictureUrl()'/>");*@
+                $("#@(clientId + "value") input").val(0);
+                $(this).hide();
+            });
+        });
+    });
+</script>

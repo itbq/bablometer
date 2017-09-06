@@ -1,0 +1,157 @@
+﻿@model Nop.Admin.Models.Statistics.DealsStatisticRangeModel
+@using Telerik.Web.Mvc;
+@using Telerik.Web.Mvc.UI
+<table class="stats">
+    <tbody>
+        <tr>
+            <td class="orderaveragereport">
+                <h2>@T("Admin.Statistics.Deals")</h2>
+                <table class="adminContent">
+                    <tr>
+                        <td>
+                            @(Html.Telerik().Grid(new List<Nop.Admin.Models.Statistics.DealsStatisticModel>(){Model.Pending,Model.Rejected,Model.Accepted,Model.Total})
+                                .Name("average-order-report-grid")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(x => x.Name);
+                                    columns.Bound(x => x.TodayCount);
+                                    columns.Bound(x => x.WeeklyCount);
+                                    columns.Bound(x => x.MonthCount);
+                                    columns.Bound(x => x.YearCount);
+                                    columns.Bound(x => x.TotalCount);
+                                })
+                                .EnableCustomBinding(true))
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="stats">
+    <tbody>
+        <tr>
+            <td class="orderaveragereport">
+                <table class="adminContent">
+                    <tr>
+                        <td id="today-deals" class="chartcell">
+                            @(Html.Telerik().Chart<Nop.Admin.Models.Statistics.DealsSource>(Model.GetTodayPercentage())
+                                  .Name("todayChart")
+                                  .Title(T("Admin.Statistics.Deals.Today").Text)
+                                  .Legend(legend => legend
+                                      .Position(ChartLegendPosition.Bottom)
+                                  )
+                                  .Series(series => {
+                                      series.Pie("Percentage", "Source")
+                                            .Labels(labels => labels.Visible(true)
+                                                .Template("<#= value #>%")
+                                                .Align(ChartPieLabelsAlign.Column)
+                                                .Position(ChartPieLabelsPosition.OutsideEnd))
+                                            .StartAngle(90).Padding(30);
+                                  })
+                                  .Tooltip(tooltip => tooltip.Visible(true).Template("<#= value #>%"))
+                                  .HtmlAttributes(new { style = "width: 500px; height: 400px;" })
+                            )
+                        </td>
+                        <td id="weekly-deals" class="chartcell">
+                            @(Html.Telerik().Chart<Nop.Admin.Models.Statistics.DealsSource>(Model.GetWeeklyPercentage())
+                                  .Name("weeklyChart")
+                                  .Title(T("Admin.Statistics.Deals.Week").Text)
+                                  .Legend(legend => legend
+                                      .Position(ChartLegendPosition.Bottom)
+                                  )
+                                  .Series(series => {
+                                      series.Pie("Percentage", "Source")
+                                            .Labels(labels => labels.Visible(true)
+                                                .Template("<#= value #>%")
+                                                .Align(ChartPieLabelsAlign.Column)
+                                                .Position(ChartPieLabelsPosition.OutsideEnd))
+                                            .StartAngle(90).Padding(30);
+                                  })
+                                  .Tooltip(tooltip => tooltip.Visible(true).Template("<#= value #>%"))
+                                  .HtmlAttributes(new { style = "width: 500px; height: 400px;" })
+                            )
+                        </td>
+                        <td id="month-deals" class="chartcell">
+                            @(Html.Telerik().Chart<Nop.Admin.Models.Statistics.DealsSource>(Model.GetMonthPercentage())
+                                  .Name("monthChart")
+                                  .Title(T("Admin.Statistics.Deals.Month").Text)
+                                  .Legend(legend => legend
+                                      .Position(ChartLegendPosition.Bottom)
+                                  )
+                                  .Series(series => {
+                                      series.Pie("Percentage", "Source")
+                                            .Labels(labels => labels.Visible(true)
+                                                .Template("<#= value #>%")
+                                                .Align(ChartPieLabelsAlign.Column)
+                                                .Position(ChartPieLabelsPosition.OutsideEnd))
+                                            .StartAngle(90).Padding(30);
+                                  })
+                                  .Tooltip(tooltip => tooltip.Visible(true).Template("<#= value #>%"))
+                                  .HtmlAttributes(new { style = "width: 500px; height: 400px;" })
+                            )
+                        </td>
+                        <td id="year-deals" class="chartcell">
+                            @(Html.Telerik().Chart<Nop.Admin.Models.Statistics.DealsSource>(Model.GetYearPercentage())
+                                  .Name("yearChart")
+                                  .Title(T("Admin.Statistics.Deals.Year").Text)
+                                  .Legend(legend => legend
+                                      .Position(ChartLegendPosition.Bottom)
+                                  )
+                                  .Series(series => {
+                                      series.Pie("Percentage", "Source")
+                                            .Labels(labels => labels.Visible(true)
+                                                .Template("<#= value #>%")
+                                                .Align(ChartPieLabelsAlign.Column)
+                                                .Position(ChartPieLabelsPosition.OutsideEnd))
+                                            .StartAngle(90).Padding(30);
+                                  })
+                                  .Tooltip(tooltip => tooltip.Visible(true).Template("<#= value #>%"))
+                                  .HtmlAttributes(new { style = "width: 500px; height: 400px;" })
+                            )
+                        </td>
+                        <td id="total-deals" class="chartcell">
+                            @(Html.Telerik().Chart<Nop.Admin.Models.Statistics.DealsSource>(Model.GetTotalPercentage())
+                                  .Name("totalChart")
+                                  .Title(T("Admin.Statistics.Deals.Total").Text)
+                                  .Legend(legend => legend
+                                      .Position(ChartLegendPosition.Bottom)
+                                  )
+                                  .Series(series => {
+                                      series.Pie("Percentage", "Source")
+                                            .Labels(labels => labels.Visible(true)
+                                                .Template("<#= value #>%")
+                                                .Align(ChartPieLabelsAlign.Column)
+                                                .Position(ChartPieLabelsPosition.OutsideEnd))
+                                            .StartAngle(90).Padding(30);
+                                  })
+                                  .Tooltip(tooltip => tooltip.Visible(true).Template("<#= value #>%"))
+                                  .HtmlAttributes(new { style = "width: 500px; height: 400px;" })
+                            )
+                        </td>
+                        <td>
+                            <ul style="list-style:none;">
+                                <li><input type="radio" value="today-deals" name="deals-selector" checked/><label>@T("Admin.Statistics.Today")</label></li>
+                                <li><input type="radio" value="weekly-deals" name="deals-selector"/><label>@T("Admin.Statistics.Weekly")</label></li>
+                                <li><input type="radio" value="month-deals" name="deals-selector"/><label>@T("Admin.Statistics.Month")</label></li>
+                                <li><input type="radio" value="year-deals" name="deals-selector"/><label>@T("Admin.Statistics.Year")</label></li>
+                                <li><input type="radio" value="total-deals" name="deals-selector"/><label>@T("Admin.Statistics.Total")</label></li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.chartcell').hide();
+        $('#today-deals').show();
+        $('[name="deals-selector"]').change(function () {
+            $('.chartcell').hide();
+            var value = $('[name="deals-selector"]:checked').val();
+            $('#' + value).show();
+        });
+    });
+</script>

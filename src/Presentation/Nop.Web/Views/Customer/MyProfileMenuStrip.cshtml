@@ -1,0 +1,38 @@
+﻿@model Nop.Web.Models.Customer.CustomerMenuModel
+@{
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+    Html.AddTitleParts(_localisationService.GetResource("pagetitle.profile"));
+}
+<div class="header_options">
+    <div class="master-wrapper-page">
+        <ul id="optionsMenu">
+            <li>@Html.ActionLink(_localisationService.GetResource("pagetitle.profile"), "MyProfile","Customer", null, new { @class = Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.Profile ? "current" : "" })</li>
+            @*@if(Model.IsSeller)
+            {
+                <li><a href="/MyBuyingRequests" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.BuyingRequests){@Html.Raw("class=\"current\"")}>@T("Profile.MyRequests") <div class="circle" id="my-requests-menu">0</div></a></li>
+                <li><a href="/MyRequests" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.Requests){@Html.Raw("class=\"current\"")}>@T("Profile.MyBuyinRequests") </a></li>
+                <li><a href="/MyCatalogue" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.Catalogue){@Html.Raw("class=\"current\"")}>@T("Profile.Catalog")</a></li>
+                <li><a href="/news/managenews" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.News){@Html.Raw("class=\"current\"")}>@T("Profile.News")</a></li>
+                <li><a href="/Favorit" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.Favourits){@Html.Raw("class=\"current\"")}>@T("Profile.Favorites")</a></li>
+                if (WorkContext.CurrentCustomer.UserMiniSite != null)
+                {
+                    if (WorkContext.CurrentCustomer.UserMiniSite.Active)
+                    {
+                        <li><a href="/MiniSiteManagement/MainSetup" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.MiniSite){@Html.Raw("class=\"current\"")}>@T("ETF.MiniSite.Manage")</a></li>
+                    }else
+                    {
+                        <li><a nohref="nohref">@T("ETF.MiniSite.OnModeration")</a></li>
+                    }
+                }else
+                {
+                    <li><a href="/MiniSiteManagement/Add" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.MiniSite){@Html.Raw("class=\"current\"")}>@T("ETF.MiniSite.Activate")</a></li>
+                }
+            }else{
+                <li><a href="/MyRequests" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.Requests){@Html.Raw("class=\"current\"")}>@T("Profile.MyRequests") </a></li>
+                <li><a href="/MyBuyingRequests" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.BuyingRequests){@Html.Raw("class=\"current\"")}>@T("Profile.MyBuyinRequests") <div class="circle" id="my-requests-menu">0</div></a></li>
+                <li><a href="/MyCatalogue" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.Catalogue){@Html.Raw("class=\"current\"")}>@T("Profile.Catalog")</a></li>
+                <li><a href="/Favorit" @if(Model.ActiveTab == Nop.Web.Models.Customer.MenuTab.Favourits){@Html.Raw("class=\"current\"")}>@T("Profile.Favorites")</a></li>
+            }*@
+        </ul>
+    </div>
+</div>

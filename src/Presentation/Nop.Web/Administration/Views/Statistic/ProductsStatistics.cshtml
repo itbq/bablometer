@@ -1,0 +1,24 @@
+﻿@model Nop.Admin.Models.Statistics.ProductsStatisticRangeModel
+@using Telerik.Web.Mvc;
+@using Telerik.Web.Mvc.UI
+<h2>@T("Admin.Statistics.Products")</h2>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid(new List<Nop.Admin.Models.Statistics.ProductsStatisticModel>(){Model.Product,Model.Service,Model.ProductBuyingRequest,Model.ServiceBuyingRequest})
+            .DataBinding(dataBinding => dataBinding.Ajax())    
+            .Name("average-order-report-grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.Name);
+                    columns.Bound(x => x.TodayCount);
+                    columns.Bound(x => x.WeeklyCount);
+                    columns.Bound(x => x.MonthCount);
+                    columns.Bound(x => x.YearCount);
+                    columns.Bound(x => x.TotalCount);
+                })
+                .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
+

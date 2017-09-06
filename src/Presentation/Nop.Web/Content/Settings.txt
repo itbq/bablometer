@@ -1,0 +1,2 @@
+DataProvider: sqlserver
+DataConnectionString: Data Source=.\SERV;Initial Catalog=nopshop_main;Integrated Security=True;Persist Security Info=False;MultipleActiveResultSets=True

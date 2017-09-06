@@ -1,0 +1,21 @@
+﻿@model Nop.Plugin.Widgets.NivoSlider.Models.SliderItemListModel
+
+@using Nop.Web.Framework;
+@using Nop.Web.Framework.Localization;
+@if (Model.Returning)
+{
+    <script>
+        $(document).ready(function () {
+            window.location.href = '@Request.Url';
+        });
+    </script>
+}
+@for (int i = 0; i < Model.Slides.Count; i++)
+{
+    <fieldset>
+        <legend><strong>@Html.Raw(T("Plugins.Widgets.NivoSlider.Picture").Text + i.ToString())</strong></legend>
+        
+            @{Html.RenderPartial("Nop.Plugin.Widgets.NivoSlider.Views.WidgetsNivoSlider._CreateOrUpdate", Model.Slides[i]);
+}
+    </fieldset>
+}

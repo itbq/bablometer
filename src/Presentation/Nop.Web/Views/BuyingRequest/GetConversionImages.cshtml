@@ -1,0 +1,25 @@
+﻿@model List<Nop.Web.Models.BuyingRequest.ConversionImageModel>
+
+<div id="popSlider" class="invisible">
+    <div class="slider">
+        <div>
+            @foreach (var image in Model)
+            {
+                <div class="imgContainer"><img src="@image.PictureUrl"   alt="@image.Name"></div>
+            }
+@*            <div class="imgContainer"><img src="images/bg.png"   alt=""></div>
+            <div class="imgContainer"><img src="images/1x1x2.png"   alt=""></div>*@
+        </div>
+    </div>
+    <a class="prev" nohref="nohref"></a>
+    <a class="next" nohref="nohref"></a>
+    <a class="close" nohref="nohref" onclick="$(this).parent().fadeOut(); $('#popUpBg').fadeOut(); "></a>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#popSlider .close').click(function () {
+                $('#popSlider').fadeOut();
+                $('#popUpBg').fadeOut();
+            });
+        });
+    </script>
+</div>

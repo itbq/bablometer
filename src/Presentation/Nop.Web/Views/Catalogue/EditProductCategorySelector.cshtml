@@ -1,0 +1,158 @@
+﻿@model Nop.Web.Models.SellerCatalog.CategorySelectorModel
+<ul class="categoryCrumbs">
+
+    @if (Model.Categories.Length > 0)
+    {
+        <li class="dark categories inactive" id="category-0">
+            <label>&nbsp;</label>
+            <select name="@Html.Raw("EditCategories-0")" onchange="OnFirstCategoryChange" id="EditCategories-0">
+                <option value="0">@T("Profile.Catalog.SelectCategory")</option>
+                @foreach (var category in Model.Categories[0].Categories)
+                {
+                    <option  @if (category.Id == Model.Categories[0].CurrentCategoryId)
+                             {<text>selected="selected"</text>}  value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <div class="arrow"></div>
+        </li>
+    }
+    else
+    {
+        @T("ETF.FrontEnd.Product.Add.NoCategoriesCreatedYet")
+    }
+    @**@
+    @if (Model.Categories.Length > 1)
+    {
+        for (int i = 1; i < Model.Categories.Length; i++)
+        {
+        <li class="categories  
+            @if (i + 1 == Model.Categories.Length)
+            {<text> active</text>}
+            else
+            {<text> inactive</text>}
+
+             @if (i > 1)
+             {<text> light</text>}
+             else
+             {<text> dark</text>} " id="category-@i">
+            <label>&nbsp;</label>
+            <select name="@Html.Raw("EditCategories-" + Model.Categories[i].CurrentCategoryId)" onchange="OnFirstCategoryChange" id="@Html.Raw("EditCategories-" + Model.Categories[i].CurrentCategoryId)">
+                <option value="0">Select Subcategorie</option>
+                @foreach (var category in Model.Categories[i].Categories)
+                {
+                    <option   @if (category.Id == Model.Categories[i].CurrentCategoryId)
+                              {<text>selected="selected"</text>}   value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <div class="arrow"></div>
+        </li>
+        <script>
+            document.getElementById("@Html.Raw("EditCategories-" + Model.Categories[i].CurrentCategoryId)").onchange = function () {
+                OnFirstCategoryChange($(this));
+            };
+        </script>
+        }
+    }
+   
+@**@
+
+</ul>
+<script>
+    var addproductcategoryselector_isfinalcategory = true;
+    function setaddproductcategoryselector_isfinalcategory(val) {
+        addproductcategoryselector_isfinalcategory = val;
+    }
+
+    function OnFirstCategoryChange(e) {
+        if (e.val() == '0') {
+            e.parents('.categories').nextAll('.categories').remove();
+            return;
+        }
+        $.ajax({
+            url: "/BuyingRequest/GetSubCategories",
+            type: "POST",
+            dataType: "json",
+            data: { categoryId: e.val(), IsForAddProduct: 1, NumberInRow: 1 },
+            success: function (resp) {
+                if (resp.subCategories) {
+                    startString = '<li class="categories inactive ';
+                    if (resp.lavel > 1) { startString += 'light"'; } else { startString += 'dark"'; }
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                    $('.categories.active:last').after(startString + ' id=category-' + resp.lavel + '></li>');
+                    $('.categories.inactive').html(resp.htmlString);
+                    setaddproductcategoryselector_isfinalcategory(false);
+                    $('.slOpener').hide();
+                } else {
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                    setaddproductcategoryselector_isfinalcategory(true);
+                    if (resp.haveConversionImages) {
+                        $('.slOpener').show();
+                        $.ajax({
+                            url: "/BuyingRequest/GetConversionImagesOfCategory",
+                            type: "POST",
+                            dataType: "json",
+                            data: { categoryId: e.val() },
+                            success: function (resp_image) {
+
+                                $('#slider-container').html(resp_image.html).waitForImages(function () {
+                                    $("#popSlider").css({ display: "block", visibility: "hidden" });
+                                    var mh = 0;
+                                    setTimeout(function () {
+                                        mh = 0
+                                        $("#popSlider img").each(function () {
+                                            mh = Math.max(mh, $(this).height());
+                                        });
+
+                                        if (mh != 0) {
+                                            $("#popSlider").css("height", mh + "px");
+                                            $("#popSlider .slider").css("height", mh + "px");
+                                        }
+                                        $("#popSlider").css({ display: "none", visibility: "visible" });
+                                        $("#popSlider .prev").css({ top: $(window).height() / 2 + "px" });
+                                        $("#popSlider .next").css({ top: $(window).height() / 2 + "px" });
+                                    }, 1);
+
+                                    mh = "3000";
+                                    $("#popSlider").css("height", mh + "px");
+                                    $("#popSlider .slider").diyslider({
+                                        width: "3000px", // width of the slider
+                                        height: mh + "px", // height of the slider
+                                        display: 1, // number of slides you want it to display at once
+                                        loop: true // disable looping on slides
+                                    }); // this is all you need!
+
+                                    // use buttons to change slide
+                                    $("#popSlider .prev").bind("click", function () {
+                                        $("#popSlider .slider").diyslider("move", "back");
+                                        return false;
+                                    });
+                                    $("#popSlider .next").bind("click", function () {
+                                        $("#popSlider .slider").diyslider("move", "forth");
+                                        return false;
+                                    });
+                                    $("body").css("cursor", "auto");
+                                });
+
+                            }
+                        });
+                    } else {
+                        $('.slOpener').hide();
+                    }
+                    $('#SelectedCategoryId').val(e.val()).trigger('change');
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+        document.getElementById("EditCategories-0").onchange = function () {
+            OnFirstCategoryChange($(this));
+        };
+    });
+</script>

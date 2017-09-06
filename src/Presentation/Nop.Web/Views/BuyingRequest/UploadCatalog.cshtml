@@ -1,0 +1,160 @@
+﻿@model Nop.Web.Models.Catalog.UploadCatalogModel
+
+@using Nop.Core.Domain.Customers
+@using Telerik.Web.Mvc.UI
+@{
+    Html.AddTitleParts(T("Profile.Catalog.Upload").Text);
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+}
+<script type="text/javascript">
+        jQuery(document).ready(function(){
+            var params = {
+                changedEl: "select",
+                scrollArrows: true
+            }
+            cuSel(params);
+        });
+    </script>
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.Catalogue })
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <ul id="productMenu">
+            <li><a href="/MyCatalogue">@T("Profile.Catalog.ManageItems")</a></li>
+            <li><a href="/Item/Add">@T("Profile.Catalog.AddItem")</a></li>
+            <li><a href="/MyCatalog/Upload" class="current">@T("Profile.Catalog.Upload")</a></li>
+        </ul>
+
+        <div class="master-wrapper-main borderedPage">
+            @using (Html.BeginForm())
+            {
+                <div class="step">
+                    <h1><b>@T("Etf.Profile.UploadCatalog.Step") 1: </b>@T("ETF.Profile.UploadCatalog.Step1.Title")</h1>
+                    <p>@T("ETF.Profile.UploadCatalog.Step1.Prompt")</p>
+                    @Html.HiddenFor(model => model.SelectedCategoryId)
+                    @*<span id="category-error" class="field-validation-error" style="display:none;"><span>@T("ETF.Category.Select")</span></span>*@
+                    <span id="category-error-last" class="field-validation-error uploadcatalog" style="display:none;"><span>@T("ETF.Front.Product.Add.SelectFinalCategoryNotification")</span></span>
+                    @Html.Action("UploadCatalogCategorySelector", "Catalogue") 
+                    <a id="download-button" class="button" style="display:none;" href="#">@T("downloadableproducts.fields.download")</a>
+                    <p><a href="@Url.Content("~/Content/etf/instruction-" + WorkContext.WorkingLanguage.UniqueSeoCode + ".docx")">@T("ETF.Catalog.Upload.Help")</a></p>
+                </div>
+
+                <div class="step">
+                    <h1><b>@T("Etf.Profile.UploadCatalog.Step") 2: </b>@T("ETF.Profile.UploadCatalog.Step2.Title")</h1>
+                    <p>
+                        @T("ETF.Profile.UploadCatalog.Step2.Prompt")
+                    </p>
+                    <span id="itemtype-error" class="field-validation-error uploadcatalog" style="display:none;"><span>@T("ETF.UploadCatalog.ItemType.Select")</span></span>
+                    @if (WorkContext.CurrentCustomer.IsSeller())
+                    {
+                        @Html.RadioButton("ProductItemType", (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product, false, new { id = "r1" })<label for="r1">@T("ETF.Catalog.Product")</label>
+                        @Html.RadioButton("ProductItemType", (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service, false, new { id = "r2" })<label for="r2">@T("ETF.Catalog.Service")</label>
+                    }
+                    else
+                    {
+                        @Html.RadioButton("ProductItemType", (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ProductBuyingRequest, false, new { id = "r1" })<label for="r1">@T("ETF.Catalog.Product")</label>
+                        @Html.RadioButton("ProductItemType", (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ServiceBuyingRequest, false, new { id = "r2" })<label for="r2">@T("ETF.Catalog.Service")</label>
+                    }
+                    
+                </div>
+            <div class="step">
+                <h1><b>@T("Etf.Profile.UploadCatalog.Step") 3: </b>@T("ETF.Profile.UploadCatalog.Step3.Title")</h1>
+                <p>
+                    @T("ETF.Profile.UploadCatalog.Step3.Prompt")
+                </p>
+            </div>
+            <div class="step">
+                <h1><b>@T("Etf.Profile.UploadCatalog.Step") 4: </b>@T("ETF.Profile.UploadCatalog.Step4.Title")</h1>
+                <p>@T("ETF.Profile.UploadCatalog.Step4.Prompt")</p>
+                <span id="language-error" class="field-validation-error uploadcatalog" style="display:none;"><span>@T("ETF.UploadCatalog.Language")</span></span>
+                <ul class="languages">
+                    @for (int i = 0; i < Model.AviableLanguages.Count; i++)
+                    {
+                        <li><input type="hidden" value="@Model.AviableLanguages[i].Id" name="SelectedLanguages[@i].Id" /><label for="@Html.Raw("l" + Model.AviableLanguages[i].Id)"><input type="checkbox" id="@Html.Raw("l" + Model.AviableLanguages[i].Id)" value="true" name="SelectedLanguages[@i].Selected"/><div class="flag"><img src="/Content/etf/images/flag/flag_@Html.Raw(Model.AviableLanguages[i].Id + ".png")" alt=""/> <span>@Model.AviableLanguages[i].Name</span></div></label></li>
+                    }
+                </ul>
+            </div>
+            <div class="center">
+                <span id="file-error" class="field-validation-error uploadcatalog left" style="display:none;"><span>@T("ETF.Catalog.File.Upload")</span></span>
+                @Html.EditorFor(model => model.DownloadId)
+            </div>
+            <div class="step">
+                <h1><b>@T("Etf.Profile.UploadCatalog.Step") 5: </b>@T("ETF.Profile.UploadCatalog.Step5.Title")</h1>
+                <p>
+                    @T("ETF.Profile.UploadCatalog.Step5.Prompt")
+                </p>
+            </div>
+            <div class="center">
+                <button class="upload" onclick="return CheckProcessing();">@T("ETF.Profile.UploadCatalog.Import")</button>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('form').submit(function () {
+        if ($(this).valid()) {
+            $(this).find(':submit').attr('disabled', 'disabled');
+        }
+    });
+    function CheckCategory() {
+        var result = $('#SelectedCategoryId').val() != 0;
+        
+        if (!result) {
+            $('#category-error').show();
+        }
+        
+        var result1 = $('.categories.inactive').length == 0;
+        if (!result1) {
+            $('#category-error-last').show();
+        }
+        return result && result1;
+    }
+
+    function CheckProcessing() {
+        var itemtypeSelected = $('input[name="ProductItemType"]:checked').length > 0;
+        var languageSelected = $('input[type="checkbox"]:checked').length > 0;
+        var categorySelected = $('#SelectedCategoryId').val() != 0;
+        var categorySelectedlast = $('.categories.inactive').length == 0;
+        var fileUploaded = $('#DownloadId').val() != 0;
+
+        if (!itemtypeSelected) {
+            $('#itemtype-error').show();
+        }
+        if (!categorySelected) {
+            $('#category-error-last').show();
+        }
+        if (!languageSelected) {
+            $('#language-error').show();
+        }
+
+        if (!categorySelectedlast) {
+            $('#category-error-last').show();
+        }
+
+        if (!fileUploaded) {
+            $('#file-error').show();
+        }
+
+        return itemtypeSelected && categorySelected && languageSelected && categorySelectedlast;
+    }
+
+    $(document).ready(function () {
+        $('.languages li').click(function () {
+            $('#language-error').hide();
+        });
+
+        $('input[name="ProductItemType"]').click(function () {
+            $('#itemtype-error').hide();
+        });
+
+        $('#SelectedCategoryId').change(function () {
+            $('#category-error').hide();
+            $('#category-error-last').hide();
+        });
+        $('#DownloadId').change(function () {
+            $('#file-error').hide();
+        });
+    });
+</script> 

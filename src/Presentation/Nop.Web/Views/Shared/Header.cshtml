@@ -1,0 +1,257 @@
+﻿@{var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();}
+
+@using Nop.Core.Domain.Customers
+
+@*<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function() {
+        // init the FB JS SDK
+        FB.init({
+            appId      : 'YOUR_APP_ID',                        // App ID from the app dashboard
+            channelUrl : '//WWW.YOUR_DOMAIN.COM/channel.html', // Channel file for x-domain comms
+            status     : true,                                 // Check Facebook Login status
+            xfbml      : true                                  // Look for social plugins on the page
+        });
+
+    (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/@WorkContext.WorkingLanguage.LanguageCulture/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>*@
+
+@*<script type="text/javascript">
+    WebFontConfig = {
+        google: { families: ['Roboto:400,500,700,300:latin-ext,cyrillic'] }
+    };
+    (function () {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+    })(); </script>*@
+<script type="text/javascript">
+    function switchDisplay(id) {
+        if ($(id).css("display") == "none") { $(id).css("display", "block"); } else {
+            $(id).css("display", "none");
+            return false;}
+    }
+
+    $(document).ready(function () {
+        $(".goods").diyslider({
+            width: "524px", // width of the slider
+            height: "208px", // height of the slider
+            display: 4, // number of slides you want it to display at once
+            loop: true // disable looping on slides
+        }); // this is all you need!
+
+        // use buttons to change slide
+        $("#go-left").bind("click", function () {
+            $(".goods").diyslider("move", "back");
+            return false;
+        });
+        $("#go-right").bind("click", function () {
+            $(".goods").diyslider("move", "forth");
+            return false;
+        });
+
+    });
+
+    $(document).ready(function () {
+        $('#popAlert .btn').click(function () {
+            $(this).parent().parent().fadeOut(500);
+        });
+
+        $('#popOkCancel .btn').click(function () {
+            $(this).parent().parent().fadeOut(500);
+        });
+        $(document).ajaxStart(function () {
+            $("body").css("cursor", "progress");
+        });
+        $(document).ajaxStop(function () {
+            $("body").css("cursor", "auto");
+        });
+        $('input, textarea').placeholder();
+        var count = $('ul.tabFilterMenu li').length;
+        $('ul.tabFilterMenu li').width(974 / count);
+    });
+
+</script>
+<script type="text/javascript">
+    function showPop(id) {
+        $(id).parent().fadeIn(500);
+    }
+</script>
+<div class="popupBg">
+	<div class="popup" id="popAlert">
+		<div class="body">
+			<h3>&nbsp;</h3>
+			<p>&nbsp;</p>
+		</div>
+		<a href="#" class="btn ok" onclick="$(this).parent().parent().fadeOut(500);">Ок</a>
+	</div>
+	<div class="helper"></div>
+</div>
+
+<div class="popupBg">
+	<div class="popup" id="popOkCancel">
+		<div class="body">
+			<h3>&nbsp;</h3>
+			<p>&nbsp;</p>
+		</div>
+		<a href="#" class="btn ok" onclick="$(this).parent().parent().fadeOut(500);">Ок</a>
+		<a href="#" class="btn cancel" onclick="$(this).parent().parent().fadeOut(500);">Отмена</a>
+	</div>
+	<div class="helper"></div>
+</div>
+
+<div id="overlay"></div>
+<div class="header">
+    @Html.Widget("header")
+    <div class="master-wrapper-page">
+        <a href="@Url.RouteUrl("HomePage")"><img src="/@Url.Content("Content/BSFA/images/logo.png")"  class="logo" alt="" /></a>
+        @Html.Action("HeaderMenu","Common")
+         @if (_workContext.CurrentCustomer.IsAdmin())
+         {
+             <a href="#" class="basket">
+                 Товаров: <span>0</span> 
+             </a>
+         }
+        <div class="signinup">
+            @if (!_workContext.CurrentCustomer.IsRegistered())
+            {
+                <a nohref="nohref" onclick="switchDisplay('.signUp'); switchDisplay('.loginPop');">@T("Account.Login")</a>
+                <a href="@Url.RouteUrl("Register")">@T("Account.Register")</a>
+                if (!_workContext.CurrentCustomer.IsRegistered())
+                {
+                    @Html.Partial("~/Views/Customer/Login.cshtml", new Nop.Web.Models.Customer.LoginModel())
+                }
+            }
+            else
+            {
+                if (_workContext.CurrentCustomer.IsAdmin())
+                {
+                    <a href="/admin">@T("ETF.Profile.Admin.Panel")</a>
+                    <span class="signed"><a href="@Url.RouteUrl("Logout")">(@T("Account.Logout"))</a></span>
+                    
+                }
+                else
+                {
+                    <a href="/Customer/myprofile">@T("pagetitle.profile")</a>
+                    <span class="signed"><a href="@Url.RouteUrl("Logout")">(@T("Account.Logout"))</a></span>
+                    
+                }
+            }
+        </div>
+    </div>
+</div>
+@if (!_workContext.CurrentCustomer.IsRegistered())
+{
+    @Html.Partial("~/Views/Customer/PasswordRecovery.cshtml", new Nop.Web.Models.Customer.PasswordRecoveryModel())
+}
+@*@if (_workContext.CurrentCustomer.IsRegistered())
+{
+<script>
+    $(document).ready(function () {
+        GetCounts();
+        setInterval(CheckRequests, 60000);
+    });
+
+    function CheckRequests() {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/BuyingRequest/CheckRequests",
+            success: function (resp) {
+                var count = $('#my-requests').text();
+                if (count != resp.count)
+                {
+                    $('#my-requests').text(resp.count);
+                    if (resp.count != '0') {
+                        startAnim(document.getElementById('my-requests'), 500);
+                    }
+                } else {
+                    if (resp.count == 0) {
+                        stopAnim(document.getElementById('my-requests'));
+                    }
+                }
+
+                var count1 = $('#my-requests-menu').text();
+                if (count1 != resp.count)
+                {
+                    $('#my-requests-menu').text(resp.count);
+                    if (resp.count != '0') {
+                        startAnim(document.getElementById('my-requests-menu'), 500);
+                    }
+                } else {
+                    if (resp.count == 0) {
+                        startAnim(document.getElementById('my-requests-menu'));
+                    }
+                }
+            }
+        });
+    }
+
+    function startAnim(element, time) {
+        if (element == null)
+            return;
+        element.animcount = 0;
+        element.animTimer = setInterval(function () {
+        element.animcount++;
+        if ($('#' + element.id).hasClass("hidden")) {
+            $('#' + element.id).removeClass("hidden");
+            if (element.animcount > 20) {
+                stopAnim(element);
+                return;
+            }
+        }
+        else {
+            $('#' + element.id).addClass("hidden");
+        }
+        }, time);
+    }
+
+    function stopAnim(element) {
+        if (element == null)
+            return;
+        clearInterval(element.animTimer);
+    }
+
+    function GetCounts() {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/BuyingRequest/CheckRequests",
+            success: function (resp) {
+                var count = $('#my-requests').text();
+                if (count != resp.count) {
+                    $('#my-requests').text(resp.count);
+                    if (resp.count != '0') {
+                        startAnim(document.getElementById('my-requests'), 500);
+                    }
+                } else {
+                    if (resp.count == 0) {
+                        stopAnim(document.getElementById('my-requests'));
+                    }
+                }
+
+                var count1 = $('#my-requests-menu').text();
+                if (count1 != resp.count) {
+                    $('#my-requests-menu').text(resp.count);
+                    if (resp.count != '0') {
+                        startAnim(document.getElementById('my-requests-menu'), 500);
+                    }
+                } else {
+                    if (resp.count == 0) {
+                        startAnim(document.getElementById('my-requests-menu'));
+                    }
+                }
+            }
+        });
+    }
+</script>
+}*@

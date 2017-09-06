@@ -1,0 +1,65 @@
+body, .master-wrapper-main            {min-height: 900px;}
+.header .header-links.right  {float: right; margin-top: 23px; margin-right: 14px; position: relative; display: none;}
+
+
+.tabCatalog .redRibbon {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  border-top: medium none;
+  bottom: -3px;
+  color: #333333;
+  float: right;
+  font-size: 20px;
+  height: 30px;
+  line-height: 31px;
+  right: 19px;
+  top: 18px;
+}
+
+
+
+.mainSlider         {width: 940px; height: 554px; float: left; background: #DAEDE2; position: relative;box-shadow: 3px 3px 5px -1px #666666; }
+
+.tabCatalog         {background: none repeat scroll 0 0 #FFFFFF; float: left; width: 460px; position: relative; box-shadow: 2px 2px 5px -2px #888; height: 259px; padding-bottom: 0; margin-right: 18px; margin-top: 20px; }
+.tabsMenu           { float: left; width: 100%; height: 30px;margin-bottom: 30px; }
+.tabCatalog .tabsMenu ul      {height: 30px; list-style: none; float: left; white-space: nowrap; margin-top: 20px; margin: 19px; padding-bottom: 20px; }
+
+.tabContainer       { float: left; }
+.w650               { overflow: hidden; padding-bottom: 22px;width:460px; }
+
+
+
+.recentlyAdded .littleSeeAll       {width: 902px;}
+
+
+.recentlyAdded    {width: 939px; position: relative;margin-top: 20px; margin-left: 0; margin-right: 18px; box-shadow: 2px 2px 5px -2px #888; }
+.recentlyAdded .boxBody { padding-bottom: 7px;width:100%; }
+
+.recentlyAdded .goods              {float: left; height: 195px; margin-left: 28px !important; }
+.recentlyAdded .goodBox            {float: left; width: 147px !important; min-height: 195px !important; margin-top: 17px;text-align: center; }
+
+.LatesNews .news .newsHeadline 		{font-size: 18px; line-height: 18px; margin-top: 1px; float: left; font-weight: normal; width: 345px; margin-bottom: 12px; margin-left: -1px; font-family: arial;}
+.LatesNews .news .imgNews img			{clear: both; margin-top: 3px; float: left;max-height:70px;max-width:70px;overflow:hidden; border: 1px solid #DAEDE2; border-radius: 5px; }
+.newsHeadingInner{ background-color: #EBEBEB; height: 50px;  overflow: hidden;}
+.newsHeadingInner h3{line-height: 54px; text-indent: 20px;}
+.newsHeadingInner h3 a{color: #1791c0; font-weight: bolder; font-size: 22px; text-decoration: none;}
+.newsHeadingInner h3 a:hover {text-decoration: underline;}
+.newsHeadingInner .cornerRightBig{right: 1px !important;}
+.newsBoxOuter {margin-right: 10px; border: 1px solid #EBEBEB; padding: 0;  min-height: 200px; border-bottom: 5px solid #EBEBEB; background: #FFF; border-color: #EBEBEB; }
+.mainSlider img {
+    width:940px;
+    height:554px;
+}
+
+
+
+.border-line {
+  border-top: 1px solid #EBEBEB;
+  bottom: -3px;
+  height: 5px;
+  left: 20px;
+  position: absolute;
+  top: 65px;
+  width: 420px;
+}
+
+

@@ -1,0 +1,215 @@
+﻿@model Nop.Web.Models.CompanyInformation.CompanyInformationModel
+@{
+    Html.AppendTitleParts(Model.CompanyName);
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+@using Nop.Core.Domain.Customers
+
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard publicProfile">
+                <div class="firstCol">
+                    <div class="box">
+                        <div class="caption">
+                            <div class="ribbs"></div>
+                            <h3>@Model.CompanyName</h3>
+                        </div>
+
+                        <div class="logotype">
+                            @if(Model.Picture != null && Model.Picture.ImageUrl != ""){<img src="@Model.Picture.ImageUrl" alt="@Model.CompanyName"/>}
+                        </div>
+
+                        <p>@Model.CompanyDescription</p>
+
+                        <div class="alignCenter">
+                            @if(Model.Seller)
+                            {
+                                <a href="/Catalogue/Product?customerId=@Model.CustomerId">@T("Company.ViewAllProducts")</a><br>
+                                <a href="/Catalogue/Service?customerId=@Model.CustomerId">@T("Company.ViewAllServices")</a><br>
+                            }else{
+                                <a href="/Catalogue/Productbuyingrequest?customerId=@Model.CustomerId">@T("Company.ViewAllBuyingRequests")</a><br>
+                                <a href="/Catalogue/Servicebuyingrequest?customerId=@Model.CustomerId">@T("Company.ViewServiceBuyingRequests")</a><br>
+                            }
+                        </div>
+                        <div class="socials">
+                            @Html.Action("ShareButton", "Event", new {product = true })
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h5>@T("Company.Documents")</h5>
+                        <ul class="fileList">
+                             @foreach(var document in Model.CompanyDocuments)
+                             {
+                                 switch (document.FileExtension)
+                                 {
+                                     case ".doc":{
+                                         <li id="file-@document.DownloadId"><div class="icoWord"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                         break;
+                                     }
+                                      case ".docx":{
+                                         <li id="file-@document.DownloadId"><div class="icoWord"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                         break;
+                                     }
+                                      case ".pdf":{
+                                         <li id="file-@document.DownloadId"><div class="icoPDF"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li> 
+                                         break;
+                                     }
+                                      case ".xls":{
+                                         <li id="file-@document.DownloadId"><div class="icoExcel"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                         break;
+                                     }
+                                      case ".xlsx":{
+                                         <li id="file-@document.DownloadId"><div class="icoExcel"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                         break;
+                                     }
+                                     case ".jpg":
+                                     case ".jpeg":
+                                     case ".png":
+                                     case ".gif":
+                                     case ".bmp":{
+                                             <li id="file-@document.DownloadId"><div class="icoImage"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li> 
+                                             break;
+                                         }
+                                     case ".rar":
+                                     {
+                                         <li id="file-@document.DownloadId"><div class="icoRar"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                         break;
+                                     }
+                                     case ".zip":
+                                     case ".7zip":
+                                         {
+                                             <li id="file-@document.DownloadId"><div class="icoZip"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                             break;
+                                         }
+                                 }
+                             }
+                        </ul>
+                    </div>
+                    @if(Model.Seller)
+                    {
+                        <div class="box">
+                            @Html.Action("LatestCompanyNews","News",new {customerId = Model.CustomerId})
+                        </div>
+                    }
+                </div>
+
+
+                <div class="secondCol">
+                    
+                    @Html.Action("CompanyContacts","Customer",new {customerId = Model.CustomerId})
+
+                    @if(Model.Seller)
+                    {
+                        @Html.Action("PopularProducts",new {customerId = Model.CustomerId})
+                    }else{
+                        @Html.Action("RecentlyViewedSellers",new {customerId = Model.CustomerId})
+                    }
+                    
+                </div>
+                <div class="thirdCol">
+                     @if(Model.Seller)
+                    {
+                    <div class="chained">
+                        <div class="box">
+                            <h4>@T("Profile.LegalInformation")</h4>
+                        </div>
+                        <div class="middleBox"></div>
+                        <div class="box">
+                            <div class="dsBox">
+                                <div class="dataString">
+                                    <span>@T("Profile.LegalInformation.LegalAddress"): </span>
+                                    <strong>@Model.LegalAddress</strong>
+                                </div>
+                                <div class="dataString">
+                                    <span>@T("Profile.LegalInfromation.TopExecutive"): </span>
+                                    <strong>@Model.TopExecutiveName</strong>
+                                </div>
+                                <div class="dataString">
+                                    <span>@T("Profile.LegalInfromation.TaxRegistration") </span>
+                                    <strong>@Model.TaxRegistrationNumber</strong>
+                                </div>
+                                <div class="dataString">
+                                    <span>@T("Profile.LegalInformation.SWIFT"): </span>
+                                    <strong>@Model.SWIFT</strong>
+                                </div>
+                                <div class="dataString">
+                                    <span>@T("Profile.LegalInformation.BankName"): </span>
+                                    <strong>@Model.BankName</strong>
+                                </div>
+                                <div class="dataString">
+                                    <span>@T("Profile.LegalInformation.BankAddress"): </span>
+                                    <strong>@Model.BankAddress</strong>
+                                </div>
+                                <div class="dataString">
+                                    <span>@T("Profile.LegalInformation.AccountNumbers"): </span>
+                                    <strong>@Model.AccountNumbers</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="box">
+                            <h5>@T("Profile.LegalInformation.LegalDocuments")</h5>
+                            <ul class="fileList">
+                                @foreach(var document in Model.LegalDocumennts)
+                                 {
+                                     switch (document.FileExtension)
+                                     {
+                                         case ".doc":{
+                                             <li id="file-@document.DownloadId"><div class="icoWord"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                             break;
+                                         }
+                                          case ".docx":{
+                                             <li id="file-@document.DownloadId"><div class="icoWord"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                             break;
+                                         }
+                                          case ".pdf":{
+                                             <li id="file-@document.DownloadId"><div class="icoPDF"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li> 
+                                             break;
+                                         }
+                                          case ".xls":{
+                                             <li id="file-@document.DownloadId"><div class="icoExcel"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                             break;
+                                         }
+                                          case ".xlsx":{
+                                             <li id="file-@document.DownloadId"><div class="icoExcel"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                             break;
+                                         }
+                                         case ".jpg":
+                                         case ".jpeg":
+                                         case ".png":
+                                         case ".gif":
+                                         case ".bmp":{
+                                                 <li id="file-@document.DownloadId"><div class="icoImage"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li> 
+                                                 break;
+                                             }
+                                         case ".rar":
+                                         {
+                                             <li id="file-@document.DownloadId"><div class="icoRar"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                             break;
+                                         }
+                                         case ".zip":
+                                         case ".7zip":
+                                         {
+                                             <li id="file-@document.DownloadId"><div class="icoZip"></div><a href="@Url.Action("DownloadFile","Download", new { downloadId = document.DownloadId })">@document.FileName</a></li>
+                                             break;
+                                         }
+                                     }
+                                 }
+                            </ul>
+                        </div>
+                    }
+
+                    @if(Model.Seller)
+                    {
+                        <div class="box">
+                            @Html.Action("RecentlyAddedCompanyProducts",new {customerId = Model.CustomerId})
+                        </div>
+                    }else{
+                        @Html.Action("RecentlyViewedProducts",new {customerId = Model.CustomerId})
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+﻿@model FooterModel
+@using Nop.Web.Models.Common;
+@using Nop.Core.Domain.Customers;
+@{
+    var storeSettings = DependencyResolver.Current.GetService<Nop.Core.Domain.StoreInformationSettings>();
+
+}
+<div class="footer">
+    <div class="master-wrapper-page">
+        <div class="fLeft">
+            <ul class="footer-menu">
+                
+                @foreach (var topic in Model.Topics)
+                {
+                    <li><a href="@Url.RouteUrl("Topic", new { SystemName = topic.SystemName })">@topic.Title</a></li>
+                }
+                <li><a href="@T("Content.CopyrightLink")">@T("Content.CopyrightNotice")</a><span>© @Html.Raw(DateTime.Now.Year)</span></li>
+            </ul>
+            
+        </div>
+        @*<div class="fRight">
+            <div class="fline">
+                <a href="mailto: @T("Content.Contact").Text">@T("Content.Contact").Text</a>
+            </div><br />
+            <div class="fline">
+                <span>© @Html.Raw(DateTime.Now.Year)</span><a href="@T("Content.CopyrightLink")">@T("Content.CopyrightNotice")</a>
+            </div>*@
+    </div>
+</div>

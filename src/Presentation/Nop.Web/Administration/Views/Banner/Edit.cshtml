@@ -1,0 +1,78 @@
+﻿@model Nop.Admin.Models.Banners.BannerModel
+@{
+    ViewBag.Title = T("Admin.Banner.Edit").Text + " - " + Model.Title;
+}
+@using Nop.Admin.Models.Banners
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "event-form" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            @T("Admin.Banner.Edit") - @Model.Title (<a href="/Admin/Banner/List">@T("ITBSFA.BannerList.Back")</a>)
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+        </div>
+        @Html.HiddenFor(model=>model.Id)
+        @Html.HiddenFor(model=>model.BannerTypeId)
+        @Html.HiddenFor(model=>model.DisplayOnMain)
+        @Html.HiddenFor(model=>model.Height)
+        @Html.HiddenFor(model=>model.Size)
+    </div>
+ <table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.PictureId):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.PictureId)
+            @Html.RequiredHint()
+            @Html.ValidationMessageFor(x=>x.PictureId)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Title):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.Title)
+            @Html.RequiredHint()
+            @Html.ValidationMessageFor(x=>x.Title)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Alt):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.Alt)
+            @Html.RequiredHint()
+            @Html.ValidationMessageFor(x=>x.Alt)
+        </td>
+    </tr>
+     <tr>
+         <td class="adminTitle">
+             @Html.NopLabelFor(model => model.Url):
+         </td>
+         <td class="adminData">
+             @Html.EditorFor(model=>model.Url)
+         </td>
+     </tr>
+       <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.NetBanner):
+        </td>
+           <td class="adminData">
+               @Html.TextAreaFor(model=>model.NetBanner)
+           </td>
+    </tr>
+    <tr id="categories-dropdown" @if(Model.CategoryId == 0){@Html.Raw("style=\"display:none;\"")}>
+        <td class="adminTitle">
+            @T("ITBSFA.Admin.Banner.Category")
+        </td>
+        <td class="adminData">   
+            @Html.DropDownListFor(model => model.CategoryId, Model.AviableCategories)
+        </td>
+    </tr>
+</table>
+}

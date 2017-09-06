@@ -1,0 +1,148 @@
+﻿@model Nop.Admin.Models.Paging.PagingModel
+@{
+    ViewBag.Title = "Paging";
+}
+@using(Html.BeginForm())
+{
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-content.png")" alt="" />
+        Paging
+    </div>
+    <div class="options">
+        <input type="submit" class="t-button" value="@T("Admin.Common.Save")" />
+    </div>
+</div>
+<table>
+   <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.ActiveRequestsPageSize)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.ActiveRequestsPageSize)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.ActiveRequestsPageSize)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.EventsPageSize)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.EventsPageSize)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.EventsPageSize)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.ItemCatalogPageSize)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.ItemCatalogPageSize)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.ItemCatalogPageSize)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.ManageItemsPageSize)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.ManageItemsPageSize)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.ManageItemsPageSize)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.NewsListPageSize)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.NewsListPageSize)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.NewsListPageSize)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.NewsRssPageSize)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.NewsRssPageSize)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.NewsRssPageSize)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.RecentCompanyNewsPageSize)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.RecentCompanyNewsPageSize)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.RecentCompanyNewsPageSize)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.RecentlyViewedProductsNumber)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.RecentlyViewedProductsNumber)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.RecentlyViewedProductsNumber)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.RecentlyViewedSellersNumber)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.RecentlyViewedSellersNumber)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.RecentlyViewedSellersNumber)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.RequestsHistoryPageSize)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.RequestsHistoryPageSize)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.RequestsHistoryPageSize)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.SellerCatalogPageSize)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.SellerCatalogPageSize)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.SellerCatalogPageSize)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.ItemsRssCount)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.ItemsRssCount)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.ItemsRssCount)
+       </td>
+   </tr>
+    <tr>
+       <td class="adminTitle">
+           @Html.LabelFor(model=>model.SellerRssCount)
+       </td>
+       <td class="adminData">
+           @Html.EditorFor(model=>model.SellerRssCount)
+           @Html.RequiredHint()
+           @Html.ValidationMessageFor(model=>model.SellerRssCount)
+       </td>
+   </tr>
+</table>
+}

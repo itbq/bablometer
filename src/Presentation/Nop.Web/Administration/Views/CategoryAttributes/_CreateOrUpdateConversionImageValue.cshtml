@@ -1,0 +1,70 @@
+﻿
+@model ConversionImageModel
+
+@Html.ValidationSummary(false)
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.GroupModelId)
+
+@if (ViewBag.RefreshPage == true)
+{
+    <script type="text/javascript">
+        try {window.opener.document.forms['@(ViewBag.formId)'].@(ViewBag.btnId).click();}
+        catch (e){} 
+        window.close();
+    </script>
+}
+
+@(Html.NoStandartLocalizedEditor<ConversionImageModel, ConversionImageLocalizedModel>("categoryproductattributevalue-localized",
+@<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Locales[item].Name):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => Model.Locales[item].Name)
+            @Html.ValidationMessageFor(model => model.Locales[item].Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Locales[item].PictureId):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => Model.Locales[item].PictureId)
+            @Html.ValidationMessageFor(model => model.Locales[item].PictureId)
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            @Html.HiddenFor(model => model.Locales[item].LanguageId)
+        </td>
+    </tr>
+</table>
+,
+@<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Name):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.PictureId):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.PictureId)
+            @Html.ValidationMessageFor(model => model.PictureId)
+        </td>
+    </tr>
+</table>
+))
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href="#categoryproductattributevalue-localized-1"]').parent().hide();
+    });
+</script>

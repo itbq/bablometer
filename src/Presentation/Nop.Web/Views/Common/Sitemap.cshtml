@@ -1,0 +1,234 @@
+﻿@model SitemapModel
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Models.Common;
+@using Nop.Web.Models.Topics;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Sitemap").Text);
+}
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+
+            <div class="master-wrapper-whiteboard publicProfile">
+				<div class="leftSide">
+					<h1>@T("PageTitle.Sitemap")</h1>
+
+					<div id="sitemap">
+                        
+                    <h1>@T("Catalog.Product")</h1>
+                        @foreach(var category in Model.Categories)
+                        {
+					        <div class="smBox">
+					        	<h4><a href="@Url.RouteUrl("CategoryItem", new {seName = category.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})">@category.Title</a></h4>
+					        	@if(category.SubCategories.Count > 0)
+                                {
+                                    <ul>
+                                        @foreach (var firstSubCategory in category.SubCategories)
+                                        {
+                                            <li><a href="@Url.RouteUrl("CategoryItem", new {seName = firstSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})"><span>@firstSubCategory.Title</span></a></li>
+                                            if (firstSubCategory.SubCategories.Count > 0)
+                                            {
+                                                <li>
+                                                    <ul>
+                                                        @foreach (var secondSubCategory in firstSubCategory.SubCategories)
+                                                        {
+                                                             <li><a href="@Url.RouteUrl("CategoryItem", new {seName = secondSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})"><span>@secondSubCategory.Title</span></a></li>
+                                                            if (secondSubCategory.SubCategories.Count > 0)
+                                                            {
+                                                                <li>
+                                                                    <ul>
+                                                                        @foreach (var thirdSubCategory in secondSubCategory.SubCategories)
+                                                                        {
+                                                                            <li><a href="@Url.RouteUrl("CategoryItem", new {seName = thirdSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})"><span>@thirdSubCategory.Title</span></a></li>
+                                                                            if (thirdSubCategory.SubCategories.Count > 0)
+                                                                            {
+                                                                                <li>
+                                                                                    <ul>
+                                                                                        @foreach (var forthSubCategory in thirdSubCategory.SubCategories)
+                                                                                        {
+                                                                                            <li><a href="@Url.RouteUrl("CategoryItem", new {seName = forthSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})"><span>@forthSubCategory.Title</span></a></li>
+                                                                                        }
+				                    		                                        </ul>
+                                                                                </li>
+                                                                            }
+                                                                        }
+				                    		                        </ul>
+                                                                </li>
+                                                            }
+                                                        }
+				                    		        </ul>
+                                                </li>
+                                            }
+                                        }
+				                    </ul>
+                                }
+					        </div>
+                        }
+
+                        <h1>@T("Catalog.Service")</h1>
+                        @foreach(var category in Model.Categories)
+                        {
+					        <div class="smBox">
+					        	<h4><a href="@Url.RouteUrl("CategoryItem", new {seName = category.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})">@category.Title</a></h4>
+					        	@if(category.SubCategories.Count > 0)
+                                {
+                                    <ul>
+                                        @foreach (var firstSubCategory in category.SubCategories)
+                                        {
+                                            <li><a href="@Url.RouteUrl("CategoryItem", new {seName = firstSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})"><span>@firstSubCategory.Title</span></a></li>
+                                            if (firstSubCategory.SubCategories.Count > 0)
+                                            {
+                                                <li>
+                                                    <ul>
+                                                        @foreach (var secondSubCategory in firstSubCategory.SubCategories)
+                                                        {
+                                                             <li><a href="@Url.RouteUrl("CategoryItem", new {seName = secondSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})"><span>@secondSubCategory.Title</span></a></li>
+                                                            if (secondSubCategory.SubCategories.Count > 0)
+                                                            {
+                                                                <li>
+                                                                    <ul>
+                                                                        @foreach (var thirdSubCategory in secondSubCategory.SubCategories)
+                                                                        {
+                                                                            <li><a href="@Url.RouteUrl("CategoryItem", new {seName = thirdSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})"><span>@thirdSubCategory.Title</span></a></li>
+                                                                            if (thirdSubCategory.SubCategories.Count > 0)
+                                                                            {
+                                                                                <li>
+                                                                                    <ul>
+                                                                                        @foreach (var forthSubCategory in thirdSubCategory.SubCategories)
+                                                                                        {
+                                                                                            <li><a href="@Url.RouteUrl("CategoryItem", new {seName = forthSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})"><span>@forthSubCategory.Title</span></a></li>
+                                                                                        }
+				                    		                                        </ul>
+                                                                                </li>
+                                                                            }
+                                                                        }
+				                    		                        </ul>
+                                                                </li>
+                                                            }
+                                                        }
+				                    		        </ul>
+                                                </li>
+                                            }
+                                        }
+				                    </ul>
+                                }
+					        </div>
+                        }
+
+                        <h1>@T("Catalog.Seller")</h1>
+                        @foreach(var category in Model.Categories)
+                        {
+					        <div class="smBox">
+					        	<h4><a href="@Url.RouteUrl("CategorySellers", new {seName = category.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})">@category.Title</a></h4>
+					        	@if(category.SubCategories.Count > 0)
+                                {
+                                    <ul>
+                                        @foreach (var firstSubCategory in category.SubCategories)
+                                        {
+                                            <li><a href="@Url.RouteUrl("CategorySellers", new {seName = firstSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})"><span>@firstSubCategory.Title</span></a></li>
+                                            if (firstSubCategory.SubCategories.Count > 0)
+                                            {
+                                                <li>
+                                                    <ul>
+                                                        @foreach (var secondSubCategory in firstSubCategory.SubCategories)
+                                                        {
+                                                             <li><a href="@Url.RouteUrl("CategorySellers", new {seName = secondSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})"><span>@secondSubCategory.Title</span></a></li>
+                                                            if (secondSubCategory.SubCategories.Count > 0)
+                                                            {
+                                                                <li>
+                                                                    <ul>
+                                                                        @foreach (var thirdSubCategory in secondSubCategory.SubCategories)
+                                                                        {
+                                                                            <li><a href="@Url.RouteUrl("CategorySellers", new {seName = thirdSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})"><span>@thirdSubCategory.Title</span></a></li>
+                                                                            if (thirdSubCategory.SubCategories.Count > 0)
+                                                                            {
+                                                                                <li>
+                                                                                    <ul>
+                                                                                        @foreach (var forthSubCategory in thirdSubCategory.SubCategories)
+                                                                                        {
+                                                                                            <li><a href="@Url.RouteUrl("CategorySellers", new {seName = forthSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString(),})"><span>@forthSubCategory.Title</span></a></li>
+                                                                                        }
+				                    		                                        </ul>
+                                                                                </li>
+                                                                            }
+                                                                        }
+				                    		                        </ul>
+                                                                </li>
+                                                            }
+                                                        }
+				                    		        </ul>
+                                                </li>
+                                            }
+                                        }
+				                    </ul>
+                                }
+					        </div>
+                        }
+
+
+                        <h1>@T("Catalog.ServiceProvider")</h1>
+                        @foreach(var category in Model.Categories)
+                        {
+					        <div class="smBox">
+					        	<h4><a href="@Url.RouteUrl("CategorySellers", new {seName = category.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})">@category.Title</a></h4>
+					        	@if(category.SubCategories.Count > 0)
+                                {
+                                    <ul>
+                                        @foreach (var firstSubCategory in category.SubCategories)
+                                        {
+                                            <li><a href="@Url.RouteUrl("CategorySellers", new {seName = firstSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})"><span>@firstSubCategory.Title</span></a></li>
+                                            if (firstSubCategory.SubCategories.Count > 0)
+                                            {
+                                                <li>
+                                                    <ul>
+                                                        @foreach (var secondSubCategory in firstSubCategory.SubCategories)
+                                                        {
+                                                             <li><a href="@Url.RouteUrl("CategorySellers", new {seName = secondSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})"><span>@secondSubCategory.Title</span></a></li>
+                                                            if (secondSubCategory.SubCategories.Count > 0)
+                                                            {
+                                                                <li>
+                                                                    <ul>
+                                                                        @foreach (var thirdSubCategory in secondSubCategory.SubCategories)
+                                                                        {
+                                                                            <li><a href="@Url.RouteUrl("CategorySellers", new {seName = thirdSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})"><span>@thirdSubCategory.Title</span></a></li>
+                                                                            if (thirdSubCategory.SubCategories.Count > 0)
+                                                                            {
+                                                                                <li>
+                                                                                    <ul>
+                                                                                        @foreach (var forthSubCategory in thirdSubCategory.SubCategories)
+                                                                                        {
+                                                                                            <li><a href="@Url.RouteUrl("CategorySellers", new {seName = forthSubCategory.SeName, itemtype=(Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString(),})"><span>@forthSubCategory.Title</span></a></li>
+                                                                                        }
+				                    		                                        </ul>
+                                                                                </li>
+                                                                            }
+                                                                        }
+				                    		                        </ul>
+                                                                </li>
+                                                            }
+                                                        }
+				                    		        </ul>
+                                                </li>
+                                            }
+                                        }
+				                    </ul>
+                                }
+					        </div>
+                        }
+				</div>
+				</div>
+
+
+			<div class="rightSide">
+				<div class="banners">
+                        @Html.Action("BannerList", "Common", new { bigImage = true, numberOfBanners = 3 })
+                    </div>
+			</div>
+
+            </div>
+        </div>
+    </div>
+</div>

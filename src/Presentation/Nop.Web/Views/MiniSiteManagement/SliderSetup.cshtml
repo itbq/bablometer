@@ -1,0 +1,123 @@
+﻿@model Nop.Web.Models.MiniSite.MiniSiteSliderModel
+
+@{
+    Html.AddTitleParts(T("ETF.MiniSite.Setup.Title").Text + ". " + T("ETF.MiniSite.Setup.Options.Slider").Text);
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.MiniSite })
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <ul id="productMenu">
+            <li><a href="/MiniSiteManagement/MainSetup">@T("ETF.MiniSite.Setup.Options.General")</a></li>
+            <li><a href="/MiniSiteManagement/SliderSetup" class="current">@T("ETF.MiniSite.Setup.Options.Slider")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetup">@T("ETF.MiniSite.Setup.Options.Banner")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetupAdd">@T("ETF.MiniSite.Setup.Banner.Add")</a></li>
+            <li><a href="/MiniSiteManagement/TextPageSetup">@T("ETF.MiniSite.Setup.Options.TextPages")</a></li>
+        </ul>
+            @using (Html.BeginForm())
+            {
+                <div class="full">
+                <h3>@T("ETF.MiniSite.Slider.Language")</h3>
+                    <div class="language-selector left">
+                        <a nohref="nohref" onclick="switchDisplay('.otherLangProfile');" ><img src="/@Url.Content("Content/etf/images/flag/flag_" + Model.SelectedLanguage.Id + ".png")">@Model.SelectedLanguage.Name</a>
+                            <div class="otherLang invisible otherLangProfile">
+                                @foreach(var lang in Model.AviableLanguages)
+                                {
+                                    if(lang.Id != Model.SelectedLanguage.Id)
+                                    {
+                                        <a href="/MiniSiteManagement/SliderSetup?languageId=@lang.Id"><img src="/@Url.Content("Content/etf/images/flag/flag_" + lang.Id + ".png")">@lang.Name</a>
+                                    }
+                                }   
+                                @Html.HiddenFor(model=>model.SelectedLanguageId)
+                            </div>
+                    </div>
+                </div>
+                <div class="slider">
+                    <div class="regInfoBox box">
+                        <h1>@T("Plugins.Widgets.NivoSlider.Picture") 1</h1>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.Text")@Html.ValidationMessageFor(model => model.Title1)</label>
+                            @Html.EditorFor(model => model.Title1)
+                        </div>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.SubText")@Html.ValidationMessageFor(model => model.Text1)</label>
+                            @Html.EditorFor(model => model.Text1)
+                        </div>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.Link")@Html.ValidationMessageFor(model => model.Link1)</label>
+                            @Html.EditorFor(model => model.Link1)
+                        </div>   
+                        <div class="halfLine">
+                            <div class="attachType">@T("Plugins.Widgets.NivoSlider.Picture")@Html.Raw(" (934x550)")</div>
+                            @Html.EditorFor(model => model.Picture1Id)
+                        </div> 
+
+                    </div>
+                    <div class="regInfoBox box right">
+                        <h1>@T("Plugins.Widgets.NivoSlider.Picture") 2</h1>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.Text") @Html.ValidationMessageFor(model => model.Title2)</label>
+                            @Html.EditorFor(model => model.Title2)
+                        </div>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.SubText") @Html.ValidationMessageFor(model => model.Text2)</label>
+                            @Html.EditorFor(model => model.Text2)
+                        </div>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.Link") @Html.ValidationMessageFor(model => model.Link2)</label>
+                            @Html.EditorFor(model => model.Link2)
+                        </div>   
+                        <div class="halfLine">
+                            <div class="attachType">@T("Plugins.Widgets.NivoSlider.Picture")@Html.Raw(" (934x550)")</div>
+                            @Html.EditorFor(model => model.Picture2Id)
+                        </div> 
+
+                    </div>
+                </div>
+                <div class="slider">
+                    <div class="regInfoBox box">
+                        <h1>@T("Plugins.Widgets.NivoSlider.Picture") 3</h1>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.Text") @Html.ValidationMessageFor(model => model.Title3)</label>
+                            @Html.EditorFor(model => model.Title3)
+                        </div>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.SubText") @Html.ValidationMessageFor(model => model.Text3)</label>
+                            @Html.EditorFor(model => model.Text3)
+                        </div>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.Link") @Html.ValidationMessageFor(model => model.Link3)</label>
+                            @Html.EditorFor(model => model.Link3)
+                        </div>   
+                        <div class="halfLine">
+                            <div class="attachType">@T("Plugins.Widgets.NivoSlider.Picture")@Html.Raw(" (934x550)")</div>
+                            @Html.EditorFor(model => model.Picture3Id)
+                        </div> 
+
+                    </div>
+                    
+                    <div class="regInfoBox box right">
+                        <h1>@T("Plugins.Widgets.NivoSlider.Picture") 4</h1>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.Text") @Html.ValidationMessageFor(model => model.Title4)</label>
+                            @Html.EditorFor(model => model.Title4)
+                        </div>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.SubText") @Html.ValidationMessageFor(model => model.Text4)</label>
+                            @Html.EditorFor(model => model.Text4)
+                        </div>
+                        <div class="full">
+                            <label>@T("Plugins.Widgets.NivoSlider.Link") @Html.ValidationMessageFor(model => model.Link4)</label>
+                            @Html.EditorFor(model => model.Link4)
+                        </div>   
+                        <div class="halfLine">
+                            <div class="attachType">@T("Plugins.Widgets.NivoSlider.Picture")@Html.Raw(" (934x550)")</div>
+                            @Html.EditorFor(model => model.Picture4Id)
+                        </div> 
+
+                    </div>
+                </div>
+                <div class="center" id="seller-register"><button class="upload save">@T("common.save")</button></div>
+            }
+    </div>
+</div>

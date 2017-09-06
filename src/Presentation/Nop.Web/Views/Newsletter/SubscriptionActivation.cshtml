@@ -1,0 +1,11 @@
+﻿@model SubscriptionActivationModel
+@using Nop.Web.Models.Newsletter;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+<script>
+    $('#firstPopOk h2').text('');
+    $('#firstPopOk p').text('@Model.Result');
+    showPop("firstPopOk");
+    window.location.href = '@Url.RouteUrl("HomePage")';
+</script>

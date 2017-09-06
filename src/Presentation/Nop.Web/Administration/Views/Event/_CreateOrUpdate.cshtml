@@ -1,0 +1,153 @@
+﻿@model Nop.Admin.Models.Event.EventModel
+
+@using Nop.Admin.Models.Event
+@using Telerik.Web.Mvc.UI
+@if(ViewBag.error)
+{
+    <label class="error">@T("Admin.Event.Error.Fillall")</label>
+    @Html.ValidationSummary(false);
+}
+@Html.HiddenFor(model => model.Id)
+
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.PictureId)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.PictureId)
+            @Html.ValidationMessageFor(model => model.PictureId)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.CatalogPictureId)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.CatalogPictureId)
+            @Html.ValidationMessageFor(model => model.CatalogPictureId)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.StartDate)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.StartDate) @Html.ValidationMessageFor(model=>model.StartDate)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.EndDateEnabled)
+        </td>
+        <td>
+            @Html.EditorFor(model=>model.EndDateEnabled,"CheckBox")
+        </td>
+    </tr>
+    <tr id="end-date" >
+        <td class="adminTitle">
+            @{
+                if(Model.EndDate == null)
+                {
+                    Model.EndDate = DateTime.MinValue;
+                }
+            }
+            @Html.LabelFor(model=>model.EndDate)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.EndDate) @Html.ValidationMessageFor(model=>model.EndDate)
+        </td>
+    </tr>
+</table>
+@(Html.NoStandartLocalizedEditor<EventModel, EventLocalizedModel>("messagetemplate-localized",
+    @<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Locales[item].Title):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Locales[item].Title)
+            @if(Model.Locales[item].Title == null)
+            {
+                Html.ValidationMessageFor(model => model.Locales[item].Title);
+            }
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Locales[item].ShortDescription):
+        </td>
+        <td class="adminData">
+            @Html.TextAreaFor(x => x.Locales[item].ShortDescription)
+            @if(Model.Locales[item].ShortDescription == null)
+            {
+                Html.ValidationMessageFor(model => model.ShortDescription);
+            }
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model=>model.Locales[item].FullDescription)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.Locales[item].FullDescription,"RichEditor")
+            @if(Model.Locales[item].FullDescription == null)
+            {
+                Html.ValidationMessageFor(model => model.FullDescription);
+            }
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            @Html.HiddenFor(model => model.Locales[item].LanguageId)
+        </td>
+    </tr>
+</table>
+,
+@<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Title):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.ShortDescription):
+        </td>
+        <td class="adminData">
+            @Html.TextAreaFor(x => x.ShortDescription)
+            @Html.ValidationMessageFor(model => model.ShortDescription)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model=>model.FullDescription)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.FullDescription,"RichEditor")
+            @Html.ValidationMessageFor(model=>model.FullDescription)
+        </td>
+    </tr>
+</table>
+))
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#EndDateEnabled").prop("checked")) {
+            $('#end-date').show();
+        } else {
+            $('#end-date').hide();
+        }
+        $('[href="#messagetemplate-localized-1"]').parent().hide();
+        $('#EndDateEnabled').click(function () {
+            if ($("#EndDateEnabled").prop("checked")) {
+                $('#end-date').show();
+            } else {
+                $('#end-date').hide();
+            }
+        });
+    });
+</script>

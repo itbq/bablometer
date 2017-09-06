@@ -1,0 +1,405 @@
+﻿@{
+    ViewBag.Layout = null;
+}
+@model Nop.Web.Models.SearchProduct.SearchProductCategoryModel
+<div class="attributes-wrapper">
+@for (int i = 0; i < Model.Attributes.Count; i++)
+{
+    switch (Model.Attributes[i].AttributeControlTypeId)
+    {
+        case (int)Nop.Core.Domain.Catalog.SearchAttributeControlType.DropDown:
+            {
+                <div class="linedItem">
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="SelectedCategoryAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="SelectedCategoryAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeTitle" />
+                    <select class="dropdown" name="SelectedCategoryAttributes.Attributes[@i].SelectedAttributeId">
+                        @for (int j = 0; j < Model.Attributes[i].Values.Count; j++)
+                        {
+				    	    <option value="@Model.Attributes[i].Values[j].Id" @(Model.Attributes[i].Values[j].Selected ? "selected" : "")>@Model.Attributes[i].Values[j].ValueText</option>
+                        }
+				    </select>
+                </div>
+                        break;
+            }
+        case (int)Nop.Core.Domain.Catalog.SearchAttributeControlType.TextBoxReal:
+            {
+                <div class="linedItem">
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="SelectedCategoryAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="SelectedCategoryAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeTitle" />
+                    <input type="text" class="textinp" value="@(Model.Attributes[i].AttributeValue ?? "")" placeholder="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeValue" id="SCA@(i)-@Model.CategoryId" />           
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $('#SCA@(i)-@Model.CategoryId').rules("add",{
+                            number: true,
+                            min:0,
+                            messages:{
+                                number:"@T("ITBSFA.Number.Enter")",
+                                min:"@T("ITBSFA.Number.Min")"
+                            }
+                        });
+                    });
+                </script>
+                break;
+            }
+        case (int)Nop.Core.Domain.Catalog.SearchAttributeControlType.TextBoxText:
+            {
+                <div class="linedItem">
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="SelectedCategoryAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="SelectedCategoryAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeTitle" />
+                    <input type="text" class="textinp" value="@(Model.Attributes[i].AttributeValue ?? "")" placeholder="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeValue"/>
+                </div>
+                break;
+            }
+        case (int)Nop.Core.Domain.Catalog.SearchAttributeControlType.Money:
+            {
+                <div class="money-wrapper">
+                <input type="hidden" value="@Model.Attributes[i].Id" name="SelectedCategoryAttributes.Attributes[@i].Id" />
+                <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="SelectedCategoryAttributes.Attributes[@i].AttributeControlTypeId" />
+                <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeTitle" />
+                <input type="text" class="textinp currency" title="@(Model.Attributes[i].AttributeTitle) должно быть числом" value="@(Model.Attributes[i].AttributeValue ?? "")" placeholder="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeValue" id="SCA@(i)-@Model.CategoryId" />
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $('#SCA@(i)-@Model.CategoryId').rules("add",{
+                            number: true,
+                            min:0,
+                            messages:{
+                                number:"@T("ITBSFA.Number.Enter")",
+                                min:"@T("ITBSFA.Number.Min")"
+                            }
+                        });
+                    });
+                </script>
+                <div class="curencyWidget bestborderthanever">
+                    @foreach (var currency in Model.Currencies)
+                    {
+                        var currencyClass = "";
+                        switch (currency.Name)
+                        {
+                            case "USD":
+                                {
+                                    currencyClass = "dollar";
+                                    break;
+                                }
+                            case "EUR":
+                                {
+                                    currencyClass = "euro";
+                                    break;
+                                }
+                            case "RUB":
+                                {
+                                    currencyClass = "ruble";
+                                    break;
+                                }
+                        }
+
+                        string checkedString = "";
+                        if (Model.Attributes[i].CurrencyId == currency.Id)
+                        {
+                            checkedString = "checked=\"checked\"";
+                        }
+                        else
+                        {
+                            if (Model.Attributes[i].CurrencyId == 0 && currency.Name == "RUB")
+                            {
+                                checkedString = "checked=\"checked\"";
+                            }
+                        }
+                        <input type="radio" name="SelectedCategoryAttributes.Attributes[@i].CurrencyId"  id='@(currency.Id + "-" + @Model.CategoryId + "-cur" + i.ToString())' value="@currency.Id" @checkedString /><label for="@(currency.Id + "-" + @Model.CategoryId + "-cur" + i.ToString())" class="@currencyClass"></label>
+
+                    }
+                    </div> 
+                    </div>        
+                    break;
+            }
+        case (int)Nop.Core.Domain.Catalog.SearchAttributeControlType.ToddlerMax:
+            {
+                int selectedValue;
+                if (Model.Attributes[i].SelectedIntValue == 0)
+                {
+                    selectedValue = (int)(Model.Attributes[i].MaxValue);
+                }
+                else
+                {
+                    selectedValue = Model.Attributes[i].SelectedIntValue;
+                }
+                <div class="linedItem">
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="SelectedCategoryAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="SelectedCategoryAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeTitle" />
+                    <input type="hidden" value="@Model.Attributes[i].MinValue" name="SelectedCategoryAttributes.Attributes[@i].MinValue" />
+                    <input type="hidden" value="@Model.Attributes[i].MaxValue" name="SelectedCategoryAttributes.Attributes[@i].MaxValue" />
+                    <input type="hidden" id="@Model.CategoryId-toddler-@i" value="@selectedValue" name="SelectedCategoryAttributes.Attributes[@i].SelectedIntValue" />
+                    <span class="field-validation-valid" data-valmsg-for="SelectedCategoryAttributes.Attributes[@i].AttributeValue" data-valmsg-replace="true"></span>            
+                    <label for="">@Model.Attributes[i].AttributeTitle</label>
+                    <div class="trackBox">
+                        <div class="tracker toMin" id="attribute-@Model.Attributes[i].Id"></div>
+                        <div class="seps"></div>
+                    </div>
+                     @if (String.IsNullOrEmpty(Model.Attributes[i].Description))
+                     {
+                         Model.Attributes[i].Description = "";
+                     }
+                </div>   
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#attribute-@Model.Attributes[i].Id").slider({
+                            orientation: "horizontal",
+                            range: "min",
+                            min: @Model.Attributes[i].MinValue,
+                            max: @Model.Attributes[i].MaxValue,
+                            value: @(selectedValue),
+                            create: function (event, ui) {
+                                $(this).find(".ui-slider-range").html('<div class="grad"></div>');
+                                $(this).find(".ui-slider-handle").prepend('<span class="amount">@(selectedValue) @Model.Attributes[i].Description</span>');
+                                $(this).append('<div class="scale"><div class="first"></div><div class="quart"></div><div class="middle"></div><div class="middleQuart"></div><div class="last"></div>');
+                                $(this).append('<span class="min">@Model.Attributes[i].MinValue @Model.Attributes[i].Description</span>');
+                                $(this).append('<span class="max">@Model.Attributes[i].MaxValue @Model.Attributes[i].Description</span>');
+
+                                $(this).find(".grad").css("width", $(this).parent().width() + "px");
+                                $(this).find(".amount").css("width",(@Model.Attributes[i].MaxValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                                 $(this).find(".amount").css("margin-left",-(@Model.Attributes[i].MaxValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*3+8 + "px");
+                                $(this).find(".min").css("width", (@Model.Attributes[i].MinValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                                $(this).find(".max").css("width", (@Model.Attributes[i].MaxValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                            },
+                            slide: function (event, ui) {
+                                $(this).find(".min").html($(this).slider("option", "min") + " @Model.Attributes[i].Description");
+                                $(this).find(".max").html($(this).slider("option", "max") + " @Model.Attributes[i].Description");
+                                $(this).find(".amount").html(ui.value + " @Model.Attributes[i].Description");
+                            },
+                            change: function(evnt, ui){
+                                $('#@Model.CategoryId-toddler-@i').attr('value',ui.value);
+                                $(this).find(".amount").html(ui.value + " @Model.Attributes[i].Description");
+                            }
+                        });
+                    });
+                </script>
+                     break;
+            }
+        case (int)Nop.Core.Domain.Catalog.SearchAttributeControlType.ToddlerMin:
+            {
+                int selectedValue;
+                if (Model.Attributes[i].SelectedIntValue == 0)
+                {
+                    selectedValue = (int)(Model.Attributes[i].MinValue);
+                }
+                else
+                {
+                    selectedValue = Model.Attributes[i].SelectedIntValue;
+                }
+                <div class="linedItem">
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="SelectedCategoryAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="SelectedCategoryAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeTitle" />
+                    <input type="hidden" value="@Model.Attributes[i].MinValue" name="SelectedCategoryAttributes.Attributes[@i].MinValue" />
+                    <input type="hidden" value="@Model.Attributes[i].MaxValue" name="SelectedCategoryAttributes.Attributes[@i].MaxValue" />
+                    <input type="hidden" id="@Model.CategoryId-toddler-@i" value="@selectedValue" name="SelectedCategoryAttributes.Attributes[@i].SelectedIntValue" />
+                    <span class="field-validation-valid" data-valmsg-for="SelectedCategoryAttributes.Attributes[@i].AttributeValue" data-valmsg-replace="true"></span>            
+                    <label for="">@Model.Attributes[i].AttributeTitle</label>
+                    <div class="trackBox">
+                        <div class="tracker toMax" id="attribute-@Model.Attributes[i].Id"></div>
+                        <div class="seps"></div>
+                    </div>
+                     @if (String.IsNullOrEmpty(Model.Attributes[i].Description))
+                     {
+                         Model.Attributes[i].Description = "";
+                     }
+                </div>   
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#attribute-@Model.Attributes[i].Id").slider({
+                            orientation: "horizontal",
+                            range: "max",
+                            min: @Model.Attributes[i].MinValue,
+                            max: @Model.Attributes[i].MaxValue,
+                            value: @(selectedValue),
+                            create: function (event, ui) {
+                                $(this).find(".ui-slider-range").html('<div class="grad"></div>');
+                                $(this).find(".ui-slider-handle").prepend('<span class="amount">@(selectedValue) @Model.Attributes[i].Description</span>');
+                                $(this).append('<div class="scale"><div class="first"></div><div class="quart"></div><div class="middle"></div><div class="middleQuart"></div><div class="last"></div>');
+                                $(this).append('<span class="min">@Model.Attributes[i].MinValue @Model.Attributes[i].Description</span>');
+                                $(this).append('<span class="max">@Model.Attributes[i].MaxValue @Model.Attributes[i].Description</span>');
+
+                                $(this).find(".grad").css("width", $(this).parent().width() + "px");
+                                $(this).find(".amount").css("width",(@Model.Attributes[i].MaxValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                                 $(this).find(".amount").css("margin-left",-(@Model.Attributes[i].MaxValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*3+8 + "px");
+                                $(this).find(".min").css("width", (@Model.Attributes[i].MinValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                                $(this).find(".max").css("width", (@Model.Attributes[i].MaxValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                            },
+                            slide: function (event, ui) {
+                                $(this).find(".min").html($(this).slider("option", "min") + " @Model.Attributes[i].Description");
+                                $(this).find(".max").html($(this).slider("option", "max") + " @Model.Attributes[i].Description");
+                                $(this).find(".amount").html(ui.value + " @Model.Attributes[i].Description");
+                            },
+                            change: function(evnt, ui){
+                                $('#@Model.CategoryId-toddler-@i').attr('value',ui.value);
+                                $(this).find(".amount").html(ui.value + " @Model.Attributes[i].Description");
+                            }
+                        });
+                    });
+                </script>
+                     break;
+            }
+        case (int)Nop.Core.Domain.Catalog.SearchAttributeControlType.ToddlerIntBetween:
+            {
+                int selectedValue;
+                int selectedMaxvalue;
+                if (Model.Attributes[i].SelectedIntValue == 0)
+                {
+                    selectedValue = (int)(Model.Attributes[i].MinValue);
+                }
+                else
+                {
+                    selectedValue = Model.Attributes[i].SelectedIntValue;
+                }
+
+                if (Model.Attributes[i].SelectedMaxIntValue == 0)
+                {
+                    selectedMaxvalue = (int)(Model.Attributes[i].MaxValue);
+                }
+                else
+                {
+                    selectedMaxvalue = Model.Attributes[i].SelectedMaxIntValue;
+                }
+                <div class="linedItem">
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="SelectedCategoryAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="SelectedCategoryAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="SelectedCategoryAttributes.Attributes[@i].AttributeTitle" />
+                    <input type="hidden" value="@Model.Attributes[i].MinValue" name="SelectedCategoryAttributes.Attributes[@i].MinValue" />
+                    <input type="hidden" value="@Model.Attributes[i].MaxValue" name="SelectedCategoryAttributes.Attributes[@i].MaxValue" />
+                    <input type="hidden" id="@Model.CategoryId-toddler-@i" value="@selectedValue" name="SelectedCategoryAttributes.Attributes[@i].SelectedIntValue" />
+                    <input type="hidden" id="@Model.CategoryId-toddler-@i-max" value="@selectedMaxvalue" name="SelectedCategoryAttributes.Attributes[@i].SelectedMaxIntValue" />
+                    <span class="field-validation-valid" data-valmsg-for="SelectedCategoryAttributes.Attributes[@i].AttributeValue" data-valmsg-replace="true"></span>            
+                    <label for="">@Model.Attributes[i].AttributeTitle</label>
+                    <div class="trackBox">
+                        <div class="tracker both" id="attribute-@Model.Attributes[i].Id"></div>
+                        <div class="seps"></div>
+                    </div>
+                     @if (String.IsNullOrEmpty(Model.Attributes[i].Description))
+                     {
+                         Model.Attributes[i].Description = "";
+                     }
+                </div>   
+              <script type="text/javascript">
+                  $(document).ready(function () {
+                      $("#attribute-@Model.Attributes[i].Id").slider({
+                           orientation: "horizontal",
+                           range: true,
+                           min: @Model.Attributes[i].MinValue,
+                           max: @Model.Attributes[i].MaxValue,
+                           values: [@(selectedValue),@(selectedMaxvalue)],
+                           create: function( event, ui ) {
+                               $(this).find(".ui-slider-range").html('<div class="grad"></div>');
+                               $(this).find(".ui-slider-handle").prepend('<span class="amountMin">@(selectedValue) @Model.Attributes[i].Description</span>');
+                               $(this).find(".ui-slider-handle + .ui-slider-handle .amountMin").addClass("amountMax").removeClass("amountMin").text('@(selectedMaxvalue) @Model.Attributes[i].Description');
+                               $(this).append('<div class="scale"><div class="first"></div><div class="quart"></div><div class="middle"></div><div class="middleQuart"></div><div class="last"></div>');
+                               $(this).append('<span class="min">@Model.Attributes[i].MinValue @Model.Attributes[i].Description</span>');
+                                $(this).append('<span class="max">@Model.Attributes[i].MaxValue @Model.Attributes[i].Description</span>');
+
+                               $(this).find(".grad").css("width", $(this).parent().width() + "px");
+
+                               var slideWidth = (@(selectedMaxvalue-selectedValue)) * ($(this).find(".scale").width() / (@(Model.Attributes[i].MaxValue-Model.Attributes[i].MinValue)));
+
+                                if (($(this).find(".ui-slider-range").width())<= ((@(selectedValue.ToString().Length) + @Model.Attributes[i].Description.Length+1)*3+(@(selectedMaxvalue.ToString().Length) + @Model.Attributes[i].Description.Length+1)*3+1)) {
+
+                                   if ($('#@Model.CategoryId-toddler-@i').val() == $('#@Model.CategoryId-toddler-@i-max').val()) {
+                                        $(this).find(".amountMin").css("visibility", "visible");
+                                        $(this).find(".amountMax").css("visibility", "visible");
+                                        $(this).find(".amountMin").html(@(selectedValue) + " @Model.Attributes[i].Description");
+                                        $(this).find(".amountMax").html(@(selectedMaxvalue) + " @Model.Attributes[i].Description");
+                                        $(this).find(".amountMin").css("width", (@(selectedValue.ToString().Length) + @Model.Attributes[i].Description.Length + 1) * 6 + "px");
+                                        $(this).find(".amountMax").css("width", (@(selectedMaxvalue.ToString().Length) + @Model.Attributes[i].Description.Length + 1) * 6 + "px");
+                                        $(this).find(".amountMin").css("margin-left", -(@(selectedValue.ToString().Length) + @Model.Attributes[i].Description.Length + 1) * 3 + 8 + "px");
+                                        $(this).find(".amountMax").css("margin-left", -(@(selectedMaxvalue.ToString().Length) + @Model.Attributes[i].Description.Length + 1) * 3 + 8 + "px");
+                                    } else {
+                                        $(this).find(".amountMin").css("visibility", "visible");
+                                        $(this).find(".amountMax").css("visibility", "hidden");
+
+                                        $(this).find(".amountMin").html(@(selectedValue) + "-" + @(selectedMaxvalue) + " @Model.Attributes[i].Description");
+                                        $(this).find(".amountMax").html(@(selectedValue) + "-" + @(selectedMaxvalue) + " @Model.Attributes[i].Description");
+                                        $(this).find(".amountMin").css("width", (@(selectedValue.ToString().Length + selectedMaxvalue.ToString().Length) + @Model.Attributes[i].Description.Length + 2) * 6 + "px");
+                                        $(this).find(".amountMax").css("width", (@(selectedValue.ToString().Length + selectedMaxvalue.ToString().Length) + @Model.Attributes[i].Description.Length + 2) * 6 + "px");
+                                        $(this).find(".amountMax").css("margin-left", -(@(selectedValue.ToString().Length + selectedMaxvalue.ToString().Length) + @Model.Attributes[i].Description.Length + 2) * 3 + 8 - (slideWidth + 1) / 2 + "px");
+                                        $(this).find(".amountMin").css("margin-left", -(@(selectedValue.ToString().Length + selectedMaxvalue.ToString().Length) + @Model.Attributes[i].Description.Length + 2) *3 + 8 + (slideWidth +1) / 2 + "px");
+                                    }
+
+                                } else {
+                                    $(this).find(".amountMin").css("width", (@(selectedValue.ToString().Length) + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                                    $(this).find(".amountMax").css("width",(@(selectedMaxvalue.ToString().Length) + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                                    $(this).find(".amountMin").css("margin-left",-(@(selectedValue.ToString().Length) + @Model.Attributes[i].Description.Length+1)*3+8 + "px");
+                                    $(this).find(".amountMax").css("margin-left",-(@(selectedMaxvalue.ToString().Length) + @Model.Attributes[i].Description.Length+1)*3+8 + "px");
+                                }
+                               
+                                
+                               $(this).find(".min").css("width", (@Model.Attributes[i].MinValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                               $(this).find(".max").css("width", (@Model.Attributes[i].MaxValue.ToString().Length + @Model.Attributes[i].Description.Length+1)*6 + "px");
+                                
+                           },
+                           change: function(evnt, ui){
+                               $('#@Model.CategoryId-toddler-@i').attr('value',ui.values[0]);
+                               $('#@Model.CategoryId-toddler-@i-max').attr('value',ui.values[1]);
+                                
+                               
+                           },
+                           slide: function( event, ui ) {
+                               $(this).find(".min").html($(this).slider( "option", "min" ) + " @Model.Attributes[i].Description");
+                               $(this).find(".max").html($(this).slider( "option", "max" ) + " @Model.Attributes[i].Description");
+
+                               var slideWidth = (ui.values[1] - ui.values[0]) * ($(this).find(".scale").width() / (@(Model.Attributes[i].MaxValue-Model.Attributes[i].MinValue)));
+
+                               if (slideWidth <= ((ui.values[0].toString().length + @Model.Attributes[i].Description.Length + 1) * 3 + (ui.values[1].toString().length + @Model.Attributes[i].Description.Length + 1) * 3 + 1)) {
+
+
+                                   if (ui.values[0] == ui.values[1]) {
+                                       $(this).find(".amountMin").css("visibility", "visible");
+                                       $(this).find(".amountMax").css("visibility", "visible");
+                                       $(this).find(".amountMin").html(ui.values[0] + " @Model.Attributes[i].Description");
+                                        $(this).find(".amountMax").html(ui.values[1] + " @Model.Attributes[i].Description");
+                                        $(this).find(".amountMin").css("width", (ui.values[0].toString().length + @Model.Attributes[i].Description.Length + 1) * 6 + "px");
+                                        $(this).find(".amountMax").css("width", (ui.values[1].toString().length + @Model.Attributes[i].Description.Length + 1) * 6 + "px");
+                                        $(this).find(".amountMin").css("margin-left", -(ui.values[0].toString().length + @Model.Attributes[i].Description.Length + 1) * 3 + 8 + "px");
+                                        $(this).find(".amountMax").css("margin-left", -(ui.values[1].toString().length + @Model.Attributes[i].Description.Length + 1) * 3 + 8 + "px");
+                                    } else {
+                                        $(this).find(".amountMin").html(ui.values[0] + "-" + ui.values[1] + " @Model.Attributes[i].Description");
+                                        $(this).find(".amountMax").html(ui.values[0] + "-" + ui.values[1] + " @Model.Attributes[i].Description");
+                                        $(this).find(".amountMin").css("width", (ui.values[0].toString().length + ui.values[1].toString().length + @Model.Attributes[i].Description.Length + 2) * 6 + "px");
+                                        $(this).find(".amountMax").css("width", (ui.values[0].toString().length + ui.values[1].toString().length + @Model.Attributes[i].Description.Length + 2) * 6 + "px");
+                                        $(this).find(".amountMax").css("margin-left", -(ui.values[0].toString().length + ui.values[1].toString().length + @Model.Attributes[i].Description.Length + 2) * 3 + 8 - (slideWidth + 1) / 2 + "px");
+                                        $(this).find(".amountMin").css("margin-left", -(ui.values[0].toString().length + ui.values[1].toString().length + @Model.Attributes[i].Description.Length + 2) * 3 + 8 + (slideWidth + 1) / 2 + "px");
+                                        if ($('#@Model.CategoryId-toddler-@i').val() != ui.values[0]) {
+                                            $(this).find(".amountMin").css("visibility", "visible");
+                                            $(this).find(".amountMax").css("visibility", "hidden");
+                                        }
+                                        if ($('#@Model.CategoryId-toddler-@i-max').val() != ui.values[1]) {
+                                            $(this).find(".amountMin").css("visibility", "hidden");
+                                            $(this).find(".amountMax").css("visibility", "visible");
+                                        }
+
+                                    }
+
+                                } else {
+                                    $(this).find(".amountMin").css("visibility", "visible");
+                                    $(this).find(".amountMax").css("visibility", "visible");
+                                    $(this).find(".amountMin").html(ui.values[0] + " @Model.Attributes[i].Description");
+                                    $(this).find(".amountMax").html(ui.values[1] + " @Model.Attributes[i].Description");
+                                    $(this).find(".amountMin").css("width", (ui.values[0].toString().length + @Model.Attributes[i].Description.Length + 1) * 6 + "px");
+                                    $(this).find(".amountMax").css("width", (ui.values[1].toString().length + @Model.Attributes[i].Description.Length + 1) * 6 + "px");
+                                    $(this).find(".amountMin").css("margin-left", -(ui.values[0].toString().length + @Model.Attributes[i].Description.Length + 1) * 3 + 8 + "px");
+                                    $(this).find(".amountMax").css("margin-left", -(ui.values[1].toString().length + @Model.Attributes[i].Description.Length+1)*3+8 + "px");
+                                }
+                                
+                               $('#@Model.CategoryId-toddler-@i').attr('value',ui.values[0]);
+                               $('#@Model.CategoryId-toddler-@i-max').attr('value',ui.values[1]);
+                           }
+                           
+                       });
+                   });
+                </script>
+                     break;
+            }
+    }
+}
+</div>

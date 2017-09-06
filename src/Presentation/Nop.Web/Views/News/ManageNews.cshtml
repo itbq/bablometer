@@ -1,0 +1,146 @@
+﻿@model Nop.Web.Models.News.NewsItemListModel
+
+@using Nop.Web.Models.News;
+@using Nop.Web.Extensions;
+@using Telerik.Web.Mvc.UI;
+
+@{
+    Html.AddTitleParts(T("Profile.News.Manage").Text);
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    Html.AppendCssFileParts("~/Themes/ETFTheme/Content/redmond/jquery-ui.css");
+    Html.AppendCssFileParts("~/Themes/ETFTheme/Content/redmond/jquery-ui.min.css");
+    Html.AppendCssFileParts("~/Themes/ETFTheme/Content/redmond/jquery.ui.theme.css");
+    var languageService = DependencyResolver.Current.GetService <Nop.Services.Localization.ILanguageService>();
+    var storeSettings = DependencyResolver.Current.GetService<Nop.Core.Domain.StoreInformationSettings>();
+}
+
+<script type="text/javascript">
+        jQuery(document).ready(function(){
+            var params = {
+                changedEl: "select",
+                scrollArrows: true
+            }
+            cuSel(params);
+        });
+</script>
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.News })
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content favorites">
+        <div class="master-wrapper-main">
+            <ul id="productMenu">
+                <li><a href="/news/managenews" class="current">@T("Profile.News.Manage")</a></li>
+                <li>@Html.ActionLink(T("Profile.News.Add").Text,"AddNews")</li>
+            </ul>
+            <div class="filterProduct">
+                <h1 class="">@T("News.Manage.List")</h1>
+                @using (Html.BeginForm("ManageNews", "News", FormMethod.Post))
+                {
+                    <div class="linebox">
+                        <div class="selectBox">
+                            <label>@T("Profile.Request.Status")</label>
+                            @Html.DropDownList("Approved", new List<SelectListItem>(){
+                                new SelectListItem(){Selected = true, Text = T("ETF.News.NotSet").Text,Value=""},
+                                new SelectListItem(){Selected = false,Text = T("ETF.News.Published").Text, Value="true"},
+                                new SelectListItem(){Selected = false, Text = T("ETF.News.OnModeration").Text , Value = "false"}
+                            })
+                        </div>
+                        <div class="selectBox">
+                            <label>@T("languages")</label>
+                            @Html.DropDownList("LanguageId", Model.AviableLanguages.Select(x=>new SelectListItem()
+                           {
+                               Selected = x.Id == 0, Text = x.Name,Value=x.Id.ToString()
+                           }).ToList())
+                        </div>
+                        <div class="selectBox">
+                            <label>@T("News.Manage.List.MiniSite")</label>
+                            @Html.DropDownList("DisplayPlace", new List<SelectListItem>()
+                            {
+                                new SelectListItem(){Selected = true,Text = T("ETF.News.NotSet").Text,Value="0"},
+                                new SelectListItem(){Selected = false,Text = T("News.Manage.MiniSite.Location.MiniSite").Text,Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.MiniSite).ToString()},
+                                new SelectListItem(){Selected = false,Text = T("News.Manage.MiniSite.Location.Both").Text,Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.Both).ToString()},
+                                new SelectListItem(){Selected = false,Text = storeSettings.StoreName,Value = ((int)Nop.Core.Domain.News.NewsDisplayEnum.Main).ToString()},
+                            })
+                        </div>
+                    </div>
+                    <div class="linebox">
+                        <div class="selectBox calend">
+                            <label>@T("News.Filter.CreationDate.From")</label>
+                             @Html.EditorFor(model => model.PagingFilteringContext.CreationStartDate, "DateNullable", "CreationStartDate")
+                            <label>to</label>
+                            @Html.EditorFor(model => model.PagingFilteringContext.CreationEndDate, "DateNullable", "CreationEndDate")
+                        </div>
+                        <div class="selectBox calend">
+                            <label>@T("News.Filter.PublishDate.From")</label>
+                            @Html.EditorFor(model => model.PagingFilteringContext.PublishStartDate, "DateNullable", "PublishStartDate")
+                            <label>@T("ETF.News.To")</label>
+                            @Html.EditorFor(model => model.PagingFilteringContext.PublishEndDate, "DateNullable", "PublishEndDate")
+                        </div>
+                        <input class="button" onclick="javascript:return true;" type="submit" value="@T("News.Filter")" />
+                    </div>
+                }
+                
+            </div>
+
+            <table class="anyTable newsTable">
+                <tr>
+                    <th class="c1">@T("Profile.Favorit.Image")</th>
+                    <th class="c2">@T("admin.contentmanagement.topics.fields.title")</th>
+                    <th class="c3">@T("News.Manage.List.CreationDate")</th>
+                    <th class="c4">@T("News.Manage.List.PublishDate")</th>
+                    <th class="c5">@T("Profile.Request.Status")</th>
+                    <th class="c5">@T("News.Manage.List.MiniSite")</th>
+                    <th class="c6">@T("Profile.Request.Actions")</th>
+                </tr>
+                @foreach (var item in Model.NewsItems)
+                {
+                    <tr>
+
+                        <td>
+                            @if (item.PictureId != 0)
+                            {
+                                <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })"><img src="@item.Picture.ImageUrl" width="78" alt="@item.Title" /></a>
+                            }
+                        <td>
+                            <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })"><b>@item.Title</b></a>
+                            <p>@item.Short</p>
+                        </td>
+                        <td>@item.CreatedOn.ToString("d")</td>
+                        <td>@Html.Raw(item.Published ? item.PublishingDate.Value.ToString("d") : "")</td>
+                        <td>
+                            @if (item.Published)
+                            {
+                                <strong class="green">@T("ETF.News.Published")</strong>
+                            }
+                            else
+                            {
+                                <strong class="onModeration">@T("ETF.News.OnModeration")</strong>
+                            }
+                        </td>
+                        <td>
+                            @item.MiniSite
+                        </td>
+                        <td><a class="edit" href="@Url.Action("Edit", new { id = item.Id, pagenumber = Model.PagingFilteringContext.PageNumber })">@T("common.edit")</a><a class="remove button-link" nohref="nohref" onclick="removenew('@Url.Action("Delete", new { id = item.Id, pagenumber = Model.PagingFilteringContext.PageNumber })')">@T("common.delete")</a></td>
+                    </tr>
+                }
+            </table>
+            <div class="navBox">
+                        @(Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").ShowFirst(true).ShowLast(true).ShowPrevious(true))
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function removenew(url) {
+        $('#confirmPopOk h2').text('@T("ETF.Confirmation")');
+        $('#confirmPopOk p').text('@T("ETF.New.Delete")');
+        showPop("confirmPopOk");
+        $('#confirmPopOk .ok').click(function () {
+            window.location.href = url;
+        });
+    }
+</script>
+
+
+

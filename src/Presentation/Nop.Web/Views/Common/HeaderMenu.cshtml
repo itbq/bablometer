@@ -1,0 +1,19 @@
+﻿@model Nop.Web.Models.Common.FooterModel
+
+@{
+    ViewBag.Layout = null;
+}
+
+<div class="header-links left">
+    @foreach (var topic in Model.Topics)
+    {
+        if (topic.SystemName != "ContactUs")
+        {
+            <a href="@Url.RouteUrl("Topic", new {SystemName = topic.SystemName})">@topic.Title</a>
+        }
+        else
+        {
+             <a href="@Url.RouteUrl("ContactUs")">@topic.Title</a>
+        }
+    }
+</div>

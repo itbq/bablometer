@@ -1,0 +1,338 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin,cyrillic-ext);
+@import url(http://fonts.googleapis.com/css?family=Cuprum:400,700&subset=latin,cyrillic);
+
+body                    {background: url("../images/vinatge/bg.png") repeat; font-family: Open Sans, arial, sans-serif;}
+.header                 {background: url("../images/vinatge/header.png") repeat-x; height: 88px; }
+.header .logo           {margin-top: 17px;}
+
+.box                    { border-radius: 0; overflow: hidden;box-shadow: none; border: 1px solid #468966; padding: 0; height: auto; background: none repeat scroll 0 0 #ffffff; }
+.box h2                 {color: #FFF !important; width: 100% !important; font-size: 22px !important; margin: 8px 4px; font-family: Cuprum, arial, sans-serif !important;}
+.box .littleSeeAll      {text-decoration:underline; position:relative; color: #f3f5c4 !important; border: 0; margin: 0 14px; font-size: 12px; margin-left: 19px; text-align: left; float: left; }
+.box > .boxHead         {border-radius: 0; overflow: hidden;border: 0; }
+.box > .boxBody         {overflow: auto; width: 100%; position: static; height: 100%; padding-bottom: 0; }
+.boxHead                {background: url("../images/vinatge/head.png") repeat-x center center; height: 97px; border-radius: 10px 10px 0 0;background-size: auto; }
+
+.header-links           {margin: 28px 0 0 39px !important; }
+.header-links a         {color: #AcDfCc; font-size: 13px;  font-weight: lighter;text-decoration:underline; }
+.header-links a:hover   {color: #EA2E49; }
+
+.language-selector      {border-radius: 0 0 0 0; background-color: transparent; MARGIN: 23px 0; border: 1px solid #4aae7a; height: auto; display: block; }
+.language-selector >a   {font-family: arial; background: none; background: url(../images/vinatge/lang.png) repeat-x;line-height: 16px; height: 16px; }
+.language-selector .otherLang   {color: #FFFFFF; position: static; background: none; float: left; margin-bottom: 1px; }
+.language-selector .otherLang a {background-color: #3A4154; color: #FFF; width: 100%; background: url(../images/vinatge/langOther.png) repeat-x; margin-top: 0; margin-bottom: -1px; line-height: 17px; height: 18px; }
+.language-selector .otherLang a:hover   {background-color: #5A6174; color: #FFF; }
+.language-selector a img        {margin-top: 2px;}
+
+.mainSlider                     {border: 1px solid #b64926; border-radius: 0;box-shadow: none; overflow: hidden; margin-top: -5px; }
+.nivoSlider                     { overflow: hidden; margin-top: 0; }
+.nivoSlider a                   {font-size: 24px !important; color: #FFF !important ;}
+.nivoSlider a.nivo-imageLink    {}
+.theme-default .nivo-caption    {background: url(../images/vinatge/h2.png) repeat-x; border: 0; border-radius: 0; min-height: 65px; margin-top: 4px !important;left: auto; right: 0; padding-right: 40px; bottom: 60px; width: auto; min-width: 220px; }
+.theme-default .nivo-caption div{margin-top: 8px;font-size: 12px; }
+
+.layout2-2 .mainSlider          {}
+.layout2-2 .tabCatalog          {margin-left: 16px !important; margin-right: 0 !important;margin-top: -4px; height: 270px; }
+
+
+.recentlyAdded .goodCaption     {font-size: 12px; margin-top: 0px; margin-bottom: 5px; }
+
+.LatesNews .news                {}
+
+.tabsMenu                       {background: url("../images/vinatge/head.png") repeat-x center center; height: 98px; margin-bottom: -1px; }
+.tabCatalog                     {margin-right: 16px !important ;}
+
+.goodLink                       {color: #fc4349 !important;}
+
+.tabCatalog .tabsMenu ul li a                       {color: #F3F5C4; border-bottom: 1px dotted #f3f5c4;  font-family: arial,sans-serif;  margin-bottom: 6px; }
+.tabCatalog .tabsMenu ul li.ui-tabs-active a        {color: #FFF; border: 0; }
+.tabCatalog .tabsMenu ul li a:hover                 {color: #2e3444 !important;  }
+.tabCatalog .tabsMenu ul li.sep                     {color: #FFF; }
+.tabCatalog .redRibbon                              {left: 21px; font-size: 12px; top: 53px; color: #EA2E49; float: left; clear: both; position: absolute; border-bottom: none; text-align: left;border: none; }
+.tabCatalog .redRibbon a                            {position:relative; font-size: 12px; color: #f3f5c4;text-decoration:underline; }
+.tabCatalog .redRibbon a:hover                      {color: #f3f5c4;}
+
+.border-line                                        {display: none;}
+.tabCat li a                                        {color: #b64926;text-decoration: underline; }
+.tabCat li a:hover                                  {color: #ea2e49;}
+.tabCat li h3 a                                     {color: #222222; text-decoration: none; font-family: Cuprum,arial,sans-serif; }
+.tabCat li h3 a:hover                               {color: #222222;}
+
+.newsHeadline                                       {color: #B64926;margin: 3px 0 !important; font-size: 20px !important; font-family: cuprum, arial, sans-serif; }
+.newsHeadline:hover                                 {color: #ea2e49; text-decoration: underline;}
+.LatesNews .news .imgNews .newsDate                 {font-style: normal;font-weight: normal; color: #232323; font-size: 10px; }
+
+.productPicture                                     {height: 100px;}
+
+.footer                                             {background: url(../images/vinatge/footer.png) repeat-x; box-shadow: none; height: 71px; padding-top: 10px; }
+.footer-menu                                        {color: #d3eee2;}
+.footer-menu a                                      {color: #FFF; font-size: 12px; font-weight: lighter; }
+.footer-menu a:hover                                {color: #EA2E49 ;}
+
+.footer .fline a                                    {color: #FFF; font-size: 12px; font-weight: normal; float: right; text-decoration: underline; }
+.footer .fline a:hover                              {color: #EA2E49 ;}
+.footer .fline span                                 {color: #FFF;font-size: 12px; }
+.footer .fline:last-child a                         {color: #FFF;text-decoration: underline; }
+.footer .fline:last-child a:hover {color: #EA2E49 ;}
+
+.layout1-3 .recentlyAdded .slideGoods               {margin-left: 35px ;}
+.layout1-3 .arrPrev                                 {top: 0 !important; margin: 188px 5px 0 !important;}
+.layout1-3 .arrNext                                 {top: 0 !important; margin: 188px 5px 0 !important;}
+.recentlyAdded .goods                               {margin-left: 10px;}
+.recentlyAdded .arrPrev                             {background: url(../images/vinatge/arrowPrev.png) no-repeat;margin: 195px 5px 0; height: 15px; width: 7px; top: 0; }
+.recentlyAdded .arrNext                             {background: url(../images/vinatge/arrowNext.png) no-repeat;margin: 45px 5px; height: 15px; width: 7px; }
+
+
+.layout1-3 .box                     {}
+.tabCatalog .tabsMenu ul            {border: none;}
+
+
+
+.language-selector a img {
+    margin: 2px 17px 3px 4px;
+}
+
+.language-selector .otherLang a img {
+    float: left;
+    margin: 4px 17px 3px 5px;
+}
+
+
+
+.master-wrapper-whiteboard          {background: none repeat scroll 0 0 #FFF; border: 1px solid #468966 !important; box-shadow: none !important;padding: 0 0 20px; width: 940px !important; padding-bottom: 20px; border-radius: 0; }
+.ribCategories                      {background: url("../images/vinatge/comBg.png") repeat scroll 0 bottom transparent; margin-bottom: 63px; padding-top: 1px; position: relative;top: 0;width: 300px; right: 0;border-radius: 0; border: 0;background-size:cover; }
+.ribCategories h1                   {color: #FFF; font-family: cuprum,arial,sans-serif; font-size: 24px; text-decoration: none; text-transform: capitalize; }
+.rightSide button                   {background: url(../images/vinatge/btn.png) repeat; height: 42px; width: 100px; line-height: 42px; color: #FFF; font-family: Cuprum,arial,sans-serif; font-size: 18px; text-transform: uppercase;margin-top: 7px; margin-bottom: 25px;  float: none; margin: 5px auto 25px; display: block; border: 1px solid; }
+.rightSide                          {float: right !important; margin: 0 0 0 10px; width: 300px;}
+
+
+
+.leftSide .breadcrumb .head                     {background: none repeat scroll 0 0 transparent !important; color: #000;}
+.leftSide .breadcrumb .tail                     {background: none repeat scroll 0 0 transparent !important; color: #000;}
+.leftSide .breadcrumb li::after                 {content: ">"; position: relative; left: 3px; line-height: 27px;}
+.leftSide .breadcrumb li:last-child a           {color: #333; text-decoration: none;}
+.leftSide .breadcrumb li:last-child:after       {content: "";}
+.leftSide .breadcrumb a                         {background: none !important; width: auto; min-width: 0;color:#468966;}
+.cat a                                          {color: #ea2e49;}
+.cat li:last-child a                            {color: #333745; text-decoration: none;}
+
+.leftSide .breadcrumb li            {margin-left: 3px;margin-bottom:0px;}
+.leftSide .breadcrumb  .tail        {background:none repeat scroll 0 0 transparent;}
+
+.leftSide h1                        { font-size: 36px; font-weight: normal;text-transform: capitalize; padding-left: 40px; color: #b64926;}
+.leftSide .box                      {margin-left: 40px; border: 0;box-shadow: none; float: left; min-width: 92%; width: 93%; background: #FFF; }
+
+.catalogue                          {}
+.catalogue .itemBoxHeading          {
+background: rgb(91,172,132); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(91,172,132,1) 0%, rgba(49,102,72,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(91,172,132,1)), color-stop(100%,rgba(49,102,72,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(91,172,132,1) 0%,rgba(49,102,72,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(91,172,132,1) 0%,rgba(49,102,72,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(91,172,132,1) 0%,rgba(49,102,72,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(91,172,132,1) 0%,rgba(49,102,72,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5bac84', endColorstr='#316648',GradientType=0 ); /* IE6-9 */
+ max-height: 95px; padding-left: 249px; margin-left: -209px; margin-top: -1px;padding-bottom:5px; }
+.catalogue .itemImage               {left: 0; border: 1px solid #316748; top: 0; float: left; margin: 16px; background: #FFF; z-index: 2;}
+.catalogue .itemBoxOuter            {border: 0; margin: 0; }
+.catalogue .itemBoxOuterWrap        { border: 1px solid #468966; position: relative; left: -1px; overflow: hidden; box-shadow: 0; background: #FFF; border-radius: 0; }
+.catalogue .cornerLeftBig           {display: none;}
+.catalogue .itemBoxHeading h3       {padding-bottom: 5px;margin-bottom:5px; }
+.catalogue .itemBoxHeading p        {}
+.catalogue .itemBoxInner            {padding-left: 40px; }
+.catalogue .itemBoxInner p          {font-weight: lighter; font-family: Open Sans,arial,sans-serif; }
+.catalogue a.itemView                           {width: auto; background: none !important; color: #316748; font-family: cuprum ,arial,sans-serif; font-size: 13px; height: 9px;line-height: 8px; margin: 3px;border-radius: 0; padding: 8px; }
+
+.catalogue .itemBoxHeading h3 a     {display:block; max-height:39px;overflow:hidden;color: #FFF; font-family: Cuprum,arial,sans-serif; font-size: 20px; text-decoration: none;font-weight: normal; text-transform: capitalize; text-shadow: none; }
+.catalogue .itemBoxHeading a        {color: #fffabe; font-size: 14px; text-decoration: none;text-shadow: none; font-family: cuprum, arial, sans-serif; }
+
+.rightSide .banners img             { }
+
+.cusel                              {border: 1px solid #316748; background: none repeat scroll 0 0 #FFF; }
+
+.navBox a                           {color: #ea2e49;}
+.navBox .active                     {background: none !important;}
+.navCentered ul .nextPage           {background: none !important;}
+.navCentered ul .prevPage           {background: none !important;}
+
+.layout1-3 .box, .layout1-1-2 .box, .layout2-2 .box   {background: #6dbcdb;}
+
+.contactus .rightSide .box          {border: 1px solid #468966; box-shadow: none;float: right; padding: 21px; right: -1px; border-radius: 0 0 0 0; }
+.contactus .contactsForm            {border: none;}
+.contactsForm label span            {color: #ea2e49;}
+.contactus .leftSide                {width: 545px;}
+
+.contactsButton input               {background: none; height: 42px; line-height: 42px; color: #F19482; font-family: intro bold; font-size: 18px;margin-top: 0; border: 0; text-shadow: #6DBCDB; }
+
+.itemSingle .leftSide               {width: 625px;}
+
+.textInfo                           {font-family: roboto,arial,sans-serif; }
+.textInfo h3                        {font-family: cuprum, arial,sans-serif; color: #316648; font-size: 24px;text-transform: capitalize; font-weight: normal; }
+
+.itemSingle .gallery .thumbnails .galleryImage.current {border: 1px solid #b64926;}
+.itemSingle .bigImg                 {border: 1px solid #b64926; }
+
+.goodInfo                           {width: 214px !important;margin-top: -10px  !important; }
+.goodInfo li                        {line-height: 20px !important; font-size: 13px !important; min-height: 20px !important; }
+.goodInfo li:nth-last-child(2)      {margin: 10px 0;}
+.goodInfo label                     {font-size: 16px; float: left;  margin-top: 10px; }
+.boxHead .itemName                  {width: 100%; color: #b64926 !important; ; margin-top: -7px; margin-left: -5px;font-size: 16px; }
+.boxHead .share                     {float: right !important;  margin-left: -5px;margin-top: 0px; }
+.itemSingle .leftSide h1            {margin-bottom: 11px;color: #b64926; padding-left: 40px; text-transform: capitalize; margin-top: 0px; margin-bottom:0px; }
+
+.bucks          {color: #b64926;font-size: 24px; }
+.icoPDF         {color: #ea2e49;}
+
+.itemSingle .gallery                {}
+
+.itemSingle .keywords a             {COLOR: #B64926;}
+
+.contactsForm textarea              {border-color: #CDECDE;border: 2px solid #468966;overflow:auto; }
+.contactsForm input                 {border-color: #468966 !important; }
+
+.goBack a, .eventsSingle .goBack a  {background: none;}
+.newsHeading                        {background: url("../images/vinatge/headBg.png") repeat scroll center center transparent;border-radius: 0; }
+.newsSingle .newsBoxOuter           {border: 1px solid #468966;border-radius: 0; }
+.newsHeading .left                  {color: #FFF;}
+.newsHeading .right                 {color: #FFF;}
+.newsSingle .aboutBlockOuter        {padding-left: 40px;}
+.newsBoxOuterWrap                   {position: relative;}
+.newsHeadingInner                   {background: url(../images/vinatge/headBg.png) center center; position: relative; height: 72px; border-radius: 0; }
+.newsHeadingOuter                   {top: 0;}
+.newsHeadingInner a                 {color: #FFF;}
+
+.newsView                           {width: auto; padding: 8px; background: none !important; color: #316748; font-family: cuprum,arial,sans-serif; font-size: 13px; height: 9px;line-height: 8px; margin: 4px -6px;border-radius: 0; font-weight: normal; }
+.newsView:hover                     {text-decoration: underline;}
+.newsBoxOuter                       {border: 1px solid #468966;background: none repeat scroll 0 0 #FFF; border-radius: 0; box-shadow: none; margin: 0; overflow: hidden; margin-left: -1px; }
+
+.newsHeadingInner h3{
+    color: #FFF;
+    font-size: 20px;
+    font-weight: normal;
+    text-decoration: none;
+    text-transform: capitalize;
+    line-height: 74px;
+	font-family: cuprum, arial, sans-serif;
+}
+
+.newsInfo .left     {color: #316748;}
+
+.newsImage {
+    min-height: 0;
+    padding-top: 85px;
+}
+
+
+.contactsButton                     {width: 80%; }
+.contactsButton input               {background: url(../images/vinatge/btn.png) repeat; height: 42px; width: 100px; line-height: 42px; color: #FFF; font-family: roboto, sans-serif; font-size: 18px;margin-top: 7px; margin-bottom: 25px;  float: none; margin: 5px auto 25px; display: block; font-weight: normal; border-radius: 0; }
+
+
+.cusel span, .cuselText{
+	color:#6DBCDB;
+}
+
+.zoomWindowContainer div{
+z-index:1000 !important; 
+}
+
+
+.box .littleSeeAll:hover{
+  color: #ea2e49;
+}
+
+
+.itemSingle .box > .boxHead{
+height:auto;
+}
+
+.leftSide h1{
+  width:auto;
+}
+
+.littleSeeAll span, .tabCatalog .redRibbon a span {
+  font-size: 11px;
+  position: absolute;
+  right: -10px;
+  text-decoration: none;
+}
+
+.layout2-2 .recentlyAdded .slideGoods{
+ margin-left:21px;
+}
+
+.tabCatalog .redRibbon a span{
+  top:-6px;
+}
+
+
+.newsSingle.leftSide h1{
+  width:538px;
+  font-size:30px;
+}
+
+.itemSingle .box .boxHead{
+  height:auto;
+}
+
+.box .boxHead h2,h1, h2, h3, h4, h5, h6, .LatesNews .news .newsHeadline, .tabCatalog .tabsMenu ul li a, .nivoSlider a,.contactsButton input{
+  font-family: Cuprum, arial, sans-serif !important;
+}
+
+.master-wrapper-main, .textInfo, .recentlyAdded .goodCaption, .LatesNews .news .imgNews .newsDate{
+  font-family: Open Sans, arial, sans-serif !important;
+}
+
+.catalogue .itemBoxHeading h3 {
+  max-height: 39px;
+  padding-bottom: 5px;
+}
+
+.cat li.last {
+  color: #333745;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 27px;
+  padding-left: 13px;
+  text-transform: none;
+}
+
+.itemSingle .icoPDF{
+  text-align:left;
+  padding-left:20px;
+}
+
+.leftSide .breadcrumb.cat li a.rootLink{
+  text-decoration:underline;
+  color:#468966;
+}
+
+.itemSingle .leftSide .breadcrumb li:last-child a
+{
+  text-decoration:underline;
+  color: #468966;
+}
+.itemSingle .leftSide .breadcrumb li:last-child a:hover{
+color: #1791c0;
+}
+
+.itemImage + .itemBoxOuter .itemBoxHeading {
+    left: -200px;
+    margin-left: 0;
+    padding-left: 220px;
+}
+
+.itemImage + .itemBoxOuter .itemBoxInner{
+  padding-left:220px;
+}
+
+
+.master-wrapper-main .master-wrapper-whiteboard .leftSide .p40{
+  font-size:14px;
+  line-height: 20px;
+}
+
+
+.master-wrapper-main .master-wrapper-whiteboard .leftSide .p40 h2{
+  color:#316648 !important;
+  font-size:24px !important;
+  margin:0px;
+}

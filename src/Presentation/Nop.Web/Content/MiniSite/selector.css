@@ -1,0 +1,63 @@
+﻿.page-selector {
+  background: none repeat scroll 9px center white;
+  height: 75px;
+  left: 0;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+}
+.page-selector .cusel {
+  margin-left: 40%;
+  margin-top: 20px;
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 2px solid #DAEDE2;
+  cursor: pointer;
+  display: inline-block;
+  float: left;
+  font-size: 14px;
+  height: 28px;
+  margin-bottom: 24px;
+  position: relative;
+  width: 191px !important;
+  z-index: 1;
+  color:#5C5B5B;
+  border-radius:inherit;
+}
+
+.header {
+    margin-top:75px;
+}
+
+
+.page-selector .cusel .cusel-scroll-wrap{
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 2px solid #77C4D3;
+}
+
+.page-selector .cusel span,.page-selector .cuselText {
+  color: #6DBCDB;
+}
+
+.page-selector .cusel span:hover,.page-selector .cusel .cuselOptHover:hover {
+	background: #77C4D3;
+	color: #ffffff;
+}
+
+
+.fMiddle{
+ margin-left:-220px;
+}
+
+.rightSide button{
+  margin-top:20px;
+}
+
+.sizes li{
+  margin-top:-1px !important;
+}
+
+.itemSingle .facebook{
+  float:right;
+}

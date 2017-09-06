@@ -1,0 +1,73 @@
+﻿@model Nop.Web.Models.Customer.CustomerAddressListModel
+<div class="chained">
+    <div class="box">
+        <h3>@T("Profile.Contacts")</h3>
+    </div>
+    @foreach(var address in Model.Addresses)
+    {
+        <div class="middleBox"></div>
+        <div class="box">
+            <div class="lineBox">
+                <div class="contactLine">
+                    <div class="icoMan icoA"></div>
+                    <div class="underline"><span>@address.FirstName</span></div>
+                </div>
+                <div class="contactLine">
+                    <div class="icoPhone icoA"></div>
+                    <div class="underline"><span>@address.PhoneNumber</span></div>
+                </div>
+                @if (address.PhoneNumber1 != null)
+                {
+                    <div class="contactLine">
+                        <div class="icoPhone icoA"></div>
+                        <div class="underline"><span>@address.PhoneNumber1</span></div>
+                    </div>
+                }
+                @if (address.PhoneNumber2 != null)
+                {
+                    <div class="contactLine">
+                        <div class="icoPhone icoA"></div>
+                        <div class="underline"><span>@address.PhoneNumber2</span></div>
+                    </div>
+                }
+                @if (address.PhoneNumber3 != null)
+                {
+                    <div class="contactLine">
+                        <div class="icoPhone icoA"></div>
+                        <div class="underline"><span>@address.PhoneNumber3</span></div>
+                    </div>
+                }
+                <div class="contactLine">
+                    <div class="icoLetter icoA"></div>
+                    <div class="underline"><span>@address.Address1</span></div>
+                    <div class="underline"><span>@address.City @Html.Raw(",") @address.CountryName</span></div>
+                </div>
+                <div class="contactLine">
+                    <div class="icoDog icoA"></div>
+                    <div class="underline"><span><a href="mailto:@address.Email">@address.Email</a></span></div>
+                </div>
+                @if (address.Email1 != null)
+                {
+                    <div class="contactLine">
+                        <div class="icoDog icoA"></div>
+                        <div class="underline"><span><a href="mailto:@address.Email1">@address.Email1</a></span></div>
+                    </div>
+                }
+                @if (address.Email2 != null)
+                {
+                    <div class="contactLine">
+                        <div class="icoDog icoA"></div>
+                        <div class="underline"><span><a href="mailto:@address.Email2">@address.Email2</a></span></div>
+                    </div>
+                }
+                @if (address.Email3 != null)
+                {
+                    <div class="contactLine">
+                        <div class="icoDog icoA"></div>
+                        <div class="underline"><span><a href="mailto:@address.Email3">@address.Email3</a></span></div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

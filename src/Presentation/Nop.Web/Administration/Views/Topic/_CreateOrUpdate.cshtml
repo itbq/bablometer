@@ -1,0 +1,135 @@
+﻿@model TopicModel
+
+@using Telerik.Web.Mvc.UI;
+
+@Html.ValidationSummary(false)
+
+@Html.HiddenFor(model => model.Id)
+@Html.Telerik().TabStrip().Name("topic-edit").Items(x =>
+{
+    x.Add().Text(T("Admin.ContentManagement.Topics.Info").Text).Content(TabInfo().ToHtmlString()).Selected(true);
+    x.Add().Text(T("Admin.Common.SEO").Text).Content(TabSeo().ToHtmlString());
+
+    //generate an event
+    EngineContext.Current.Resolve<IEventPublisher>().Publish(new AdminTabStripCreated(x, "topic-edit"));
+})
+@helper TabInfo()
+    { 
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.SystemName):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.SystemName)
+                @Html.ValidationMessageFor(model => model.SystemName)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model=>model.DisplayInMenu)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model=>model.DisplayInMenu)
+                @Html.ValidationMessageFor(model => model.DisplayInMenu)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model=>model.Priority)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model=>model.Priority)
+                @Html.ValidationMessageFor(model => model.Priority)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.DisplayInFooterMenu):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.DisplayInFooterMenu)
+                @Html.ValidationMessageFor(model => model.DisplayInFooterMenu)
+            </td>
+        </tr>
+        @if (Model.Id > 0)
+        {
+            <tr>
+                <td class="adminTitle">
+                    @Html.NopLabelFor(model => model.Url):
+                </td>
+                <td class="adminData">
+                    @if (Model.SystemName != "ContactUs")
+                    {
+                        <a href="@Model.Url">@Model.Url</a>
+                    }
+                    else
+                    {
+                        <a href="http://etf.com/ContactUs">http://etf.com/ContactUs</a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Title):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Body):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.Body, "RichEditor")
+            @Html.ValidationMessageFor(model => model.Body)
+        </td>
+    </tr>
+    <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.MenuTitle):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.MenuTitle)
+                @Html.ValidationMessageFor(model => model.MenuTitle)
+            </td>
+        </tr>
+</table>
+}
+@helper TabSeo()
+    {
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.MetaKeywords):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.MetaKeywords)
+            @Html.ValidationMessageFor(model => model.MetaKeywords)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.MetaDescription):
+        </td>
+        <td class="adminData">
+            @Html.TextAreaFor(x => x.MetaDescription)
+            @Html.ValidationMessageFor(model => model.MetaDescription)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.MetaTitle):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.MetaTitle)
+            @Html.ValidationMessageFor(model => model.MetaTitle)
+        </td>
+    </tr>
+</table>
+}

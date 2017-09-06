@@ -1,0 +1,64 @@
+﻿.foo{}
+fieldset.social-login-block 
+{
+    display: inline;
+    float: left;
+    margin:5px;
+}
+
+.exoauth_btn {
+	width: 100px;
+	height: 40px;
+/* fix for IE 6 only: http://en.wikipedia.org/wiki/CSS_filter#Underscore_hack */
+	_width: 102px;
+	_height: 42px;
+
+	border: 1px solid #DDD;
+	margin: 3px;
+	float: left;
+}
+
+a.exoauth_btn:focus {
+	outline: none;
+}
+
+a.exoauth_btn:focus {
+	-moz-outline-style: none;
+}
+
+.social-facebook-btn {
+    background-image: url('images/facebook-account-logo.png');
+    background-repeat: no-repeat;
+}
+.social-yahoo-btn {
+    background-image: url('images/yahoo-account-logo.png');
+    background-repeat: no-repeat;
+}
+.social-googleId-btn {
+    background-image: url('images/googleId-account-logo.png');
+    background-repeat: no-repeat;
+}
+.social-google-btn {
+    background-image: url('images/google-account-logo.png');
+    background-repeat: no-repeat;
+}
+.social-linkedin-btn {
+    background-image: url('images/linkedin-account-logo.png');
+    background-repeat: no-repeat;
+}
+.social-mailru-btn {
+    background-image: url('images/mailru-account-logo.png');
+    background-repeat: no-repeat;
+}
+.social-twitter-btn {
+    background-image: url('images/twitter-account-logo.png');
+    background-repeat: no-repeat;
+}
+.social-vk-btn {
+    background-image: url('images/vk-account-logo.png');
+    background-repeat: no-repeat;
+}
+.social-yandex-btn {
+    background-image: url('images/yandex-account-logo.png');
+    background-repeat: no-repeat;
+}

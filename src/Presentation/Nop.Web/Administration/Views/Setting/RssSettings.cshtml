@@ -1,0 +1,58 @@
+﻿@model RssSettingsModel
+@{
+    ViewBag.Title = T("Admin.Rss.Name").Text;
+}
+@using (Html.BeginForm("RssSettings", "Setting", FormMethod.Post))
+{
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-content.png")" alt="" />
+        @T("Admin.Rss.Name").Text
+    </div>
+    <div class="options">
+        <input type="submit" class="t-button" value="@T("Admin.Common.Save").Text" />
+    </div>
+</div>
+    <table>
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model=>model.EventFeedCount)
+            </td>
+            <td class="adminContent">
+                @Html.EditorFor(model=>model.EventFeedCount)
+                @Html.RequiredHint()
+                @Html.ValidationMessageFor(model=>model.EventFeedCount)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model=>model.NewsFeedCount)
+            </td>
+            <td class="adminContent">
+                @Html.EditorFor(model=>model.NewsFeedCount)
+                @Html.RequiredHint()
+                @Html.ValidationMessageFor(model=>model.NewsFeedCount)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model=>model.ProductFeedCount)
+            </td>
+            <td class="adminContent">
+                @Html.EditorFor(model=>model.ProductFeedCount)
+                @Html.RequiredHint()
+                @Html.ValidationMessageFor(model=>model.ProductFeedCount)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model=>model.SellerFeedCount)
+            </td>
+            <td class="adminContent">
+                @Html.EditorFor(model=>model.SellerFeedCount)
+                @Html.RequiredHint()
+                @Html.ValidationMessageFor(model=>model.SellerFeedCount)
+            </td>
+        </tr>
+    </table>
+}

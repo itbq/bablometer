@@ -1,0 +1,197 @@
+﻿@model Nop.Web.Models.MiniSite.MiniSiteGeneralSetupModel
+
+@using Nop.Web.Models.Customer
+@{
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+    Html.AddTitleParts(T("ETF.MiniSite.Setup.Title").Text);
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery(document).ready(function () {
+            var params = {
+                changedEl: "select",
+                scrollArrows: true,
+                visRows: 10
+            }
+            cuSel(params);
+            $(".colorSlider .slider").diyslider({
+                width: "960px", // width of the slider
+                height: "210px", // height of the slider
+                display: 4, // number of slides you want it to display at once
+                loop: true // disable looping on slides
+            }); // this is all you need!
+            // use buttons to change slide
+            $(".cmPrev").bind("click", function () {
+                $(".colorSlider .slider").diyslider("move", "back");
+                return false;
+            });
+            $(".cmNext").bind("click", function () {
+                $(".colorSlider .slider").diyslider("move", "forth");
+                return false;
+            });
+        });
+    });
+    </script>
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.MiniSite })
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <ul id="productMenu">
+            <li><a href="/MiniSiteManagement/MainSetup" class="current">@T("ETF.MiniSite.Setup.Options.General")</a></li>
+            <li><a href="/MiniSiteManagement/SliderSetup">@T("ETF.MiniSite.Setup.Options.Slider")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetup">@T("ETF.MiniSite.Setup.Options.Banner")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetupAdd">@T("ETF.MiniSite.Setup.Banner.Add")</a></li>
+            <li><a href="/MiniSiteManagement/TextPageSetup">@T("ETF.MiniSite.Setup.Options.TextPages")</a></li>
+        </ul>
+        @using(Html.BeginForm())
+        {
+            <div class="createSite setupSite">
+                <div class="whiteBox">
+                    <h1>@T("ETF.MiniSite.Setup.Title")</h1>
+                    <h2 class="bottom">@T("ETF.MiniSite.Settings")</h2>
+                </div>
+                <div class="greyBox">
+                    <div class="regInfoBox box">
+                        <div class="regInfoLeft">
+                            <div class="full">
+                                <label>@T("ETF.MiniSite.Title.En") <span class="asterisk"></span>@Html.ValidationMessageFor(model => model.Title)</label>
+                                @Html.EditorFor(model => model.Title)
+                            </div>
+                            <div class="full">
+                                <label>@T("ETF.MiniSite.Title.Ru") <span class="asterisk"></span>@Html.ValidationMessageFor(model => model.TitleRus)</label>
+                                @Html.EditorFor(model => model.TitleRus)
+                            </div>
+                            <div class="full">
+                            <label>@T("ETF.MiniSite.Email") <span class="asterisk"></span>@Html.ValidationMessageFor(model => model.ContactEmail)</label>
+                            @Html.EditorFor(model => model.ContactEmail)
+                        </div>
+                            <div class="full">
+                            <label>@T("ETF.MiniSite.GoogleAnalytics") </label>
+                            @Html.TextAreaFor(model => model.GoogleAnalytics, new {rows="10" })
+                        </div>
+                        </div>
+                    <div class="regInfoRight">
+                        <div class="attachType">@T("Profile.Company.Logo")</div>
+                        @Html.EditorFor(model => model.LogoId)
+                    </div>
+                        </div>
+                </div>
+                <div class="whiteBox">
+                    <h2 class="top">@T("ETF.MiniSite.Template.Choose")</h2>
+                    <h2 class="bottom">@T("ETF.MiniSite.Layout.Choose")</h2>
+                    <p>@T("MiniSite.Template.Prompt")</p>
+                    <div class="colorSlider">
+                        <div class="cmPrev"></div>
+                        <div class="cmNext"></div>
+    
+                        <div class="previews">
+                            @foreach (var style in Model.AviableCssTemplates)
+                            {
+                                <div class="preview invisible"><img src="@Url.Content("~/Content/MiniSite/Templates/" + style + "/preview.jpg")" width="600" height="465" alt=""/></div>@*
+                                <div class="preview invisible"><img src="images/colorPreview.png" width="324" height="309" alt=""/></div>
+                                <div class="preview invisible"><img src="images/colorPreview.png" width="324" height="309" alt=""/></div>
+                                <div class="preview invisible"><img src="images/colorPreview.png" width="324" height="309" alt=""/></div>*@
+                            }
+                        </div>
+    
+                        <script type="text/javascript">
+                            currentPreview = "";
+                            function openMyPreview(el) {
+                                var preview = $(".previews .preview").eq($('.relav img').index($(el)));
+                                preview.fadeOut(0);
+                                preview.css("left", $(el).offset().left - $(".previews").offset().left + ($(el).outerWidth() - preview.outerWidth()) / 2);
+                                preview.css("top", $(el).offset().top - $(".previews").offset().top + ($(el).outerHeight() - preview.outerHeight()) / 2);
+                                setTimeout(function () { preview.stop(); preview.fadeIn(300); }, 50);
+                                currentPreview = preview.find("img")[0];
+                            }
+
+                            $(document).click(function (e) {
+                                $(".previews .preview").fadeOut();
+                            })
+
+                        </script>
+                        <div class="slider">
+                            <div>
+                                    @for (int j = 0; j < Model.AviableCssTemplates.Count; j++)
+                                    {
+                                        <div class="relav"><input type="radio" name="CssTemplateName" id="r_cm_@Html.Raw(j)" value="@Model.AviableCssTemplates[j]" @if (Model.CssTemplateName == Model.AviableCssTemplates[j]) { @Html.Raw("checked") } /><label for="r_cm_@Html.Raw(j)"></label><div class="labl"><a href="/minisite/Preview?CssFolderName=@Model.AviableCssTemplates[j]&LayoutType=1" target="_blank">@T("ETF.MiniSite.Template.Demo")</a><img src="@Url.Content("~/Content/MiniSite/Templates/" + Model.AviableCssTemplates[j] + "/preview.jpg")" width="220" height="170" alt="" onclick='openMyPreview(this);'/></div></div>
+                                    }
+                                    
+                                    @*<div class="relav"><input type="radio" name="r_cm" id="r_cm_2"/><label for="r_cm_2"></label><div class="labl"><a href="#">Demo</a><img src="images/colorMockup2.png" onclick='openMyPreview(this);' width="220" height="170" alt=""/></div></div>
+                                    <div class="relav"><input type="radio" name="r_cm" id="r_cm_3"/><label for="r_cm_3"></label><div class="labl"><a href="#">Demo</a><img src="images/colorMockup3.png" onclick='openMyPreview(this);' width="220" height="170" alt=""/></div></div>
+                                    <div class="relav"><input type="radio" name="r_cm" id="r_cm_4"/><label for="r_cm_4"></label><div class="labl"><a href="#">Demo</a><img src="images/colorMockup4.png" onclick='openMyPreview(this);' width="220" height="170" alt=""/></div></div>*@
+                            </div>
+                        </div>
+                        <div>
+                                @Html.ValidationMessageFor(model=>model.CssTemplateName)</div>
+                    </div>
+                </div>
+                <div class="greyBox">
+                    <p>@T("MiniSite.Layout.Prompt")</p>
+                    <div class="layoutLand">
+                        <div>
+                            <input type="radio" name="LayoutId" id="r_lt_1" value="3" @if(Model.LayoutId == 3){@Html.Raw("checked")}/><label for="r_lt_1"><img src="@Url.Content("~/Content/etf/images/1x3-" + WorkContext.WorkingLanguage.UniqueSeoCode +".png")" width="300" height="236" alt=""/></label>
+                        </div>
+                        <div>
+                            <input type="radio" name="LayoutId" id="r_lt_2" value="1" @if(Model.LayoutId == 1){@Html.Raw("checked")}/><label for="r_lt_2"><img src="@Url.Content("~/Content/etf/images/1x1x2-" + WorkContext.WorkingLanguage.UniqueSeoCode +".png")" width="300" height="236" alt=""/></label>
+                        </div>
+                        <div>
+                            <input type="radio" name="LayoutId" id="r_lt_3" value="2" @if(Model.LayoutId == 2){@Html.Raw("checked")}/><label for="r_lt_3"><img src="@Url.Content("~/Content/etf/images/2x2-" + WorkContext.WorkingLanguage.UniqueSeoCode +".png")" width="300" height="236" alt=""/></label>
+                        </div>
+                        <div>
+                                @Html.ValidationMessageFor(model=>model.LayoutId)</div>
+                    </div>
+                </div>
+    
+                <div class="whiteBox">
+                    <h2 class="top">@T("ETF.MiniSite.Domain.Select")</h2>
+                    <p>@T("MiniSite.Domain.Address")</p>
+                    <ul>
+                        <li>
+                            @T("Etf.Domain.Prompt.First")
+                        </li>
+                        <li>
+                            @T("Etf.Domain.Prompt.Second")
+                        </li>
+                        <li>
+                            @T("Etf.Domain.Prompt.Third")
+                        </li>
+                        <li>
+                            @T("Etf.Domain.Prompt.Four")
+                        </li>
+                    </ul>
+                    <div class="domainSelect">
+                        <div class="subdomain">
+                            <div class="headDom"><span class="dname">http://<strong>@if(!String.IsNullOrEmpty(Model.DomainName)){@Html.Raw(Model.DomainName)}else{@Html.Raw(T("ETF.MiniSite.YourDomain").Text)}</strong>.@(Request.Url.Host)</span></div>
+                            <h3>@T("ETF.MiniSite.Domain.Second") @(Request.Url.Host)</h3>
+                            <input type="text" class="domainNameInp" onchange="$(this).parent().find('.dname strong').html($(this).val());" onkeydown="$(this).parent().find('.dname strong').html($(this).val());" name="DomainName" value="@Model.DomainName"/>
+                            <input type="radio" id="rDom1" name="UseSecondLavelDomain" value="true" @if(Model.UseSecondLavelDomain == true){@Html.Raw("checked")}/><label for="rDom1"></label>
+                        </div>
+                        <div class="yourdomain">
+                            <div class="headDom"><span class="dname">http://<strong>@if(!String.IsNullOrEmpty(Model.OwnDomain)){@Html.Raw(Model.OwnDomain)}else{@Html.Raw(T("ETF.MiniSite.YourDomain").Text + ".com")}</strong></span></div>
+                            <h3>@T("ETF.MiniSite.OwnDomain")</h3>
+                            <input type="text" class="domainNameInp" onkeydown="$(this).parent().find('.dname strong').html($(this).val());" onchange="$(this).parent().find('.dname strong').html($(this).val());" name="OwnDomain" value="@Model.OwnDomain"/>
+                            <input type="radio" id="rDom2" name="UseSecondLavelDomain" value="false" @if(Model.UseSecondLavelDomain == false){@Html.Raw("checked")}/><label for="rDom2"></label>
+                        </div>
+                        <div>
+                                @Html.ValidationMessageFor(model=>model.UseSecondLavelDomain)
+                            @Html.ValidationMessageFor(model=>model.OwnDomain)
+                             @Html.ValidationMessageFor(model=>model.DomainName)
+                        </div>
+                    </div>
+                     <input type="submit" class="createSiteBtn" value="@T("common.save")"  />
+                </div>
+                
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#layout-droopdown').change(function () {
+        var layout = $('#layout-droopdown').val();
+        var css = $('#css-droopdown').val();
+        $('#previewlink').attr('href', '/minisite/Preview?CssFolderName=' + css + '&LayoutType=' + layout);
+    });
+</script>
+

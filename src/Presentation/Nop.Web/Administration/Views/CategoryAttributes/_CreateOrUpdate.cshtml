@@ -1,0 +1,166 @@
+﻿@model CategoryProductAttributeGroupModel
+
+@using Telerik.Web.Mvc.UI;
+
+@Html.ValidationSummary(false)
+@Html.HiddenFor(model => model.Id)
+
+@Html.Telerik().TabStrip().Name("categoryproductattributes-edit").Items(x =>
+{
+    x.Add().Text(T("Admin.Catalog.CategoryProductAttributeGroup.Info").Text).Content(TabInfo().ToHtmlString()).Selected(true);
+    x.Add().Text(T("Admin.Catalog.CategoryProductAttributeGroup.Attributes").Text).Content(TabAttributes().ToHtmlString());
+
+    //generate an event
+    EngineContext.Current.Resolve<IEventPublisher>().Publish(new AdminTabStripCreated(x, "categoryproductattributes-edit"));
+})
+@helper TabInfo()
+{ 
+    @(Html.NoStandartLocalizedEditor<CategoryProductAttributeGroupModel, CategoryProductAttributeGroupLocalizedModel>("categoryproductattributegroup-localized",
+    @<table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Locales[item].Name):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.Locales[item].Name)
+                @Html.ValidationMessageFor(model => model.Locales[item].Name)
+            </td>
+        </tr>
+        @*<tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Locales[item].Description):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Locales[item].Description, "RichEditor")
+                @Html.ValidationMessageFor(model => model.Locales[item].Description)
+            </td>
+        </tr>*@
+        <tr>
+            <td colspan="2">
+                @Html.HiddenFor(model => model.Locales[item].LanguageId)
+            </td>
+        </tr>
+    </table>
+    ,
+    @<table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Name):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </td>
+        </tr>
+        @*<tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Description):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(x => x.Description, "RichEditor")
+                @Html.ValidationMessageFor(model => model.Description)
+            </td>
+        </tr>*@
+    </table>
+))
+}
+
+@helper TabAttributes()
+{
+    if (Model.Id > 0)
+    {
+    @(Html.Telerik().Grid<CategoryProductAttributeModel>()
+                .Name("categopyproductattributes-grid")
+                .DataKeys(keys =>
+                {
+                    keys.Add(x => x.Id);
+                })
+                .DataBinding(dataBinding =>
+                {
+                    dataBinding.Ajax()
+                        .Select("CategoryProductAttributeList", "CategoryAttributes", new { categoryProductGroupId = Model.Id })
+                        .Insert("CategoryProductAttributeInsert", "CategoryAttributes", new { categoryProductGroupId = Model.Id })
+                        .Update("CategoryProductAttributeUpdate", "CategoryAttributes")
+                        .Delete("CategoryProductAttributeDelete", "CategoryAttributes");
+                })
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.ProductAttribute)
+                        .Width(150)
+                        .Centered();
+                    columns.Bound(x => x.MainAttribute)
+                        .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.MainAttribute.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= MainAttribute #>.gif' />")
+                        .Width(80)
+                        .Centered();
+                    columns.Bound(x => x.IsRequired)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.IsRequired.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= IsRequired #>.gif' />")
+                            .Centered()
+                            .Width(80);
+                    columns.Bound(x => x.ProductBoxAttribute)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.ProductBoxAttribute.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= ProductBoxAttribute #>.gif' />")
+                            .Centered()
+                            .Width(80);
+                    columns.Bound(x => x.AdditionalAttribute)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.AdditionalAttribute.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= AdditionalAttribute #>.gif' />")
+                            .Centered()
+                            .Width(80);
+                            columns.Bound(x => x.AttributeControlType)
+                                .Width(150)
+                                .Centered();
+                            columns.Bound(x => x.SearchAttributeControlType)
+                                .Width(150)
+                                .Centered();
+                            columns.Bound(x => x.DisplayOrder1)
+                                .Width(50)
+                                .Centered();
+                            columns.Bound(x => x.ViewEditUrl)
+                                .Width(200)
+                                .ClientTemplate("<a href=\"<#= ViewEditUrl #>\"><#= ViewEditText #></a>")
+                                .ReadOnly()
+                                .Title(T("Admin.Catalog.CategoryProductAttribute.Attributes.Values").Text);
+                            columns.Command(commands =>
+                            {
+                                commands.Edit().Text(T("Admin.Common.Edit").Text);
+                                commands.Delete().Text(T("Admin.Common.Delete").Text);
+                            })
+                            .Width(180);
+                })
+                                                                                                                            .ToolBar(commands => commands.Insert())
+                                                                                                                            .ClientEvents(events => events.OnEdit("onCategoryProductAttributeEdit").OnError("onCategoryProductAttributeError"))
+                                                                                                                            .EnableCustomBinding(true))
+    
+                <script type="text/javascript">
+                    function onCategoryProductAttributeEdit(e) {
+                        $(e.form).find('#CategoryProductAttribute').data('tDropDownList').select(function (dataItem) {
+                            return dataItem.Value == e.dataItem['CategoryProductAttributeId'];
+                        });
+
+                        $(e.form).find('#AttributeControlType').data('tDropDownList').select(function (dataItem) {
+                            return dataItem.Value == e.dataItem['AttributeControlTypeId'];
+                        });
+                    }
+
+                    function onCategoryProductAttributeError(e) {
+                        alert(e.XMLHttpRequest.responseText);
+                        e.preventDefault();
+                    }
+                </script>
+    }
+    else
+    {
+    @T("Admin.Catalog.CategoryProductAttributeGroup.Attributes.SaveBeforeEdit")
+    }
+}
+

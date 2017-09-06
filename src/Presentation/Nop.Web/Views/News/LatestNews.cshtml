@@ -1,0 +1,66 @@
+﻿@model IList<Nop.Web.Models.News.NewsItemModel>
+@{
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+}
+
+<div class="LatesNews box">
+    <div class="boxHead">
+        <h2>@T("News.LatestNews")</h2>
+        @Html.ActionLink(_localisationService.GetResource("seeall.lower"),"List","News",null,new {@class="littleSeeAll"})
+        <a class="rssRibbon" href="@Url.RouteUrl("NewsFeed")"><div class="cornerRight"></div>RSS</a>
+    </div>
+    <div class="boxBody">
+        @if (Model.Count > 0)
+        {
+        <div class="hotNews">
+            @{
+                var featuredNew = Model.Where(x => x.Featured).FirstOrDefault();
+            }
+            @if (featuredNew != null)
+            {
+                <div class="hotImg">
+                    @if(featuredNew.Picture!= null){<img src="@featuredNew.Picture.ImageUrl" alt="@featuredNew.Title">}
+                </div>
+                <div class="newsDate">
+                    @featuredNew.PublishingDate.Value.ToString("dd.MM.yy")
+                </div>
+                <a href="@Url.RouteUrl("NewsItem", new { SeName = featuredNew.SeName })">
+                    <div class="newsHeadline">
+                        <span>@featuredNew.Title</span><div class="cornerLeft"></div>
+                    </div>
+                </a>
+                <div class="newsText">
+                    <div class="cornerLeft"></div>
+                        <p>@featuredNew.Short</p>
+                </div>
+            }else
+            {
+                <div class="hotImg">
+                @if(Model[0].Picture!= null){<img src="@Model[0].Picture.ImageUrl" alt="@Model[0].Title">}</div>
+                <div class="newsDate">@Model[0].PublishingDate.Value.ToString("dd.MM.yy")</div>
+                <a href="@Url.RouteUrl("NewsItem", new { SeName = Model[0].SeName })"><div class="newsHeadline"><span>@Model[0].Title</span><div class="cornerLeft"></div></div></a>
+                <div class="newsText"><div class="cornerLeft"></div><p>@Model[0].Short</p></div>
+            }
+        </div>
+
+        <div class="news">
+            @for (int i = featuredNew == null ? 1:0; i < Model.Count; i++)
+            {
+                if (Model[i].Featured)
+                {
+                    continue;
+                }
+                <div class="newsBox">
+                    <a href="@Url.RouteUrl("NewsItem", new { SeName = Model[i].SeName })" class="newsHeadline">@Model[i].Title</a>
+                    <div class="newsText"><span>@Model[i].Short</span></div>
+                    <div class="imgNews">
+                        <div class="cornerRight"></div>
+                        <div class="newsDate">@Model[i].PublishingDate.Value.ToString("dd.MM")</div>
+                        @if(Model[i].Picture != null){<img src="@Model[i].Picture.ImageUrl" alt="@Model[i].Title">}
+                    </div>
+                </div>
+            }
+        </div>
+        }
+    </div>
+</div>

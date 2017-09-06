@@ -1,0 +1,20 @@
+﻿@model Nop.Web.Models.Catalog.CategoryNavigationModel
+<div class="w650">
+    @foreach (var category in Model.Categories)
+    {
+        <ul class="tabCat">
+            <li><h3><a href="@Url.RouteUrl("MiniCategoryItem",new {SeName = category.SeName,itemtype=Model.ItemType.ToString()})">@category.Name</a></h3></li>
+            @foreach(var subCategory in category.SubCategories)
+            {
+                <li><a href="@Url.RouteUrl("MiniCategoryItem",new {SeName = subCategory.SeName,itemtype=Model.ItemType.ToString()})">@subCategory.Name</a></li>
+            }
+        </ul>
+    }
+</div>
+<div class="redRibbon tabSeeAll">
+    <a href="@Url.RouteUrl("MiniCategoryItem",new {SeName = "all",itemtype=Model.ItemType.ToString()})">@T("MiniSite.SeeAll.Catalog")<span> ></span></a>
+</div>
+@if(WorkContext.CurrentMiniSite.LayoutId == 1)
+{
+    <div class="border-line">&nbsp;</div>
+}

@@ -1,0 +1,28 @@
+﻿@model  IList<Nop.Web.Models.Catalog.ProductShortModel>
+<div class="recentlyAdded box">
+    <div class="boxHead">
+        <h2>@T("MiniSite.Home.RecentlyAddedProducts")</h2>
+        <a href="/Catalogue/Product" class="littleSeeAll">@T("MiniSite.SeeAll.Lower")<span> ></span></a>
+    </div>
+    <div class="boxBody">
+        <div class="slideGoods">
+            <a  href="#" class="arrPrev" id="go-left"><div class="cornerLeft"></div></a>
+            <a href="#" class="arrNext" id="go-right"><div class="cornerRight"></div></a>
+
+            <div class="goods">
+                <div>
+                    @foreach(var product in Model)
+                    {
+                        <div class="goodBox">
+                            <a href="/Catalogue/Product?BrandId=@product.BrandId" class="goodCaption BrandName">@product.BrandName</a>
+                            <div class="productPicture">@if(product.PictureUrl != null){<img src="@product.PictureUrl" alt=""/>}</div>
+                            <a href="@Url.RouteUrl("MiniProduct",new {seName = product.ProductSeName})" class="goodLink">
+                                @product.ProductName
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+﻿@model Nop.Web.Areas.MiniSite.Models.Common.ContactUsModel
+@{
+    Layout = "_RootNoScript";
+
+    Html.AddTitleParts(T("PageTitle.ContactUs").Text);
+}
+<script>
+    $(document).ready(function () {
+        if(@Html.Raw(Model.SuccessfullySent.ToString().ToLower()))
+        {
+            $('#firstPopOk h2').text('');
+            $('#firstPopOk p').text('@T("ETF.ContactUs.Email.Success")');
+            $('.contactsForm form input').not("input[type='submit']").val('');
+            $('.contactsForm form textarea').val('');
+            showPop("firstPopOk");
+        }
+    });
+</script>
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard contactus">
+                <div class="leftSide">
+                    <h1>@T("ContactUs")</h1>
+
+                    <div class="contactsForm  box">
+                            <form name="ContactUs" action="/Contacts" method="post">
+                                <p>
+                                    <label for="userName">@T("ETF.ContactUs.Name"):<span>*</span></label>@Html.ValidationMessageFor(model => model.FullName)<br />
+                                    @Html.EditorFor(model => model.FullName)
+                                </p>
+                                <p>
+                                    <label for="userCompany">@T("Profile.Company.Name"):</label>@Html.ValidationMessageFor(model => model.Company)<br />
+                                    @Html.EditorFor(model => model.Company)
+                                </p>
+                                <p>
+                                    <label for="userEmail">Email:<span>*</span></label>@Html.ValidationMessageFor(model => model.Email)<br />
+                                    @Html.EditorFor(model => model.Email)
+                                </p>
+                                <p>
+                                    <label for="userMessage">@T("admin.giftcards.fields.message"):<span>*</span></label>@Html.ValidationMessageFor(model => model.Enquiry)<br />
+                                    @Html.TextAreaFor(model => model.Enquiry, new { id = "userMessage", cols = "30", rows = "10", maxlength = 1000 })
+                                </p>
+                                <p class="contactsButton">
+                                    <input type="submit" value="@T("privatemessages.send.sendbutton")" />
+                                </p>
+                            </form>
+                    </div>
+                </div>
+                <div class="rightSide">
+                        @Html.Action("CompanyContacts")
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

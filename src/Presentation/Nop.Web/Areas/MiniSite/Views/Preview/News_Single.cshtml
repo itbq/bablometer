@@ -1,0 +1,203 @@
+@model Nop.Web.Areas.MiniSite.Models.Preview.PreviewModel
+@{
+    Html.AppendCssFileParts("~/Content/MiniSite/selector.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/css/theme.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/Css/styles1.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/Css/root.css");
+    Html.AppendCssFileParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/Css/cusel.css");
+    Html.AppendScriptParts("~/Content/MiniSite/js/cusel-fixed-min-2.5.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/validateRun.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/jquery.validate.min.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/jquery.diyslider.min.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/script.js");
+    Html.AppendScriptParts("~/Content/MiniSite/Templates/" + Model.CssTemplateName + "/js/jquery-1.6.2.js");
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ETF</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=windows-1251" />
+
+    <link rel="shortcut icon" href="/Content/MiniSite/Templates/@Model.CssTemplateName/images/favicon.ico" type="image/x-icon" />
+    @Html.NopCssFiles(this.Url, ResourceLocation.Head)
+    @Html.NopScripts(this.Url,ResourceLocation.Head,false)
+     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            var params = {
+                changedEl: "select",
+                scrollArrows: true
+            }
+            cuSel(params);
+        });
+    </script>
+
+</head>
+
+<body class="signedIn ">
+
+<div class="signUp invisible">
+    <div class="fullScreenLoginPop" onclick="switchDisplay('.signUp');"></div>
+    <form class="loginPop" action="#" method="post">
+        <div class="loginH" onclick="switchDisplay('.signUp');">Log in</div>
+        <div class="inputs">
+            <input type="text" value="" placeholder="username or email">
+            <input type="password" value="" placeholder="password">
+        </div>
+
+        <a href="#" class="forgot">Trouble Logging in</a>
+        <input type="submit" value="Login">
+    </form>
+</div>
+
+<div class="page-selector">
+    <select id="page-selector">
+        <option value="1" @if(Model.PageName == "1"){@Html.Raw("selected")}>Home page layout 1</option>
+        <option value="2" @if(Model.PageName == "2"){@Html.Raw("selected")}>Home page layout 2</option>
+        <option value="3" @if(Model.PageName == "3"){@Html.Raw("selected")}>Home page layout 3</option>
+        <option value="Catalog" @if (Model.PageName == "Catalog"){@Html.Raw("selected")}>Catalog page</option>
+        <option value="Item_Single" @if (Model.PageName == "Item_Single"){@Html.Raw("selected")}>Single item page</option>
+        <option value="Contacts" @if (Model.PageName == "Contacts"){@Html.Raw("selected")}>Contacts page</option>
+        <option value="News_Landing" @if (Model.PageName == "News_Landing"){@Html.Raw("selected")}>News landing page</option>
+        <option value="News_Single" @if (Model.PageName == "News_Single"){@Html.Raw("selected")}>Single new page</option>
+        <option value="TextPage" @if (Model.PageName == "TextPage"){@Html.Raw("selected")}>Text page</option>
+    </select>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#page-selector').change(function () {
+                var val = $('#page-selector').val();
+                if (val == '1') {
+                    window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=1";
+                    return;
+                }
+                if (val == '2') {
+                    window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=2";
+                    return;
+                }
+                if (val == '3') {
+                    window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=3";
+                    return;
+                }
+
+                window.location.href = "/minisite/Preview?CssFolderName=@Model.CssTemplateName&LayoutType=3&PageName=" + val;
+                return;
+
+            });
+        });
+    </script>
+</div>
+<div class="header">
+    <div class="master-wrapper-page">
+        <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/logo.png" width="73" height="38" class="logo" alt="" />
+        <div class="header-links left">
+            <a href="#">About</a>
+            <a href="#">Benefits</a>
+            <a href="#">Contact us</a>
+        </div>
+
+        <div class="language-selector">
+            <a href="#" onclick="switchDisplay('.otherLang');"><img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/flag/flag_3.png" alt="" /></a>
+            <div class="otherLang invisible">
+                <a href="#"><img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/flag/flag_1.png" alt="Русский" />Русский</a>
+            </div>
+        </div>
+
+        <div class="header-links right">
+            <span class="signed">user_name <a href="#">(logout)</a></span>
+            <a href="#">Dashboard</a>
+            <a href="#">My buying requests <span class="xxTop">36</span></a>
+            <a href="#">My requests <span class="xxTop">6</span></a>
+        </div>
+
+    </div>
+</div>
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide newsSingle">
+
+                    <div class="goBack">
+                        <a href="#">&larr; Back to news</a>
+                    </div>
+
+                    <h1>News Article Header</h1>
+                    <div class="newsBoxOuter" >
+                        <div class="newsHeading">
+                            <p class="left">01/04/01</p>
+                            <p class="right">
+                                Share this:
+                                <a href="#" class="twitter"></a>
+                                <a href="#" class="facebook"></a>
+                            </p>
+                        </div>
+                        <div class="newsBoxInner">
+                            <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/news/fashion-week.png" alt="" />
+                        </div>
+                    </div>
+                    <div class="aboutBlockOuter">
+                        <div class="aboutBlockInner">
+                            <p>This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor,nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit.</p>
+                            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum <a href="#">fermentum nunc</a>. Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim.</p>
+                            <h2>This is level-two header</h2>
+                            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum fermentum nunc. Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim.</p>
+                            <h3>This is level-three header</h3>
+                            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum fermentum nunc. Etiam pharetra, erat</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="rightSide">
+
+                    <div class="banners">
+                        <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/banner/banner_3.jpg" alt="">
+                        <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/banner/banner_3.jpg" alt="">
+                        <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/banner/banner_3.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+
+        </div> </div>
+</div>
+<div class="footer">
+    <div class="master-wrapper-page">
+        <div class="fLeft">
+            <ul class="footer-menu">
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Services</a></li>
+            </ul>
+            <div class="social">
+                <img src="/Content/MiniSite/Templates/@Model.CssTemplateName/images/fish.png" alt=""/>
+            </div>
+        </div>
+
+        <div class="fMiddle">
+            <ul class="footer-menu">
+                <li><a href="#">About Company</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Contacts</a></li>
+            </ul>
+            <div class="social"></div>
+        </div>
+
+        <div class="fRight">
+            <div class="fline">
+                <a href="mailto: info@mailbox.com">info@mailbox.com</a>
+            </div>
+            <div class="fline">
+                <span>© 2013</span><a href="#">Company Name</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+﻿
+@using Telerik.Web.Mvc.UI;
+@using Nop.Core.Domain.Catalog;
+@using Nop.Services.Catalog;
+
+@{
+    var controlTypeList = SearchAttributeControlType.TextBoxText.ToSelectList();
+}
+
+@Html.Telerik().DropDownList().Name("SearchAttributeControlType").BindTo(controlTypeList)

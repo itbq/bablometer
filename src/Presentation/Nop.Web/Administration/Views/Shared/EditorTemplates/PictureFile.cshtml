@@ -1,0 +1,81 @@
+﻿@model int
+@using Nop.Core;
+@using Nop.Web.Framework.UI;
+
+@{
+    //register CSS and JS
+    Html.AddCssFileParts("~/Administration/Content/fileuploader.css");
+    Html.AddScriptParts("~/Administration/Scripts/fileuploader.js");
+    Html.AddScriptParts("~/Administration/Scripts/swfobject.js");
+
+    //other variables
+    var random = CommonHelper.GenerateRandomInteger();
+    var clientId = "picture" + random;
+    var pictureService = EngineContext.Current.Resolve<Nop.Services.Media.IPictureService>();
+    var picture = pictureService.GetPictureById(Model);
+    string pictureString;
+    if (pictureService.GetPictureUrl(Model, 0, true).IndexOf(".swf") > 0)
+    {
+        pictureString = "<div width=\"100\" height=\"100\"><embed width=\"100%\" height=\"100%\" name=\"plugin\" src=\""+(pictureService.GetPictureUrl(Model, 0, true))+"\" type=\"application/x-shockwave-flash\" scale=\"tofit\" /></div>";
+    }
+    else
+    {
+        pictureString = "<img src=" + (pictureService.GetPictureUrl(Model, 0, true)) + " />";
+    }
+}
+
+<div id="@(clientId + "value")">
+    @Html.HiddenFor(x => x)
+</div>
+<div id="@(clientId + "image")">
+    @Html.Raw(pictureString)
+</div>
+@if (picture != null)
+{
+    <span id="@(clientId + "remove")" class="t-button">@T("Admin.Picture.RemovePicture")</span>
+}
+else
+{
+    <span id="@(clientId + "remove")" class="t-button" style="display:none;">@T("Admin.Picture.RemovePicture")</span>
+}
+<br />
+<div id="@clientId">
+    <noscript>
+        <p>
+            Please enable JavaScript to use file uploader.</p>
+        <!-- or put a simple form for upload here -->
+    </noscript>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(function () {
+            var uploader@(clientId) = new qq.FileUploader({
+                element: document.getElementById('@clientId'),
+                action: '@(Url.Content("~/Admin/Picture/AsyncUploadToFile"))',
+                onComplete: function(id, fileName, responseJSON){
+                    if (responseJSON.success) {
+                        if (responseJSON.imageUrl.indexOf(".swf", responseJSON.imageUrl.length - 5) > 0) {
+                            $('#@(clientId + "image")').html('<embed name="plugin" src="' + responseJSON.imageUrl + '" width=\"100%\" height=\"100%\" type="application/x-shockwave-flash">');
+                        } else {
+                            $("#@(clientId + "image")").html('<img src="' + responseJSON.imageUrl + '"/>');
+                        }
+                        $("#@(clientId + "value") input").val(responseJSON.pictureId);
+                        $("#@(clientId + "remove")").show();
+                    }
+                },
+                strings: {
+                    upload: "@T("Common.FileUploader.Upload")",
+                    drop: "@T("Common.FileUploader.DropFiles")",
+                    cancel: "@T("Common.FileUploader.Cancel")",
+                    failed: "@T("Common.FileUploader.Failed")"
+                }
+            });
+
+            $("#@(clientId + "remove")").click(function(e){
+                $("#@(clientId + "image")").html("<img src='@pictureService.GetDefaultPictureUrl()'/>");
+                $("#@(clientId + "value") input").val(0);
+                $(this).hide();
+            });
+        });
+    });
+</script>

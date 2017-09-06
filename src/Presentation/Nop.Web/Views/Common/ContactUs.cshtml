@@ -1,0 +1,122 @@
+﻿@model ContactUsModel
+@using Nop.Web.Models.Common;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.ContactUs").Text);
+}
+<script>
+    $(document).ready(function () {
+        if(@Html.Raw(Model.SuccessfullySent.ToString().ToLower()))
+        {
+            $('#popAlert h3').text('');
+            $('#popAlert p').text('@T("ETF.ContactUs.Email.Success")');
+            $('.contactsForm form input').not("input[type='submit']").val('');
+            $('.contactsForm form textarea').val('');
+            showPop("#popAlert");
+        }
+    });
+
+    function switchDisplay(id) {
+        if ($(id).css("display") == "none") {$(id).css("display", "block");} else {$(id).css("display", "none");}
+    }
+
+
+    $(function() {
+
+        // cusel init
+        var params = { changedEl: ".dropdown", scrollArrows: true, visRows: 5 }
+        cuSel(params);
+
+        $( ".tabFilters" ).tabs();
+
+        $(".slideBox").diyslider({
+            width: "936px", // width of the slider
+            height: "200px", // height of the slider
+            display: 1, // number of slides you want it to display at once
+            loop: true // disable looping on slides
+        }); // this is all you need!
+
+        // use buttons to change slide
+        $(".offersSlideBox .arrowPrev").bind("click", function(){
+            $(".slideBox").diyslider("move", "back");
+            return false;
+        });
+        $(".offersSlideBox .arrowNext").bind("click", function(){
+            $(".slideBox").diyslider("move", "forth");
+            return false;
+        });
+
+        $("#submit").click(function () {
+            if ($(".loginPop").validate().form()) {
+                $("#submit").submit();
+            } else {}
+        });
+
+    });
+</script>
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="textPage">
+                <div class="leftSide">
+
+                    <h1>@T("ContactUs")</h1>
+                    
+                    <div class="aboutBlockOuter">
+                        <div class="aboutBlockInner">
+                            @Html.Raw(T("TextResource.JoinUs").Text)
+                             </div>
+                    
+                         @using (Html.BeginForm("ContactUs", "Common", FormMethod.Post, new {name = "contactus-form", id = "contactus-form", @class = "feedback"}))
+                         {
+                             <div class="litegreen">
+                             
+                                 <h5>@T("ITBSFA.Common.ContactUS.ContactUS")</h5>
+                                 <div class="fline">
+                                     <label for="inp1" class="require">@T("ETF.ContactUs.Name"):</label>
+                                     @Html.EditorFor(model => model.FullName)
+                                     @Html.ValidationMessageFor(model => model.FullName)
+                                 </div>
+
+                                 <div class="fline">
+                                     <label for="inp2">@T("Profile.Company.Name"):</label>
+                                     @Html.EditorFor(model => model.Company)
+                                     @Html.ValidationMessageFor(model => model.Company)
+                                 </div>
+
+                                 <div class="fline">
+                                     <label for="inp3" class="require">Email:</label>
+                                     @Html.EditorFor(model => model.Email)
+                                     @Html.ValidationMessageFor(model => model.Email)
+                                 </div>
+
+                                 <div class="fline">
+                                     <label for="inp4" class="require">@T("admin.giftcards.fields.message"):</label>
+                                     @Html.TextAreaFor(model => model.Enquiry, new {id = "userMessage", cols = "30", rows = "10", maxlength = 1000})
+                                    @Html.ValidationMessageFor(model => model.Enquiry)
+                                 </div>
+
+
+                                 <div class="left bottom grey absolute fleft p15">
+                                     <span class="require"></span>@T("ITBSFA.Common.ContactUS.RequiredFilds")
+                                 </div>
+                              
+
+                             </div>
+                             <div class="submit"><span class="btnShadow"><input type="submit" class="signupBtn" value="@T("privatemessages.send.sendbutton")"></span></div>
+                         }
+				</div>
+
+		</div>
+
+
+                <div class="rightSide">
+                    <div class="litegreen radius10">
+                        @Html.Action("TopicBlock", "Topic", new { systemName = "ContactUs" })
+                    </div>
+                </div>
+            </div>
+        </div> </div>
+</div>

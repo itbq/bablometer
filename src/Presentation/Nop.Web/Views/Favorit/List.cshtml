@@ -1,0 +1,100 @@
+﻿@model Nop.Web.Models.Favorits.FavoritsListModel
+
+@using System.Collections.Generic
+@using Nop.Web.Extensions
+@using Nop.Core.Domain.Customers
+
+@{
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+    Html.AddTitleParts(_localisationService.GetResource("Profile.Favorit"));
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    
+    var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+    });
+    </script>
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.Favourits })
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content favorites">
+        <div class="master-wrapper-main">
+            <div class="filterProduct">
+                <h1 class="starFavorites">@T("Profile.Favorit.Items")</h1>
+                @Html.Action("ManageItemCategorySelector","Catalogue") 
+                @using (Html.BeginForm("List","Favorit",FormMethod.Get))
+                {
+                    <input type="hidden" value="0" name="SelectedCategoryId" id="SelectedCategoryId"/>
+                    <div class="selectBox">
+                        <label>@T("Profile.Request.ItemType")</label>
+                            <select name="ItemType" id="ItemType">
+                                <option value="0">@T("DisplayAll")</option>
+                                <option value="@Html.Raw(((int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product).ToString())">@T("admin.catalog.products")</option>
+                                <option value="@Html.Raw(((int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service).ToString())">@T("Catalog.Services")</option>
+                                <option value="@Html.Raw(((int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ProductBuyingRequest).ToString())">@T("Catalog.ProductRequest")</option>
+                                <option value="@Html.Raw(((int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.ServiceBuyingRequest).ToString())">@T("Catalog.ServiceRequests")</option>
+                            </select>
+                    </div>
+                    <div class="selectBox">
+                        <label>@T("Profile.Product.Brand")</label>
+                        <select name="BrandId" id="BrandId">
+                            <option value="0">@T("DisplayAll")</option>
+                            @foreach (var brand in Model.PagingContext.Brands)
+                            {
+                                <option value="@brand.Value">@brand.Key</option>
+                            }
+                        </select>
+                    </div>
+                    <input type="submit" class="button" value="@T("News.Filter")" /><br />
+                }
+            </div>
+
+            <table class="anyTable favoritesTable">
+                <tr>
+                    <th class="c1">@T("Profile.Favorit.Image")</th>
+                    <th class="c2">@T("Profile.Company.Description")</th>
+                    <th class="c3">@T("Profile.Request.ItemType")</th>
+                    <th class="c4">@T("Profile.Favorit.Category")</th>
+                    <th class="c5">@T("Profile.Catalog.Brand")</th>
+                    <th class="c6">@T("Profile.Request.Company")</th>
+                    <th class="c7">@T("Profile.Request.Actions")</th>
+                </tr>
+                @foreach (var item in Model.Favorits)
+                {
+                    <tr>
+                        <td>@if (item.PictureUrl != null)
+                            {<a href="@Url.RouteUrl("Product", new { seName = item.ProductSeName })"><img src="@item.PictureUrl" width="78" alt="@item.ProductTitle"/></a>}</td>
+                        <td>
+                            <a href="@Url.RouteUrl("Product", new { seName = item.ProductSeName })"><b>@item.ProductTitle</b></a>
+                            <p>@item.ProductDescription</p>
+                        </td>
+                        <td>@item.ItemType</td>
+                        <td>@item.CategoryString</td>
+                        <td>@item.Brand</td>
+                        <td><a href="@Url.RouteUrl("CompanyInformation",new {seName = item.CompanySeName})">@item.CompanyName</a></td>
+                        <td><span class="remove" id="@item.Id" >@T("common.remove")</span></td>
+                    </tr>
+                }
+            </table>
+            <div class="navBox">
+                @Html.Pager(Model.PagingContext).QueryParam("pagenumber")
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.remove').click(function () {
+            if ($(this).attr('disabled') != 'disabled') {
+                window.location.href = '/Favorit/Manage/Remove?id=' + $(this).attr('id');
+                $(this).attr('disabled', 'disabled');
+            }
+        });
+    });
+</script>

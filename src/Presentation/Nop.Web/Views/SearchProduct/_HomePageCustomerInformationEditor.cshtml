@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Layout = null;
+}
+
+@model Nop.Web.Models.SearchProduct.SearchProductCategoryModel
+<div class="personalData">
+	<p>@T("ITBSFA.ProfileInformation.Prompt")</p>
+    <div class="linedItem">
+	<select class="dropdown" name="CustomerAttributes.CityId">
+        <option value="0">@T("ITBSFA.HomePage.City")</option>
+        @foreach (var city in Model.Cities)
+        {
+            if (Model.CityId == 0)
+            {
+                var selected = WorkContext.CurrentCustomer.CityId.GetValueOrDefault();
+                <option value="@city.Id" @(selected == city.Id ? "selected" : "")>@city.Title</option>
+            }
+            else
+            {
+                <option value="@city.Id" @(Model.CityId == city.Id ? "selected" : "")>@city.Title</option>
+            }
+        }
+	</select>
+        </div>
+    @for (int i = 0; i < Model.Attributes.Count; i++)
+    {
+        switch (Model.Attributes[i].AttributeControlTypeId)
+        {
+            case (int)Nop.Core.Domain.Customers.CustomerInformationProductSearchControlType.NumberTextBoxExact:
+            case (int)Nop.Core.Domain.Customers.CustomerInformationProductSearchControlType.NumberToddlerLess:
+            case (int)Nop.Core.Domain.Customers.CustomerInformationProductSearchControlType.NumberToddlerMore:
+            case (int)Nop.Core.Domain.Customers.CustomerInformationProductSearchControlType.NumberToddlerBetween:
+                {
+                    <div class="linedItem">
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="CustomerAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="CustomerAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="CustomerAttributes.Attributes[@i].AttributeTitle" />
+                    <input type="text" class="textinp" data-msg-min="@(Model.Attributes[i].AttributeTitle) должно быть числом" value="@(String.IsNullOrEmpty(Model.Attributes[i].AttributeValue) || Model.Attributes[i].AttributeValue == "0" ? "" : Model.Attributes[i].AttributeValue)" placeholder="@Model.Attributes[i].AttributeTitle" name="CustomerAttributes.Attributes[@i].AttributeValue" id="CCA@(i)-@Model.CategoryId" />           
+                    <script type="text/javascript">
+                    $(document).ready(function(){
+                        $('#CCA@(i)-@Model.CategoryId').rules("add",{
+                            number: true,
+                            min:0,
+                            messages:{
+                                number: "@T("ITBSFA.Number.Enter")",
+                                min: "@T("ITBSFA.Number.Min")"
+                            }
+                        });
+                    });
+                </script>
+                        </div>
+                    break;
+                }
+            case (int)Nop.Core.Domain.Customers.CustomerInformationProductSearchControlType.MoneyLess:
+            case (int)Nop.Core.Domain.Customers.CustomerInformationProductSearchControlType.MoneyMore:
+                {
+                    <div class="linedItem currencyItem">
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="CustomerAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="CustomerAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="CustomerAttributes.Attributes[@i].AttributeTitle" />
+                    <input type="text" class="textinp" data-msg-min="@(Model.Attributes[i].AttributeTitle) должно быть числом" value="@(String.IsNullOrEmpty(Model.Attributes[i].AttributeValue) || Model.Attributes[i].AttributeValue == "0" ? "" : Model.Attributes[i].AttributeValue)" placeholder="@Model.Attributes[i].AttributeTitle" name="CustomerAttributes.Attributes[@i].AttributeValue" id="CCA@(i)-@Model.CategoryId" />           
+                    <div class="curencyWidget bestborderthanever">
+                    @foreach (var currency in Model.Currencies)
+                    {
+                        var currencyClass = "";
+                        switch (currency.Name)
+                        {
+                            case "USD":
+                                {
+                                    currencyClass = "dollar";
+                                    break;
+                                }
+                            case "EUR":
+                                {
+                                    currencyClass = "euro";
+                                    break;
+                                }
+                            case "RUB":
+                                {
+                                    currencyClass = "ruble";
+                                    break;
+                                }
+                        }
+
+                        string checkedString = "";
+                        if (Model.Attributes[i].CurrencyId == currency.Id)
+                        {
+                            checkedString = "checked=\"checked\"";
+                        }
+                        else
+                        {
+                            if (Model.Attributes[i].CurrencyId == 0 && currency.Name == "RUB")
+                            {
+                                checkedString = "checked=\"checked\"";
+                            }
+                        }
+                        <input type="radio" name="CustomerAttributes.Attributes[@i].CurrencyId"  id='@(currency.Id + "-" + @Model.CategoryId + "-cur" + i.ToString())' value="@currency.Id" @checkedString /><label for="@(currency.Id + "-" + @Model.CategoryId + "-cur" + i.ToString())" class="@currencyClass"></label>
+
+                        }
+                        </div> 
+                   <script type="text/javascript">
+                        $(document).ready(function () {
+                            $('#CCA@(i)-@Model.CategoryId').rules("add", {
+                            number: true,
+                            min: 0,
+                            messages: {
+                                number: "@T("ITBSFA.Number.Enter")",
+                                min: "@T("ITBSFA.Number.Min")"
+                            }
+                        });
+                    });
+                </script>
+                        </div>
+                    break;
+                }
+            case (int)Nop.Core.Domain.Customers.CustomerInformationProductSearchControlType.Gender:
+                {
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="CustomerAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="CustomerAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <div class="radioGender">
+                            @foreach (var val in Model.Attributes[i].Values)
+                            {
+                                if (val.ValueText == "М")
+                                {
+                                    <input type="radio" name="CustomerAttributes.Attributes[@i].SelectedAttributeId" value="@val.Id" id="male-@Model.CategoryId" @(val.Selected ? "checked" : "")><label for="male-@Model.CategoryId" class="male"></label>
+                                }
+                                else
+                                {
+                                    <input type="radio" name="CustomerAttributes.Attributes[@i].SelectedAttributeId" value="@val.Id" id="female-@Model.CategoryId" @(val.Selected ? "checked" : "")><label for="female-@Model.CategoryId" class="female"></label>
+                                }
+
+                            }
+	                </div>
+                            break;
+                }
+            case (int)Nop.Core.Domain.Catalog.SearchAttributeControlType.Money:
+                {
+                    <input type="hidden" value="@Model.Attributes[i].Id" name="CustomerAttributes.Attributes[@i].Id" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeControlTypeId" name="CustomerAttributes.Attributes[@i].AttributeControlTypeId" />
+                    <input type="hidden" value="@Model.Attributes[i].AttributeTitle" name="CustomerAttributes.Attributes[@i].AttributeTitle" />
+                    <span class="field-validation-valid" data-valmsg-for="CustomerAttributes.Attributes[@i].AttributeValue" data-valmsg-replace="true"></span>            
+                    <input type="text" class="textinp currency" min="0" title="@(Model.Attributes[i].AttributeTitle) должно быть числом" value="@(Model.Attributes[i].AttributeValue ?? "")" placeholder="@Model.Attributes[i].AttributeTitle" name="ProductAttributes[@i].AttributeValue" id="ProductAttributes[@i].AttributeValue" />
+                    <select class="dropdown currency" name="CustomerAttributes.Attributes[@i].CurrencyId">
+                        @foreach (var currency in Model.Currencies)
+                        {
+		    			    <option value="@currency.Id">@currency.Name</option>
+                        }
+		    		</select>            
+                        break;
+                }
+        }
+    }
+</div>

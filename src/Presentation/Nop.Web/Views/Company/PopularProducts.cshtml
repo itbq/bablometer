@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Nop.Web.Models.Catalog.ProductShortModel>
+
+<div class="box">
+    <h4>@T("Company.PopularProducts")</h4>
+    <div class="separateLine"></div>
+
+    <div class="popGoods">
+        @foreach (var product in Model)
+        {
+            <div class="goodBox">
+                <div class="productPicture">
+                @if(product.PictureUrl != null){<img src="@product.PictureUrl" alt=""/>}
+                else
+                {
+                    @Html.Raw("&nbsp;")
+                }
+                </div>
+                <a href="@Url.RouteUrl("Product",new {seName = product.ProductSeName})" class="goodLink">@product.ProductName</a>
+            </div>
+        }
+    </div>
+</div>

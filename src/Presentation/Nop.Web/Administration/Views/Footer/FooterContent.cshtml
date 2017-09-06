@@ -1,0 +1,50 @@
+﻿@model Nop.Admin.Models.Footer.FooterContentModel
+@using Telerik.Web.Mvc.UI
+@using Nop.Admin.Models.Footer
+@{
+    ViewBag.Title = T("Admin.ContentManagement.Footer").Text;
+}
+@using (Html.BeginForm())
+{
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-content.png")" alt="" />
+        @T("Admin.ContentManagement.Footer").Text
+    </div>
+    <div class="options">
+        <input type="submit" class="t-button" value="@T("Admin.Common.Save")" />
+    </div>
+</div>
+    <table>
+        @*<tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model=>model.ContactText)
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model=>model.ContactText)
+                    @Html.RequiredHint()
+                    @Html.ValidationMessageFor(model=>model.ContactText)
+                </td>
+            </tr>*@
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model=>model.CopyRightLink)
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model=>model.CopyRightLink)
+                    @Html.RequiredHint()
+                    @Html.ValidationMessageFor(model=>model.CopyRightLink)
+                </td>
+            </tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.LabelFor(model=>model.CopyrightText)
+                </td>
+                <td class="adminData">
+                    @Html.EditorFor(model=>model.CopyrightText)
+                    @Html.RequiredHint()
+                    @Html.ValidationMessageFor(model=>model.CopyrightText)
+                </td>
+            </tr>
+     </table>
+}

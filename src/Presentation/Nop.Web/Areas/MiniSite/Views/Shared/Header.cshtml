@@ -1,0 +1,78 @@
+﻿<script type="text/javascript">
+    //WebFontConfig = {
+    //    google: { families: ['Roboto:400,500,700,300:latin-ext,cyrillic'] }
+    //};
+    //(function () {
+    //    var wf = document.createElement('script');
+    //    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+    //      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    //    wf.type = 'text/javascript';
+    //    wf.async = 'true';
+    //    var s = document.getElementsByTagName('script')[0];
+    //    s.parentNode.insertBefore(wf, s);
+    //})();
+
+    $(document).ready(function () {
+        $(document).ajaxStart(function () {
+            $("body").css("cursor", "progress");
+        });
+        $(document).ajaxStop(function () {
+            $("body").css("cursor", "auto");
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".popOk .ok").click(function () {
+            $(this).parent().fadeOut();
+            $("#popUpBg").fadeOut();
+        })
+        $(".popOk .cancel").click(function () {
+            $(this).parent().fadeOut();
+            $("#popUpBg").fadeOut();
+        })
+
+
+        //showPop("firstPopOk");
+    });
+
+    function showPop(id) {
+        $("#" + id).fadeIn();
+        $("#popUpBg").fadeIn();
+    }
+
+</script>
+<div id="popUpBg" class="invisible"></div>
+
+<div class="popOk invisible" id="firstPopOk">
+    <h2>&nbsp;</h2>
+    <p>&nbsp;</p>
+    <a nohref="nohref" class="ok button-link" >Ok</a>
+</div>
+
+<div class="popOk invisible" id="confirmPopOk">
+    <h2>&nbsp;</h2>
+    <p>&nbsp; </p>
+    <a nohref="nohref" class="ok button-link">Ok</a><a nohref="nohref" class="cancel button-link">Cancel</a>
+    <input type="hidden" value="false" />
+</div>
+<div id="overlay"></div>
+<div class="header">
+    <div class="master-wrapper-page">
+        <a href="/"><img src="/Content/MiniSite/@WorkContext.CurrentMiniSite.MiniSiteLayout.StyleFolder/logo.jpg" height="38" class="logo" alt=""></a>
+        <div class="header-links left">
+            @Html.Action("Menu","Common")
+            <a href="@Url.RouteUrl("MiniContacts")">@T("ContactUs")</a>
+        </div>
+
+        <div class="language-selector">@*
+            <a href="#" onclick="switchDisplay('.otherLang');"><img src="/Content/MiniSite/images/flag/flag_3.png">English</a>
+            <div class="otherLang invisible">
+                <a href="#"><img src="/Content/MiniSite/Templates/images/flag/flag_1.png">Русский</a>
+            </div>*@
+        @Html.Action("LanguageSelector","Common")
+        </div>
+        
+    </div>
+</div>

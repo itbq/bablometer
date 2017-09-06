@@ -1,0 +1,138 @@
+﻿@switch (WorkContext.CurrentMiniSite.LayoutId)
+{
+    case 1:
+        {
+            <script type="text/javascript">
+                function switchDisplay(id) {
+                    if ($(id).css("display") == "none") {$(id).css("display", "block");} else {$(id).css("display", "none");}
+                }
+            
+            
+            
+                $(function() {
+                    $( ".tabCatalog" ).tabs();
+                });
+            
+                $(document).ready(function() {
+                    $(".goods").diyslider({
+                        width: "882px", // width of the slider
+                        height: "200px", // height of the slider
+                        display: 6, // number of slides you want it to display at once
+                        loop: true // disable looping on slides
+                    }); // this is all you need!
+            
+                    // use buttons to change slide
+                    $("#go-left").bind("click", function(){
+                        $(".goods").diyslider("move", "back");
+                        return false;
+                    });
+                    $("#go-right").bind("click", function(){
+                        $(".goods").diyslider("move", "forth");
+                        return false;
+                    });
+            
+                    $("#submit").click(function () {
+                        if ($(".loginPop").validate().form()) {
+                            $("#submit").submit();
+                        } else {}
+                    });
+            
+                    $("#mainSlider").diyslider({
+                        width: "940px", // width of the slider
+                        height: "529px", // height of the slider
+                        display: 1, // number of slides you want it to display at once
+                        loop: true // disable looping on slides
+                    }); // this is all you need!
+            
+            
+                })
+                </script>
+            break;
+        }
+    case 2:
+        {
+            <script type="text/javascript">
+                function switchDisplay(id) {
+                    if ($(id).css("display") == "none") { $(id).css("display", "block"); } else { $(id).css("display", "none"); }
+                }
+
+
+
+                $(function () {
+                    $(".tabCatalog").tabs();
+                });
+
+                $(document).ready(function () {
+                    $(".goods").diyslider({
+                        width: "390px", // width of the slider
+                        height: "200px", // height of the slider
+                        display: 3, // number of slides you want it to display at once
+                        loop: true // disable looping on slides
+                    }); // this is all you need!
+
+                    // use buttons to change slide
+                    $("#go-left").bind("click", function () {
+                        $(".goods").diyslider("move", "back");
+                        return false;
+                    });
+                    $("#go-right").bind("click", function () {
+                        $(".goods").diyslider("move", "forth");
+                        return false;
+                    });
+
+                    $("#submit").click(function () {
+                        if ($(".loginPop").validate().form()) {
+                            $("#submit").submit();
+                        } else { }
+                    });
+
+                })
+
+
+                </script>
+            break;
+        }
+    case 3:
+        {
+            <script type="text/javascript">
+                function switchDisplay(id) {
+                    if ($(id).css("display") == "none") { $(id).css("display", "block"); } else { $(id).css("display", "none"); }
+                }
+
+
+
+                $(function () {
+                    $(".tabCatalog").tabs();
+                });
+
+                $(document).ready(function () {
+                    $(".goods").diyslider({
+                        width: "220px", // width of the slider
+                        height: "200px", // height of the slider
+                        display: 2, // number of slides you want it to display at once
+                        loop: true // disable looping on slides
+                    }); // this is all you need!
+
+                    // use buttons to change slide
+                    $("#go-left").bind("click", function () {
+                        $(".goods").diyslider("move", "back");
+                        return false;
+                    });
+                    $("#go-right").bind("click", function () {
+                        $(".goods").diyslider("move", "forth");
+                        return false;
+                    });
+
+                    $("#submit").click(function () {
+                        if ($(".loginPop").validate().form()) {
+                            $("#submit").submit();
+                        } else { }
+                    });
+
+                })
+
+
+            </script>
+            break;
+        }
+}

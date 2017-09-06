@@ -1,0 +1,81 @@
+﻿@model Nop.Web.Models.Event.EventNavigationModel
+@using Nop.Web.Framework.UI.Paging
+@using Nop.Core;
+@using Nop.Web.Extensions
+
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+    Html.AddTitleParts(_localisationService.GetResource("Events.Events"));
+}
+<script>
+    $(document).ready(function () {
+        $('body').addClass('eventsLanding');
+    });
+</script>
+
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+                    <h1>@T("Events.Events")</h1>
+                    <div class="catalogue">
+                        @foreach(var item in Model.EventList)
+                        {
+                            <div class="newsBoxOuterWrap">
+                                <div class="newsHeadingOuter">
+                                    <div class="newsHeadingInner">
+                                        <div class="cornerRightBig"></div>
+                                        <h3><a href="@Url.RouteUrl("Event",new {seName=item.SeName})">@item.Title</a></h3>
+                                    </div>
+                                </div>
+                                <div class="newsBoxOuter">
+                                    <div class="newsBoxInner">
+                                        <div class="newsImage">
+                                           @if(item.CatalogPictureid != 0){<img src="@item.CatalogPictureModel.FullSizeImageUrl" alt="@item.Title" />}
+                                        </div>
+                                        <div class="newsContent">
+                                            <div class="newsInfo">
+                                                @if(item.StartDate.Hour == 0)
+                                                {
+                                                    if(item.EndDate.HasValue && item.EndDate.Value.Hour == 0)
+                                                    {
+                                                        <p class="left">@Html.Raw(item.StartDate.ToString("d") + (item.EndDate.HasValue ? " - " + item.EndDate.Value.ToString("d") : ""))</p>
+                                                    }else
+                                                    {
+                                                        <p class="left">@Html.Raw(item.StartDate.ToString("d") + (item.EndDate.HasValue ? " - " + item.EndDate.Value.ToString("g") : ""))</p>
+                                                    }
+                                                }else
+                                                {
+                                                    if(item.EndDate.HasValue && item.EndDate.Value.Hour == 0)
+                                                    {
+                                                        <p class="left">@Html.Raw(item.StartDate.ToString("g") + (item.EndDate.HasValue ? " - " + item.EndDate.Value.ToString("d") : ""))</p>
+                                                    }else
+                                                    {
+                                                        <p class="left">@Html.Raw(item.StartDate.ToString("g") + (item.EndDate.HasValue ? " - " + item.EndDate.Value.ToString("g") : ""))</p>
+                                                    }
+                                                }
+                                            </div>
+                                            <p class="newsText">
+                                                @item.ShortDescription
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <a class="newsView" href="@Url.RouteUrl("Event",new {seName=item.SeName})">@T("ReadMore")</a>
+                                </div>
+                            </div>
+                        }
+                    <div class="navBox">
+                        @(Html.Pager(Model.PagingContext).QueryParam("pagenumber").ShowFirst(true).ShowLast(true).ShowPrevious(true))
+                    </div>
+                </div>
+            </div>
+            <div class="rightSide">
+                    <div class="banners">
+                        @Html.Action("BannerList", "Common", new { bigImage = true, numberOfBanners = 3 })
+                    </div>
+            </div>
+        </div> </div>
+    </div>
+</div>

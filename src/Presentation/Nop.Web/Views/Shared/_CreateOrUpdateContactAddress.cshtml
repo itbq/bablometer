@@ -1,0 +1,282 @@
+﻿@model AddressModel
+@using Nop.Web.Models.Common;
+
+@Html.HiddenFor(model => model.Id)
+<table>
+    <tr>
+        <td>
+            @Html.LabelFor(model => model.FirstName):
+        </td>
+        <td>
+            @Html.EditorFor(model => model.FirstName)
+            @Html.RequiredHint()
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </td>
+    </tr>
+    <tr id="email-entry" class="email-entry">
+        <td>
+            @Html.LabelFor(model => model.Email):
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Email)
+            @Html.RequiredHint()
+            @Html.ValidationMessageFor(model => model.Email)
+        </td>
+    </tr>
+    <tr id="email-entry1">
+        <td>
+            @Html.LabelFor(model => model.Email1):
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Email1)
+            <div class="delete">Delete</div>
+            @Html.ValidationMessageFor(model => model.Email1)
+        </td>
+    </tr>
+    <tr id="email-entry2">
+        <td>
+            @Html.LabelFor(model => model.Email2):
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Email2)
+            <div class="delete">Delete</div>
+            @Html.ValidationMessageFor(model => model.Email2)
+        </td>
+    </tr>
+    <tr id="email-entry3">
+        <td>
+            @Html.LabelFor(model => model.Email3):
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Email3)
+            <div class="delete">Delete</div>
+            @Html.ValidationMessageFor(model => model.Email3)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="add-email">Add email</div>
+        </td>
+    </tr>
+
+    @if (Model.CountryEnabled)
+    {
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.CountryId):
+            </td>
+            <td>
+                @Html.DropDownListFor(model => model.CountryId, Model.AvailableCountries)
+                @Html.RequiredHint()
+                @Html.ValidationMessageFor(model => model.CountryId)
+            </td>
+        </tr>
+    }
+
+    @if (Model.CountryEnabled && Model.StateProvinceEnabled)
+    {
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.StateProvinceId):
+            </td>
+        </tr>
+    }
+    @if (Model.CityEnabled)
+    {
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.City):
+            </td>
+            <td>
+                @Html.EditorFor(model => model.City)
+
+                @if (Model.CityRequired)
+                {
+                    @Html.RequiredHint()
+                }
+                @Html.ValidationMessageFor(model => model.City)
+            </td>
+        </tr>
+    }
+    @if (Model.StreetAddressEnabled)
+    {
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Address1):
+            </td>
+            <td>
+                @Html.EditorFor(model => model.Address1)
+                @if (Model.StreetAddressRequired)
+                {
+                    @Html.RequiredHint()
+                }
+                @Html.ValidationMessageFor(model => model.Address1)
+            </td>
+        </tr>
+    }
+    @if (Model.StreetAddress2Enabled)
+    {
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Address2):
+            </td>
+            <td>
+                @Html.EditorFor(model => model.Address2)
+                @if (Model.StreetAddress2Required)
+                {
+                    @Html.RequiredHint()
+                }
+                @Html.ValidationMessageFor(model => model.Address2)
+            </td>
+        </tr>
+    }
+    @if (Model.ZipPostalCodeEnabled)
+    {
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.ZipPostalCode):
+            </td>
+            <td>
+                @Html.EditorFor(model => model.ZipPostalCode)
+                @if (Model.ZipPostalCodeRequired)
+                {
+                    @Html.RequiredHint()
+                }
+                @Html.ValidationMessageFor(model => model.ZipPostalCode)
+            </td>
+        </tr>
+    }
+    @if (Model.PhoneEnabled)
+    {
+        <tr class="phone-entry">
+            <td>
+                @Html.LabelFor(model => model.PhoneNumber):
+            </td>
+            <td>
+                @Html.EditorFor(model => model.PhoneNumber)
+                @if (Model.PhoneRequired)
+                {
+                    @Html.RequiredHint()
+                }
+                @Html.ValidationMessageFor(model => model.PhoneNumber)
+            </td>
+        </tr>
+        <tr id="phone-entry1">
+            <td>
+                @Html.LabelFor(model => model.PhoneNumber1):
+            </td>
+            <td>
+                @Html.EditorFor(model => model.PhoneNumber1)
+                <div class="delete">Delete</div>
+            </td>
+        </tr>
+        <tr id="phone-entry2">
+            <td>
+                @Html.LabelFor(model => model.PhoneNumber2):
+            </td>
+            <td>
+                @Html.EditorFor(model => model.PhoneNumber2)
+                <div class="delete">Delete</div>
+            </td>
+        </tr>
+        <tr id="phone-entry3">
+            <td>
+                @Html.LabelFor(model => model.PhoneNumber3):
+            </td>
+            <td>
+                @Html.EditorFor(model => model.PhoneNumber3)
+                <div class="delete">Delete</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="add-phone">Add phone number</div>
+            </td>
+        </tr>
+    }
+    @if (Model.FaxEnabled)
+    {
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.FaxNumber):
+            </td>
+            <td>
+                @Html.EditorFor(model => model.FaxNumber)
+                @if (Model.FaxRequired)
+                {
+                    @Html.RequiredHint()
+                }
+                @Html.ValidationMessageFor(model => model.FaxNumber)
+            </td>
+        </tr>
+    }
+</table>
+<script type="text/javascript">
+    function addphone() {
+        if ($('.deleted-phone').length > 0) {
+            $('.deleted-phone').first().show();
+            $('.deleted-phone').first().addClass('phone-entry');
+            $('.deleted-phone').first().removeClass('deleted-phone');
+            if ($('.phone-entry').length == 4) {
+                $('#add-phone').hide();
+            }
+            return;
+        }
+        if ($('.phone-entry').length <= 4) {
+            switch ($('.phone-entry').length) {
+                case 1: {
+                    $('#phone-entry1').show();
+                    $('#phone-entry1').addClass('phone-entry');
+                        break;
+                    }
+                    case 2: {
+                        $('#phone-entry2').show();
+                        $('#phone-entry2').addClass('phone-entry');
+                        break;
+                    }
+                    case 3: {
+                        $('#phone-entry3').show();
+                        $('#phone-entry3').addClass('phone-entry');
+                        $('#add-phone').hide();
+                        break;
+                    }
+                }
+            } else {
+                return;
+            }
+    }
+
+    function addemail() {
+        if ($('.deleted-email').length > 0) {
+            $('.deleted-email').first().show();
+            $('.deleted-email').first().addClass('email-entry');
+            $('.deleted-email').first().removeClass('deleted-email');
+            if ($('.email-entry').length == 4) {
+                $('#add-email').hide();
+            }
+            return;
+        }
+        if ($('.email-entry').length <= 4) {
+            switch ($('.email-entry').length) {
+                case 1: {
+                    $('#email-entry1').show();
+                    $('#email-entry1').addClass('email-entry');
+                        break;
+                    }
+                    case 2: {
+                        $('#email-entry2').show();
+                        $('#email-entry2').addClass('email-entry');
+                        break;
+                    }
+                    case 3: {
+                        $('#email-entry3').show();
+                        $('#email-entry3').addClass('email-entry');
+                        $('#add-email').hide();
+                        break;
+                    }
+                }
+            } else {
+                return;
+            }
+    }
+</script>

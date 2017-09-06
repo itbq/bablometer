@@ -1,0 +1,19 @@
+﻿@model Nop.Web.Models.CompanyInformation.CompanyListModel
+
+<table>
+    <tr>
+        <th>Logo</th>
+        <th>Title</th>
+        <th>Short Description</th>
+        <th>More details</th>
+    </tr>
+    @foreach (var item in Model.Compannies)
+    {
+       <tr>
+           <td><img src="@item.Picture.ImageUrl" /></td>
+           <td>@item.CompanyName</td>
+           <td>@Html.Raw(item.CompanyDescription)</td>
+           <td><a href="@Url.RouteUrl("CompanyInformation",new {seName = item.SeName})">@item.CompanyName</a></td>
+       </tr>
+    }
+</table>

@@ -1,0 +1,17 @@
+﻿@model LanguageSelectorModel
+@using Nop.Web.Models.Common;
+@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@using Nop.Core.Infrastructure.DependencyManagement;
+@{var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+    var selectedLanguage = Model.AvailableLanguages.Where(x => x.Id == Model.CurrentLanguageId).FirstOrDefault();}
+    <a nohref="nohref" onclick="switchDisplay('.otherLangMain');"><img src="/@Url.Content("Content/etf/images/flag/flag_" + selectedLanguage.Id + ".png")">@selectedLanguage.Name</a>
+    <div class="otherLang invisible otherLangMain">  
+    @foreach(var lang in Model.AvailableLanguages)
+    {
+        if(lang.Id != Model.CurrentLanguageId)
+        {
+            <a href="@Url.RouteUrl("ChangeLanguage", new { langid = lang.Id })"><img src="/@Url.Content("Content/etf/images/flag/flag_" + lang.Id + ".png")">@lang.Name</a>
+        }
+    }   
+    </div>

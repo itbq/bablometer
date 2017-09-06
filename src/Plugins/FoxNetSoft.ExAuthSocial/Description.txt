@@ -1,0 +1,8 @@
+﻿Group: ExternalAuth methods
+FriendlyName: ExAuthSocial (Facebook, Google, Yahoo, Twitter, LinkedIn, Mail.ru, VK.com, Yandex, etc)
+SystemName: FoxNetSoft.ExternalAuth.Social
+Version: 1.02
+SupportedVersions: 3.00
+Author: FoxNetSoft
+DisplayOrder: 5
+FileName: FoxNetSoft.Plugin.ExternalAuth.Social.dll

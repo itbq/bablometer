@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Nop.Admin.Models.Catalog.ProductModel>
+<div class="slideGoods">
+    <a href="#" class="arrPrev" id="go-left_view">
+        <div class="cornerLeft"></div>
+    </a>
+    <a href="#" class="arrNext" id="go-right_view">
+        <div class="cornerRight"></div>
+    </a>
+
+    <div class="goodsView">
+        <div>
+            @foreach (var item in Model)
+            {
+                var link = ((Nop.Core.Domain.Catalog.ProductItemTypeEnum)item.ProductItemTypeId).ToString();
+                <div class="goodBox">
+                         
+                    <div class="productPicture">@if(!String.IsNullOrEmpty(item.PictureThumbnailUrl)){<img src="@Url.Content(@item.PictureThumbnailUrl)" alt="">}</div>
+                    <a href="@Url.Action("Details", "Catalogue",new { seName = item.SeName})" class="goodLink">@item.Name
+                    </a>
+                </div>
+               
+            }
+        </div>
+    </div>
+</div>
+@* IF YOU ARE MAKING CHANGES, PLEASE MAKE CHANGES TO RECENTLYADDEDPRODUCTS.CSHTML *@
+
+

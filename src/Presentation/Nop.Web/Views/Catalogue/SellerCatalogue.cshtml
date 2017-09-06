@@ -1,0 +1,71 @@
+﻿@model Nop.Web.Models.SellerCatalog.SellerListModel
+@using Telerik.Web.Mvc.UI
+@using Nop.Web.Extensions
+@{
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+    
+    if((Nop.Core.Domain.Catalog.ProductItemTypeEnum)Model.ItemType == Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service)
+    {
+        Html.AddTitleParts(_localisationService.GetResource("Catalog.ServiceProvider"));
+    }else{
+        Html.AddTitleParts(_localisationService.GetResource("Catalog.Seller"));
+    }
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+                    @if((Nop.Core.Domain.Catalog.ProductItemTypeEnum)Model.ItemType == Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service)
+                    {
+                        <h1>@T("Catalog.ServiceProvider")</h1>
+                    }else{
+                        <h1>@T("Catalog.Seller")</h1>
+                    }
+                    <ul class="breadcrumb cat">
+                         <li>
+                             <div class="tail"></div>
+                             <a href="@Url.RouteUrl("CategorySellers", new {SeName="all",itemtype = ((Nop.Core.Domain.Catalog.ProductItemTypeEnum)Model.ItemType).ToString()})">Top</a><div class="head"></div></li>
+                             @if(Model.CategoryBreadCrumb != null)
+                             {
+                                 for (int i = 0; i < Model.CategoryBreadCrumb.Count - 1; i++)
+                                 {
+                                     <li><div class="tail"></div>
+                                         <a href="@Url.RouteUrl("CategorySellers", new { seName = Model.CategoryBreadCrumb[i].SeName, itemtype = ((Nop.Core.Domain.Catalog.ProductItemTypeEnum)Model.ItemType).ToString() })">@Model.CategoryBreadCrumb[i].Name</a><div class="head"></div></li>
+                                 }
+                                 <li class="last">@Model.CategoryBreadCrumb[Model.CategoryBreadCrumb.Count - 1].Name</li>
+                             }
+                    </ul>
+                    <div class="catalogue">
+                        <div class="catalogueLeft">
+                            @foreach(var seller in Model.Sellers)
+                            {
+                                <div class="sellerBox">
+                                    <p class="sellerName">
+                                        @if(seller.PictureUrl != null && seller.PictureUrl != ""){<a class="imgContainer" href="@Url.RouteUrl("CompanyInformation",new {seName =  seller.CompanySeName})"><img src="@seller.PictureUrl" alt="@seller.CompanyName" /></a>}<a href="@Url.RouteUrl("CompanyInformation",new {seName =  seller.CompanySeName})">@seller.CompanyName</a>
+                                    </p>
+                                    <p class="sellerInfo">
+                                        @seller.CompanyDescription
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                        @*<div class="catalogueRight">
+                        </div>*@
+                    </div>
+                    <div class="navBox">
+                        @(Html.Pager(Model.PagingContext).QueryParam("pagenumber").ShowFirst(true).ShowLast(true).ShowPrevious(true))
+                    </div>
+                </div>
+                <div class="rightSide">
+                    @Html.Action("CategorySelector","Catalogue",new {CatalogUrl = "Sellers", itemtype=Model.ItemType})
+
+                    <div class="banners">
+                         @Html.Action("BannerList", "Common", new { bigImage = true, numberOfBanners = 3 })
+                    </div>
+                </div>
+                </div>
+
+    </div> </div>
+</div>

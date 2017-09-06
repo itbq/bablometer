@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Nop.Web.Models.Event.EventInfoModel>
+
+@{
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+}
+<div class="LatesEvents box">
+                <div class="boxHead">
+                    <h2>@T("Events.LatestEvents")</h2>
+                    @Html.ActionLink(_localisationService.GetResource("seeall.lower"),"List","Event",null,new {@class="littleSeeAll"})
+                    <a class="rssRibbon" href="@Url.RouteUrl("EventsFeed")"><div class="cornerRight"></div>RSS</a>
+                </div>
+                <div class="boxBody">
+                    <div class="events">
+                        @foreach(var eventInfo in Model)
+                        {
+                            <div class="newsBox">
+                                <a href="@Url.RouteUrl("Event",new {seName=eventInfo.SeName})" class="newsHeadline">@eventInfo.Title</a>
+                                <div class="newsText">@eventInfo.ShortDescription</div>
+                                <div class="imgNews">
+                                    <div class="cornerRight"></div>
+                                    <div class="newsDate">@Html.Raw(eventInfo.StartDate.ToString("dd.MM") + (eventInfo.EndDate.HasValue ? " - " + eventInfo.EndDate.Value.ToString("dd.MM") : ""))</div>
+                                    @if(eventInfo.PictureId != 0){<img src="@eventInfo.PictureModel.ImageUrl" alt="@eventInfo.Title" />}
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>

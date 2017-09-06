@@ -1,0 +1,65 @@
+﻿@model List<Nop.Web.Models.MiniSite.MiniSiteBannerModel>
+
+@{
+    Html.AddTitleParts(T("ETF.MiniSite.Setup.Title").Text + ". " + T("ETF.MiniSite.Setup.Options.Banner").Text);
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.MiniSite })
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content favorites miniSite">
+        <ul id="productMenu">
+            <li><a href="/MiniSiteManagement/MainSetup">@T("ETF.MiniSite.Setup.Options.General")</a></li>
+            <li><a href="/MiniSiteManagement/SliderSetup">@T("ETF.MiniSite.Setup.Options.Slider")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetup" class="current">@T("ETF.MiniSite.Setup.Options.Banner")</a></li>
+            <li><a href="/MiniSiteManagement/BannerSetupAdd">@T("ETF.MiniSite.Setup.Banner.Add")</a></li>
+            <li><a href="/MiniSiteManagement/TextPageSetup">@T("ETF.MiniSite.Setup.Options.TextPages")</a></li>
+        </ul>
+        <div class="master-wrapper-main">
+        <table class="anyTable favoritesTable">
+                <tr>
+                    <th class="c1">@T("Profile.Favorit.Image")</th>
+                    <th class="c5">@T("MiniSite.Banner.TitleText")</th>
+                    <th class="c5">@T("MiniSite.Banner.AltText")</th>
+                    <th class="c6">@T("languages")</th>
+                    <th class="c7">@T("Profile.Request.Actions")</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@if (item.Picture != null)
+                            {<img src="@item.Picture.ImageUrl" width="78" alt=""/>}</td>
+                        <td>
+                            @item.TitleTag
+                        </td>
+                        <td>@item.AltTag</td>
+                        <td class="lang">
+                             @foreach (var lang in item.Languages)
+                             {
+                                <div class="language @if (lang.Selected)
+                                                     {@Html.Raw("ledit")}
+                                                     else
+                                                     {@Html.Raw("ladd")}"><img src="/@Url.Content("Content/etf/images/flag/flag_" + lang.LanguageId + ".png")" alt=""/><span>@lang.LanguageName</span> 
+                                    @if (lang.Selected)
+                                    {<a href="/MiniSiteManagement/BannerSetupEdit?Id=@item.Id&languageid=@lang.LanguageId" class="miniAction"></a>}
+                                    else
+                                    {<a href="/MiniSiteManagement/BannerSetupEdit?Id=@item.Id&languageid=@lang.LanguageId" class="miniAction"></a>}</div>
+                             }
+                             </td>
+                        <td><a class="remove button-link" nohref="nohref" onclick="removenew('/MiniSiteManagement/BannerSetupDelete?Id=@item.Id')">@T("common.remove")</a></td>
+                    </tr>
+                }
+            </table>
+            </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function removenew(url) {
+        $('#confirmPopOk h2').text('@T("ETF.Confirmation")');
+        $('#confirmPopOk p').text('@T("ETF.MiniSite.Delete")');
+        showPop("confirmPopOk");
+        $('#confirmPopOk .ok').click(function () {
+            window.location.href = url;
+        });
+    }
+</script>

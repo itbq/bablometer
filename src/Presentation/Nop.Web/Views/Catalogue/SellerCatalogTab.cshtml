@@ -1,0 +1,179 @@
+﻿@model Nop.Web.Models.Catalog.CategoryNavigationModel
+
+@{
+    var itemType = Model.ItemType.ToString() + "-user";
+}
+
+<div class="w650">
+    <a href="#" class="arrPrev" id="go-left-@itemType">
+        <div class="cornerLeft"></div>
+    </a>
+    <a href="#" class="arrNext" id="go-right-@itemType">
+        <div class="cornerRight"></div>
+    </a>
+    <div class="conteiner @(itemType)">
+      <div class="block-containter">
+      @for (int i = 0; i < Model.Categories.Count; i += 3)
+      {
+      <div class="group-block @(itemType)" id="@(itemType)group@((int)i/3)">
+            <ul>
+            	<li><a href="#">@Model.Categories[i].Name</a></li>
+                @if (Model.Categories.Count > i + 1)
+                {   
+                    <li><a href="#">@Model.Categories[i + 1].Name</a></li>
+                }
+                @if (Model.Categories.Count > i + 2)
+                {
+                    <li><a href="#">@Model.Categories[i + 2].Name</a></li>
+                }
+            </ul>
+        <div class="number-block">
+        	<div class="circle-pimp">
+            	<p>@((int)i/3 + 1) </p>
+            </div>
+            <div class="arrow-promp"></div>
+            </div>
+        	
+      </div>
+      }
+      </div>
+      <div class="switchs">
+          @for (int i = 0; i < Model.Categories.Count; i += 3)
+          {
+              <a nohref="nohref" class="@(itemType) catalog-circle@(i == 0 ? " active":"")" id="@(itemType)circle@((int)i/3)">&nbsp;</a>
+          }
+        </div>			
+    </div>
+    @*<div class="@(itemType)Slider">
+        <div>
+            @foreach (var category in Model.Categories)
+            {
+                <div>
+                    <ul class="tabCat">
+                        <li><h3><a href="@Url.RouteUrl("CategorySellers",new {SeName = category.SeName,itemtype=Model.ItemType.ToString()})">@category.Name</a></h3></li>
+                        @foreach(var subCategory in category.SubCategories)
+                        {
+                            <li><a href="@Url.RouteUrl("CategorySellers",new {SeName = subCategory.SeName,itemtype=Model.ItemType.ToString()})">@subCategory.Name</a></li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+     </div>*@
+    <div class="@(itemType)Slider">
+        <div>
+        @for (int i = 0; i < Model.Categories.Count; i += 3)
+        {
+            <div>
+                <ul class="tabCat">
+                    <li><h3><a href="@Url.RouteUrl("CategorySellers", new { SeName = Model.Categories[i].SeName, itemtype = Model.ItemType.ToString() })">@Model.Categories[i].Name</a></h3></li>
+                    @foreach (var subCategory in Model.Categories[i].SubCategories)
+                    {
+                        <li><a href="@Url.RouteUrl("CategorySellers", new { SeName = subCategory.SeName, itemtype = Model.ItemType.ToString() })">@subCategory.Name</a></li>
+                    }
+                </ul>
+                @if (Model.Categories.Count > i + 1)
+                {
+                    <ul class="tabCat">
+                        <li><h3><a href="@Url.RouteUrl("CategoryItem", new { SeName = Model.Categories[i + 1].SeName, itemtype = Model.ItemType.ToString() })">@Model.Categories[i + 1].Name</a></h3></li>
+                        @foreach (var subCategory in Model.Categories[i + 1].SubCategories)
+                        {
+                            <li><a href="@Url.RouteUrl("CategoryItem", new { SeName = subCategory.SeName, itemtype = Model.ItemType.ToString() })">@subCategory.Name</a></li>
+                        }
+                    </ul>
+                }
+                @if (Model.Categories.Count > i + 2)
+                {
+                    <ul class="tabCat">
+                        <li><h3><a href="@Url.RouteUrl("CategoryItem", new { SeName = Model.Categories[i + 2].SeName, itemtype = Model.ItemType.ToString() })">@Model.Categories[i + 2].Name</a></h3></li>
+                        @foreach (var subCategory in Model.Categories[i + 2].SubCategories)
+                        {
+                            <li><a href="@Url.RouteUrl("CategoryItem", new { SeName = subCategory.SeName, itemtype = Model.ItemType.ToString() })">@subCategory.Name</a></li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+        </div>
+    </div>
+</div>
+<a href="@Url.RouteUrl("SellerFeed",new {itemtype = Model.ItemType.ToString()})" class="rssRibbon"><div class="cornerRight"></div>RSS</a>
+<div class="redRibbon tabSeeAll">
+    <div class="cornerRight"></div>
+    <div class="cornerLeft"></div>
+     @switch (Model.ItemType)
+     {
+         case Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product:
+             {
+                 <a href="@Url.RouteUrl("CategorySellers",new {SeName = "all",itemtype=Model.ItemType.ToString()})">@T("seeall.Catalog.Sellers")</a>
+                 break;
+             }
+         case Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service:
+             {
+                 <a href="@Url.RouteUrl("CategorySellers",new {SeName = "all",itemtype=Model.ItemType.ToString()})">@T("seeall.Catalog.ServiceProviders")</a>
+                 break;
+             }
+     }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".@(itemType)Slider").diyslider({
+            width: "625px", // width of the slider
+            height: "238px", // height of the slider
+            display: 1, // number of slides you want it to display at once
+            loop: true // disable looping on slides
+        }); // this is all you need!
+
+        $('.group-block').each(function () {
+            var width = $(this).width();
+            var number = $(this).attr('id').replace("@(itemType)group", "");
+            $(this).css("left", (-width / 2 + number * 14 + 4) + 'px');
+        });
+
+        $('.@(itemType).catalog-circle').bind({
+            mouseenter: function (event) {
+                var number = $(this).attr('id').replace("@(itemType)circle", "");
+                $('#@(itemType)group' + number).show();
+                event.preventDefault();
+            },
+            mouseleave: function (event) {
+                var number = $(this).attr('id').replace("@(itemType)circle", "");
+                $('#@(itemType)group' + number).hide();
+                event.preventDefault();
+            },
+            click: function () {
+                var number = parseInt($(this).attr('id').replace("@(itemType)circle", ""));
+                $('.@(itemType) .switchs a.active').removeClass('active');
+                $(this).addClass('active');
+                $(".@(itemType)Slider").diyslider("move", number + 1);
+            }
+        });
+        // use buttons to change slide
+        $("#go-left-@(itemType)").bind("click", function () {
+            $(".@(itemType)Slider").diyslider("move", "back");
+            var circle = $('.conteiner.@(itemType) .switchs a.active').first();
+            var number = parseInt(circle.attr("id").replace("@(itemType)circle", ""));
+            circle.removeClass("active");
+            if (number == 0) {
+                $('.conteiner.@(itemType) .switchs a').last().addClass('active');
+            } else {
+                $('#@(itemType)circle' + (number - 1)).addClass('active');
+            }
+            return false;
+        });
+        $("#go-right-@(itemType)").bind("click", function () {
+            var circle = $('.conteiner.@(itemType) .switchs a.active').first();
+            var number = parseInt(circle.attr("id").replace("@(itemType)circle", ""));
+            var lastNumber = parseInt($('.conteiner.@(itemType) .switchs a').last().attr("id").replace("@(itemType)circle", ""));
+            circle.removeClass("active");
+            if (number == lastNumber) {
+                $('#@(itemType)circle0').addClass('active');
+            } else {
+                $('#@(itemType)circle' + (number + 1)).addClass('active');
+            }
+            $(".@(itemType)Slider").diyslider("move", "forth");
+            return false;
+        });
+
+    });
+</script>

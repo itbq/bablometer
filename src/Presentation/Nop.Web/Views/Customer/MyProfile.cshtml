@@ -1,0 +1,281 @@
+﻿@model ProfileModel
+
+@using Nop.Web.Models.Customer
+@using Nop.Core.Domain.Customers
+@{
+   
+    var _localisationService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Localization.ILocalizationService>();
+    Html.AddTitleParts(Model.Email + " - " + _localisationService.GetResource("pagetitle.profile"));
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#RegionId').change(function () {
+            var regionId = $(this).attr('value');
+            if (regionId == 0) {
+                $('#citiesBlock').html('<label for="CityId" >@T("ITBSFA.Register.City")</label><select id="CityId" name="CityId" class="dropdown" selected><option value="0">@T("ITBSFA.Register.Choose")</option></select>');
+                var params = { changedEl: "#CityId", scrollArrows: true }
+                cuSel(params);
+            } else {
+                $.ajax('/Customer/GetCities', {
+                    data: { regionId: regionId },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.Success) {
+                            $('#citiesBlock').html(data.resultHtml);
+                            var params = { changedEl: "#CityId", scrollArrows: true }
+                            cuSel(params);
+                        }
+                    }
+                });
+            }
+        });
+     });
+
+    function switchDisplay(id) {
+        if ($(id).css("display") == "none") { $(id).css("display", "block"); } else { $(id).css("display", "none"); }
+    }
+
+
+    $(function () {
+        // cusel init
+        var params = { changedEl: ".dropdown", scrollArrows: true, visRows: 5 }
+        cuSel(params);
+
+        $(".tabFilters").tabs();
+
+        $(".slideBox").diyslider({
+            width: "936px", // width of the slider
+            height: "200px", // height of the slider
+            display: 1, // number of slides you want it to display at once
+            loop: true // disable looping on slides
+        }); // this is all you need!
+
+        // use buttons to change slide
+        $(".offersSlideBox .arrowPrev").bind("click", function () {
+            $(".slideBox").diyslider("move", "back");
+            return false;
+        });
+        $(".offersSlideBox .arrowNext").bind("click", function () {
+            $(".slideBox").diyslider("move", "forth");
+            return false;
+        });
+
+        $("#submit").click(function () {
+            if ($(".loginPop").validate().form()) {
+                $("#submit").submit();
+            } else { }
+        });
+
+    });
+
+    $(function () {
+        $(".tabFormBox").tabs();
+    });
+</script>
+
+<div class="master-wrapper-page">
+		<div class="master-wrapper-content">
+			<div class="master-wrapper-main">
+                <div class="tabFormBox">
+                    <div class="bottomSignUp">
+                        
+                        @*@Html.Action("MyProfileMenuStrip", "Customer", new { activetab = (int)Nop.Web.Models.Customer.MenuTab.Profile })*@
+                    <ul class="tabFormMenu">
+                        <li><a href="#main-profile">Профиль</a></li>
+                        @if(WorkContext.CurrentCustomer.IsAdmin()){<li><a href="#formTab2">Анкета банка</a></li>
+                        <li><a href="#formTab3">Еще закладка</a></li>}
+                    </ul>
+       
+
+            @using (Html.BeginForm("MyProfile", "Customer", FormMethod.Post, new {onsubmit = "return CheckContactCount();", id = "main-profile"}))
+            {
+                @Html.AntiForgeryToken()
+
+                if (!WorkContext.CurrentCustomer.ExternalAuthenticationRecords.Any())
+                {
+                    @:<div class="litegreen twothird relative" id="legal-information">
+                }
+                else
+                {
+                    @:<div class="litegreen twothirdNew relative" id="legal-information">
+                }
+                    <h4>@T("ITB.Portal.Register.About"):</h4>
+                    <div class="leftSide">
+                        <div class="fline">
+                            <label for="Gender" >@T("ITBSFA.Register.Gender")</label>
+                            <select class="dropdown" name="Gender" id="Gender">
+                                <option value="">@T("IBSFA.Register.Choose")</option>
+                                <option value="M" @(Model.Gender == "M" ? "selected" : "")>@T("ITBSFA.Register.Man")</option>
+                                <option value="W" @(Model.Gender == "W" ? "selected" : "")>@T("ITBSFA.Register.Woman")</option>
+                            </select>
+                        </div>
+                        <div class="fline dateLine">
+                            <label>@T("Account.Fields.DateOfBirth"):</label>
+                            @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
+                                Html.FieldNameFor(x => x.DateOfBirthMonth),
+                                Html.FieldNameFor(x => x.DateOfBirthYear),
+                                DateTime.Now.Year - 110,
+                                DateTime.Now.Year,
+                                Model.DateOfBirthDay,
+                                Model.DateOfBirthMonth,
+                                Model.DateOfBirthYear)
+                            @Html.ValidationMessageFor(model => model.DateOfBirthDay)
+                            @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
+                            @Html.ValidationMessageFor(model => model.DateOfBirthYear)
+                        </div>
+                        <div class="fline currency">
+									<label for="Income" >@T("ITBSFA.Register.Income")</label>					
+									@Html.TextBoxFor(model => model.Income)
+                                    <div class="curencyWidget bestborderthanever">
+                                    @foreach (var currency in Model.AviableCurrencies)
+                                    {
+                                        var currencyClass = "";
+                                        switch (currency.Name)
+                                        {
+                                            case "USD":
+                                                {
+                                                    currencyClass = "dollar";
+                                                    break;
+                                                }
+                                            case "EUR":
+                                                {
+                                                    currencyClass = "euro";
+                                                    break;
+                                                }
+                                            case "RUB":
+                                                {
+                                                    currencyClass = "ruble";
+                                                    break;
+                                                }
+                                        }
+
+                                        string checkedString = "";
+                                        if (Model.CurrencyId == currency.Id)
+                                        {
+                                            checkedString = "checked=\"checked\"";
+                                        }
+                                        else
+                                        {
+                                            if (Model.CurrencyId == 0 && currency.Name == "RUB")
+                                            {
+                                                checkedString = "checked=\"checked\"";
+                                            }
+                                        }
+                                        <input type="radio" name="CurrencyId"  id='@(currency.Id + "-cur")' value="@currency.Id" @checkedString /><label for="@(currency.Id + "-cur")" class="@currencyClass"></label>
+
+                                    }
+                                    </div> 
+                        @Html.ValidationMessageFor(model => model.Income, "Доход, должен быть числом больше 0, меньше 4 млн.")
+								</div>
+                        <div class="fline">
+                            <label>@T("ITB.Portal.Register.LastName"):</label>
+                            @Html.EditorFor(model => model.LastName)
+                        </div>
+                        <div class="fline">
+                            <label>@T("ITB.Portal.Register.FirstName"):</label>
+                            @Html.EditorFor(model => model.FirstName)
+                        </div>
+                    </div>
+                        
+                    <div class="rightSide">
+                        <div class="fline">
+                            <label for="inp7" >@T("ITBSFA.Register.Country")</label>
+                            <select class="dropdown" name="" id="inp7">
+                                @*<option value="0">@T("ITBSFA.Register.Choose")</option>*@
+                                <option value="1">Россия</option>
+                                @*<option value="2">2</option>
+										<option value="2">3</option>*@
+                            </select>
+                        </div>
+
+                        <div class="fline">
+                            <label>@T("ITB.Portal.Register.Region"):</label>
+                        @Html.DropDownListFor(mode => Model.RegionId, Model.Regions.Select(x => new SelectListItem() {Text = x.Title, Value = x.Id.ToString(), Selected = x.Id == Model.RegionId}), new {@class = "dropdown"})
+                        </div>
+
+                        <div class="fline" id="citiesBlock">
+									<label for="CityId" >@T("ITBSFA.Register.City")</label>
+                                    <select id="CityId" name="CityId" class="dropdown">
+                                        @foreach (var city in Model.Cities)
+                                        {
+                                            if (city.Id == Model.CityId)
+                                            {
+                                                <option value="@city.Id" selected>@city.Title</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@city.Id">@city.Title</option>
+                                            }
+                                        }
+                                    </select>
+									@*<select class="dropdown" name="" id="inp9">
+										<option value="0">Выберите</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="2">3</option>
+									</select>*@
+								</div>
+
+                        <div class="fline">
+                            <label for="inp10">@T("ITB.Portal.Register.Index"):</label>
+                            @Html.EditorFor(model => model.Index)
+                            @Html.ValidationMessageFor(model => model.Index)
+                        </div>
+                        <div class="fline">
+                            <label for="inp11">@T("ITB.Portal.Register.Address"):</label>
+                            @Html.EditorFor(model => model.Address)
+                        </div>
+                    </div>
+                @:</div>
+                if (!WorkContext.CurrentCustomer.ExternalAuthenticationRecords.Any())
+                {
+                <div class="litegreen onethird relative">
+                        <h4>@T("Profile.RegistrationInformation")</h4>
+                        <div class="fline">
+                            <label>@T("Account.Login.Fields.UserName"):</label>
+                             <b>@Model.Email</b>
+                            @Html.HiddenFor(model => model.Email)
+                        </div>
+                        <div class="fline">
+                            <label for="inp2" class="require">@T("ITBSFA.Account.Fields.NewPassword"):</label>
+                           
+                            @Html.EditorFor(model => model.NewPassword)
+                             @Html.ValidationMessageFor(model => model.NewPassword)
+                        </div>
+                        <div class="fline">
+                            <label for="inp3" class="require">@T("Account.Fields.ConfirmPassword"):</label>
+                            @Html.EditorFor(model => model.ConfirmNewPassword)
+                             @Html.ValidationMessageFor(model => model.ConfirmNewPassword)
+                        </div>
+
+                        <div class="left bottom grey absolute fleft p15">
+                            <span class="require"></span>Поля обязательные для заполнения
+                        </div>
+                    </div>
+                }
+                <div class="submit"><span class="btnShadow"><button class="signupBtn">@T("admin.common.save")</button></span></div>
+                
+            }
+                        @if(WorkContext.CurrentCustomer.IsAdmin()){<div id="formTab2"></div>
+                        <div id="formTab3"></div>}
+                    </div>
+                </div>
+			</div>
+		</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type="password"]').val("");
+
+        $('.cusel').each(function () {
+            if ($(this).parent().children('.field-validation-error').length > 0) {
+                $(this).addClass('input-validation-error');
+            }
+        });
+    });
+</script>

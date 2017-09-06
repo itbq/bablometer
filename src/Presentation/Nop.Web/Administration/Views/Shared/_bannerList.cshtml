@@ -1,0 +1,66 @@
+﻿@model IList<BannerModel>
+@using Nop.Admin.Models.Banners
+
+<table class="adminContent">
+    <tr>
+        <th>ID</th>
+        <th>@T("Banner.Picture").Text</th>
+        <th>@T("Banner.Title").Text</th>
+        <th>@T("Banner.Position").Text</th>
+        @if (Model.Count > 0 && Model.First().BannerTypeId == (int)Nop.Core.Domain.BannerTypeEnum.Productpage)
+        {
+            <th>@T("ITBSFA.Admin.Banner.Category")</th>
+        }
+        <th>@T("Admin.Common.Edit").Text</th>
+        <th>@T("Admin.Common.Delete").Text</th>
+    </tr>
+    @foreach(var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>
+                @{
+                    string picturestring;
+                    if (item.PictureModel.FullSizeImageUrl.IndexOf(".swf", item.PictureModel.FullSizeImageUrl.Length - 5) > 0)
+                    {
+                        picturestring = "<div id=\"flash" + item.Id + "\" class=\"image-prview\"><embed width=\"100%\" height=\"100%\" scale=\"tofit\" name=\"plugin\" src=\"" + item.PictureModel.FullSizeImageUrl + "\" type=\"application/x-shockwave-flash\" /></div>";
+                    }
+                    else
+                    {
+                        picturestring = "<div id=\"pic" + item.Id + "\" class=\"image-prview\"><img src=" + item.PictureModel.FullSizeImageUrl + " /></div>";
+                    }
+                }
+                <span><h2>@T("Admin.Banner.PictureSize").Text @item.Size x @item.Height</h2></span>
+                @Html.Raw(picturestring)
+            </td>
+            <script type="text/javascript">
+                $('#flash'+@item.Id.ToString()).width(@item.Size);
+                $('#flash'+@item.Id.ToString()).height(@item.Height);
+                $('#pic'+@item.Id.ToString()).width(@item.Size);
+                $('#pic'+@item.Id.ToString()).height(@item.Height);
+            </script>
+            <td>
+                @item.Title
+            </td>
+            <td>
+                @item.BannerTypeString
+            </td>
+            @if (item.BannerTypeId == (int)Nop.Core.Domain.BannerTypeEnum.Productpage)
+            {
+                <td>
+                    @item.CategoryName
+                </td>
+            }
+            <td>
+                @Html.ActionLink(T("Admin.Common.Edit").Text, "Edit", new { id = item.Id })
+            </td>
+            <td>
+                @Html.ActionLink(T("Admin.Common.Delete").Text, "Delete", new { Id = item.Id })
+            </td>
+            <td>
+                <a nohref="nohref" onclick="OpenWindow('@Url.Action("ReportsPopUp", "Reports", new {reportType = 5,referenceId = item.Id, reportName = T("ITBSFA.Report.BannerView.Title.Single").Text })',800,350,true)" class="t-button">@T("ITBSFA.Reports.BannerView.Single.Title")</a>
+                <a nohref="nohref" onclick="OpenWindow('@Url.Action("ReportsPopUp", "Reports", new {reportType = 6,referenceId = item.Id, reportName = T("ITBSFA.Reports.BannerClick.Title.Single").Text })',800,350,true)" class="t-button">@T("ITBSFA.Reports.BannerClick.Single.Title")</a>
+            </td>
+        </tr>
+    }
+</table>

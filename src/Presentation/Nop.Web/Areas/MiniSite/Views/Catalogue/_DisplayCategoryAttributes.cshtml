@@ -1,0 +1,98 @@
+﻿@model IList<CategoryAttributeModel>
+
+@using Nop.Web.Models.BuyingRequest
+@for (int i = 0; i < Model.Count; i++)
+{
+    switch (Model[i].ControlType)
+    {
+        case Nop.Core.Domain.Catalog.AttributeControlType.ColorSquares:
+            {
+                if(Model[i].Values.Where(x=>x.IsPreSelected).Count() > 0)
+                {
+                    <li><b>@Model[i].Name</b></li>
+                    <ul class="colorpicker">
+                        @foreach (var pvaValue in Model[i].Values)
+                        {
+                            if (pvaValue.IsPreSelected)
+                            {
+                            <li>
+                                <div class="circle">
+                                    <span style="background-color:@(pvaValue.ColorSquaresRgb);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <span style="background-color:@(pvaValue.ColorSquaresRgb);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </div>
+                            </li>
+                            }
+                        }
+                    </ul>
+                }
+                break;
+            }
+        case Nop.Core.Domain.Catalog.AttributeControlType.SizePicker:
+            {
+                if(Model[i].Values.Where(x=>x.IsPreSelected).Count() > 0)
+                {
+                    <li>
+                        <label><b>@Model[i].Name</b></label></li>
+                    <li>
+
+                        <ul class="sizes">
+                            @foreach (var pvaValue in Model[i].Values)
+                            {
+                                <li @if (pvaValue.IsPreSelected)
+                                    { <text>class="sizeIsAvailable"</text>} >
+                                    @pvaValue.Name
+
+                                </li>
+                            }
+                        </ul>
+
+                    </li>
+                }
+                break;
+            }
+        case Nop.Core.Domain.Catalog.AttributeControlType.Checkboxes:
+            {
+                if(Model[i].Values.Where(x=>x.IsPreSelected).Count() > 0)
+                {
+                    <li>
+                        <label><b>@Model[i].Name</b></label></li>
+                    <li>
+                        @{string s = "";
+                            for (int j = 0; j < Model[i].Values.Count;j++)
+                            {
+                                if(Model[i].Values[j].IsPreSelected)
+                                {
+                                    s+=Model[i].Values[j].Name + ", ";
+                                }
+                            }
+                            s = s.Remove(s.Length - 2, 2);
+                        }
+                        @Html.Raw(s)
+                    </li>
+                }
+                break;
+            }
+        case Nop.Core.Domain.Catalog.AttributeControlType.DropdownList:
+            {
+                if(Model[i].Values.Where(x=>x.IsPreSelected).FirstOrDefault() != null)
+                {
+                    <li>
+                        <label><b>@Model[i].Name</b></label>
+                        : @(Model[i].Values.Where(x=>x.IsPreSelected).FirstOrDefault().Name)
+                    </li>
+                }
+                break;
+            }
+        default:
+            {
+                if(Model[i].SelectedValue != null)
+                {
+                    <li>
+                        <label><b>@Model[i].Name</b></label>
+                        : @Model[i].SelectedValue.Name
+                    </li>
+                }
+                break;
+            }
+    }
+}

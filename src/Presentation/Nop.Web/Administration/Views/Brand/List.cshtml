@@ -1,0 +1,55 @@
+﻿@model Telerik.Web.Mvc.GridModel<Nop.Admin.Models.Brand.BrandModel>
+@using Telerik.Web.Mvc.UI
+@{  
+    //page title
+    ViewBag.Title = T("Admin.Brand").Text;
+    var gridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+        @T("Admin.Brand")
+    </div>
+</div>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<Nop.Admin.Models.Brand.BrandModel>(Model.Data)
+                    .Name("brand-grid")
+                    .DataKeys(x =>
+                    {
+                        x.Add(y => y.Id).RouteKey("Id");
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Name)
+                            .Width(200);
+                        columns.Bound(x => x.ProductCount)
+                            .Width(100)
+                            .ReadOnly()
+                            .Filterable(false);                            
+                        columns.Bound(x => x.IsApproved)
+                            .Title(T("ETF.Common.Approved").Text)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.IsApproved.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= IsApproved #>.gif' />");
+                        columns.Command(commands =>
+                            {
+                                commands.Edit().Text("Edit");
+                                //commands.Delete().Text("Delete");
+                            }).Width(180).Title(T("ETF.Common.Commands").Text);
+                    })
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("List", "Brand")
+                    .Update("BrandUpdate","Brand")
+                    .Delete("BrandDelete","Brand"))
+                    .Pageable(settings => settings.Total(Model.Total).PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                    .Editable(x =>
+                    {
+                        x.Mode(GridEditMode.InLine);
+                    })
+                    .Filterable()
+                    .EnableCustomBinding(false))
+        </td>
+    </tr>
+</table>

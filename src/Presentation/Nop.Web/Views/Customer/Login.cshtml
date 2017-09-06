@@ -1,0 +1,84 @@
+﻿@model LoginModel
+@using Nop.Web.Models.Customer;
+@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@using Nop.Core.Infrastructure.DependencyManagement;
+@{
+    //register URL with return URL (if specified)
+    var registerUrl = Url.RouteUrl("Register");
+    if (!String.IsNullOrEmpty(this.Context.Request.QueryString["returnUrl"]))
+    {
+        var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+        registerUrl = webHelper.ModifyQueryString(registerUrl, "returnurl=" + HttpUtility.UrlEncode(this.Context.Request.QueryString["returnUrl"]), null);
+    }
+}
+
+@using (Html.BeginForm("Login", "Customer", FormMethod.Post, new { @class = "loginPop invisible", name = "login-form", id = "login-form" }))
+{
+        <div class="top">@*<div class="loginH" onclick="switchDisplay('.loginPop');">@T("Account.Login")</div>*@</div>
+        <!--<div class="loginH" onclick="switchDisplay('.signUp');">Log in</div>-->
+        <div class="inputs"> 
+            <label class="error-lable invisible">@T("Account.Login.Unsuccessful").Text</label>
+            <label for="login">@T("Account.Login.Fields.UserName").Text:</label>
+            @Html.TextBoxFor(model => model.Username, new {@class="required", placeholder = T("Account.Login.Fields.UserName").Text, onfocus = "ResetError" })
+            <label for="login">@T("Account.Login.Fields.Password").Text:</label>
+            @Html.PasswordFor(model => model.Password, new {@class="required", placeholder = T("Account.Login.Fields.Password").Text, onfocus = "ResetError" })
+        </div>
+        <div class="line">
+            <a nohref="nohref" class="forgot" id="forgot-pass">@T("Account.Login.ForgotPassword").Text</a>
+        </div>
+        <div class="btnShadow loginSubmit">
+            <input type="submit" value="@T("Account.Login").Text" id="login-button">
+        </div>
+    <div class="logAs">
+        <div>@T("Account.LoginAs"):</div>
+        <div class="external-authentication">
+            @Html.Action("ExternalMethods", "ExternalAuthentication")
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $('#login-button').click(function () {
+            $("body").css("cursor", "progress");
+            var username = $('input[name="Username"]').val();
+            var password = $('input[name="Password"]').val();
+            $.ajax({
+                url: "/Customer/CheckLogin",
+                type: "POST",
+                dataType: "json",
+                data: { username: username, password: password },
+                success: function (resp) {
+                    if (resp.correct) {
+                        $('.error-lable').addClass('invisible');
+                        $.post('/Login', { Username: resp.username, Password: resp.password }, function () { window.location.href='/'; });
+                    } else {
+                        $("body").css("cursor", "auto");
+                        $('.error-lable').removeClass('invisible');
+                    }
+                }
+            });
+            return false;
+        });
+
+        $('#forgot-pass').click(function (event) {
+            showPop('#forgot-password');
+            $('#forgot-password').parent().click(function () {
+                $('#forgot-password input[type="text"]').val("");
+                $('#forgot-password form').validate().resetForm();
+                $('#forgot-password form .field-validation-error').removeClass('field-validation-error').addClass('field-validation-valid');
+                $('#forgot-password').parent().fadeOut(500);
+            });
+            $('#forgot-password').click(function (event) {
+                return false;
+            });
+            //$('#forgot-password').parent().parent().click(function () {
+            //    $(this).fadeOut();
+            //}
+        });
+    });
+
+    function ResetError() {
+        $('.error-lable').addClass('invisible');
+    }
+</script>

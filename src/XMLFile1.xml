@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Products Version="2.80">
+  <Product>
+    <ProductId>19</ProductId>
+    <Name>Compaq Presario SR1519X Pentium 4 Desktop PC with CDRW</Name>
+    <ShortDescription>Compaq Presario Desktop PC</ShortDescription>
+    <FullDescription>&lt;p&gt;Compaq Presario PCs give you solid performance, ease of use, and deliver just what you need so you can do more with less effort. Whether you are e-mailing family, balancing your online checkbook or creating school projects, the Presario is the right PC for you.&lt;/p&gt;</FullDescription>
+    <AdminComment />
+    <ProductTemplateId>2</ProductTemplateId>
+    <ShowOnHomePage>False</ShowOnHomePage>
+    <MetaKeywords />
+    <MetaDescription />
+    <MetaTitle />
+    <SEName>compaq-presario-sr1519x-pentium-4-desktop-pc-with-cdrw</SEName>
+    <AllowCustomerReviews>True</AllowCustomerReviews>
+    <Published>True</Published>
+    <CreatedOnUtc>1/28/2013 10:53:33 AM</CreatedOnUtc>
+    <UpdatedOnUtc>1/29/2013 1:35:32 PM</UpdatedOnUtc>
+    <ProductVariants>
+      <ProductVariant>
+        <ProductVariantId>20</ProductVariantId>
+        <ProductId>19</ProductId>
+        <Name />
+        <SKU />
+        <Description />
+        <AdminComment />
+        <ManufacturerPartNumber />
+        <Gtin />
+        <IsGiftCard>False</IsGiftCard>
+        <GiftCardType>Virtual</GiftCardType>
+        <RequireOtherProducts>False</RequireOtherProducts>
+        <RequiredProductVariantIds />
+        <AutomaticallyAddRequiredProductVariants>False</AutomaticallyAddRequiredProductVariants>
+        <IsDownload>False</IsDownload>
+        <DownloadId>0</DownloadId>
+        <UnlimitedDownloads>False</UnlimitedDownloads>
+        <MaxNumberOfDownloads>0</MaxNumberOfDownloads>
+        <DownloadExpirationDays />
+        <DownloadActivationType>0</DownloadActivationType>
+        <HasSampleDownload>False</HasSampleDownload>
+        <SampleDownloadId>0</SampleDownloadId>
+        <HasUserAgreement>False</HasUserAgreement>
+        <UserAgreementText />
+        <IsRecurring>False</IsRecurring>
+        <RecurringCycleLength>0</RecurringCycleLength>
+        <RecurringCyclePeriodId>0</RecurringCyclePeriodId>
+        <RecurringTotalCycles>0</RecurringTotalCycles>
+        <IsShipEnabled>True</IsShipEnabled>
+        <IsFreeShipping>False</IsFreeShipping>
+        <AdditionalShippingCharge>0.0000</AdditionalShippingCharge>
+        <IsTaxExempt>False</IsTaxExempt>
+        <TaxCategoryId>2</TaxCategoryId>
+        <ManageInventoryMethodId>1</ManageInventoryMethodId>
+        <StockQuantity>10000</StockQuantity>
+        <DisplayStockAvailability>True</DisplayStockAvailability>
+        <DisplayStockQuantity>False</DisplayStockQuantity>
+        <MinStockQuantity>0</MinStockQuantity>
+        <LowStockActivityId>1</LowStockActivityId>
+        <NotifyAdminForQuantityBelow>1</NotifyAdminForQuantityBelow>
+        <BackorderModeId>0</BackorderModeId>
+        <AllowBackInStockSubscriptions>False</AllowBackInStockSubscriptions>
+        <OrderMinimumQuantity>1</OrderMinimumQuantity>
+        <OrderMaximumQuantity>10000</OrderMaximumQuantity>
+        <AllowedQuantities />
+        <DisableBuyButton>False</DisableBuyButton>
+        <DisableWishlistButton>False</DisableWishlistButton>
+        <CallForPrice>False</CallForPrice>
+        <Price>500.0000</Price>
+        <OldPrice>0.0000</OldPrice>
+        <ProductCost>0.0000</ProductCost>
+        <SpecialPrice />
+        <SpecialPriceStartDateTimeUtc />
+        <SpecialPriceEndDateTimeUtc />
+        <CustomerEntersPrice>False</CustomerEntersPrice>
+        <MinimumCustomerEnteredPrice>0.0000</MinimumCustomerEnteredPrice>
+        <MaximumCustomerEnteredPrice>0.0000</MaximumCustomerEnteredPrice>
+        <Weight>7.0000</Weight>
+        <Length>7.0000</Length>
+        <Width>7.0000</Width>
+        <Height>7.0000</Height>
+        <PictureId>0</PictureId>
+        <Published>True</Published>
+        <Deleted>False</Deleted>
+        <DisplayOrder>1</DisplayOrder>
+        <CreatedOnUtc>1/28/2013 10:53:33 AM</CreatedOnUtc>
+        <UpdatedOnUtc>1/28/2013 10:53:33 AM</UpdatedOnUtc>
+        <ProductDiscounts />
+        <TierPrices />
+        <ProductAttributes />
+      </ProductVariant>
+    </ProductVariants>
+    <ProductPictures>
+      <ProductPicture>
+        <ProductPictureId>24</ProductPictureId>
+        <PictureId>44</PictureId>
+        <DisplayOrder>1</DisplayOrder>
+      </ProductPicture>
+    </ProductPictures>
+    <ProductCategories>
+      <ProductCategory>
+        <ProductCategoryId>19</ProductCategoryId>
+        <CategoryId>3</CategoryId>
+        <IsFeaturedProduct>False</IsFeaturedProduct>
+        <DisplayOrder>1</DisplayOrder>
+      </ProductCategory>
+    </ProductCategories>
+    <ProductManufacturers />
+    <ProductSpecificationAttributes>
+      <ProductSpecificationAttribute>
+        <ProductSpecificationAttributeId>20</ProductSpecificationAttributeId>
+        <SpecificationAttributeOptionId>9</SpecificationAttributeOptionId>
+        <CustomValue />
+        <AllowFiltering>True</AllowFiltering>
+        <ShowOnProductPage>True</ShowOnProductPage>
+        <DisplayOrder>3</DisplayOrder>
+      </ProductSpecificationAttribute>
+      <ProductSpecificationAttribute>
+        <ProductSpecificationAttributeId>21</ProductSpecificationAttributeId>
+        <SpecificationAttributeOptionId>3</SpecificationAttributeOptionId>
+        <CustomValue />
+        <AllowFiltering>True</AllowFiltering>
+        <ShowOnProductPage>True</ShowOnProductPage>
+        <DisplayOrder>4</DisplayOrder>
+      </ProductSpecificationAttribute>
+      <ProductSpecificationAttribute>
+        <ProductSpecificationAttributeId>22</ProductSpecificationAttributeId>
+        <SpecificationAttributeOptionId>6</SpecificationAttributeOptionId>
+        <CustomValue />
+        <AllowFiltering>True</AllowFiltering>
+        <ShowOnProductPage>True</ShowOnProductPage>
+        <DisplayOrder>5</DisplayOrder>
+      </ProductSpecificationAttribute>
+      <ProductSpecificationAttribute>
+        <ProductSpecificationAttributeId>23</ProductSpecificationAttributeId>
+        <SpecificationAttributeOptionId>8</SpecificationAttributeOptionId>
+        <CustomValue>5 GB</CustomValue>
+        <AllowFiltering>True</AllowFiltering>
+        <ShowOnProductPage>True</ShowOnProductPage>
+        <DisplayOrder>6</DisplayOrder>
+      </ProductSpecificationAttribute>
+    </ProductSpecificationAttributes>
+  </Product>
+</Products>

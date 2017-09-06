@@ -1,0 +1,52 @@
+﻿@model Nop.Web.Models.SellerCatalog.CategorySelectorModel
+
+<div class="selectBox">
+    <div class="categories active" id="category-0">
+        <select name="@Html.Raw("EditCategories-0")" onchange="OnFirstCategoryChange" id="EditCategories-0">
+            <option value="0">@T("Profile.Catalog.SelectCategory")</option>
+            @foreach (var category in Model.Categories[0].Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+            </select>
+            <div class="arrowDown"></div>
+        </div>
+</div>
+
+<script>
+    function OnFirstCategoryChange(e) {
+        $('#SelectedCategoryId').val(e.val()).trigger('change');
+        if (e.val() == '0') {
+            e.parents('.categories').nextAll('.categories').remove();
+            return;
+        }
+        $.ajax({
+            url: "/BuyingRequest/GetSubCategories",
+            type: "POST",
+            dataType: "json",
+            data: { categoryId: e.val() },
+            success: function (resp) {
+                if (resp.subCategories) {
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                    $('.categories.active:last').after('<div class="categories inactive" id=category-' + resp.lavel + '></div>');
+                    $('.categories.inactive').html(resp.htmlString);
+
+                } else {
+                    $('.categories').filter('#category-' + (resp.lavel - 1)).nextAll('.categories').remove();
+                    $('.categories.inactive').removeClass('inactive').addClass('active');
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+        document.getElementById("EditCategories-0").onchange = function () {
+            OnFirstCategoryChange($(this));
+        };
+    });
+</script>

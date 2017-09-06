@@ -1,0 +1,19 @@
+﻿<div class="tabCatalog box">
+    <div class="boxHead">
+        <div class="tabsMenu">
+            <ul>
+                <li  class="firstTab"><a href="#tabs-1"><div class="ifActive"></div>@T("admin.catalog.products")</a></li>
+                <li class="sep">/</li>
+                <li><a href="#tabs-2"><div class="ifActive"></div>@T("Catalog.Services")</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="boxBody">
+        <div id="tabs-1" class="tabContainer">
+            @Html.Action("ProductCatalogTab", "Catalogue", new { productItemType = (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Product })
+        </div>
+        <div id="tabs-2" class="tabContainer">
+            @Html.Action("ProductCatalogTab", "Catalogue", new { productItemType = (int)Nop.Core.Domain.Catalog.ProductItemTypeEnum.Service })
+        </div>
+    </div>
+</div>

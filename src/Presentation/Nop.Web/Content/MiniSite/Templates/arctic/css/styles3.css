@@ -1,0 +1,108 @@
+body, .master-wrapper-main            {min-height: 900px;}
+
+.sliderRibbon       { height: 48px; bottom: 30px; right: 0; padding: 10px 11px 10px 12px;width: 180px; }
+.tabCatalog .redRibbon {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  border-bottom: 1px solid #EBEBEB;
+  bottom: 20px;
+  color: #333333;
+  font-size: 20px;
+  height: 30px;
+  left: 20px;
+  line-height: 29px;
+  text-align: right;
+  top: 51px;
+  width: 260px;
+}
+.tabCatalog .redRibbon a{color: #1791c0; font-size: 14px;}
+.tabCatalog .redRibbon a:hover{color: #EEE; text-decoration: none;}
+
+
+
+.mainSlider         {width: 940px; height: 551px; float: left; background: #DAEDE2; position: relative;box-shadow: 3px 3px 5px -1px #666666; }
+.tabCatalog         {background: none repeat scroll 0 0 #FFFFFF; margin-left: 0; float: left; width: 300px; position: relative;margin-top: 23px; box-shadow: 2px 2px 5px -2px #888; margin-right: 20px; }
+.tabsMenu           { float: left; width: 100%; height: 30px; position: relative;margin-bottom: 60px; }
+.tabCatalog .tabsMenu ul      {height: 30px; list-style: none; float: left; white-space: nowrap; margin-top: 20px; }
+.tabCatalog .tabsMenu ul li   { float: left; height: 30px; padding: 0 26px 0 10px; line-height: 32px; color: #333745;}
+.tabCatalog .tabsMenu ul li.firstTab                  {padding: 0 26px 0 20px;}
+
+.tabContainer       { float: left; }
+.w650               { overflow: hidden; padding-bottom: 22px; }
+.tabCat             {list-style: none;margin: 23px 21px -10px; float: left; width: 100%; min-height: 75px; }
+
+
+
+.box .boxBody     {float: left; width: 571px; background: #FFF;position:relative;}
+.littleSeeAll       {float: left; width: 260px; height: 2px; font-size: 14px; line-height: 13px; margin-left: 19px; border-bottom: 1px solid #ebebeb; margin-top: 7px;}
+
+
+.recentlyAdded    {width: 298px; position: relative;margin-top: 23px; margin-left: 0; margin-right: 20px; box-shadow: 2px 2px 5px -2px #888; }
+.recentlyAdded .boxBody {width:299px; }
+.recentlyAdded .slideGoods         {float: left;margin-left: 21px; }
+.recentlyAdded .goods              {float: left; height: 195px; margin-left: 25px; }
+.recentlyAdded .goodBox            {float: left; width: 110px !important; min-height: 195px !important; margin-top: 10px;}
+.recentlyAdded .goodCaption {
+  float: left;
+  font-family: arial;
+  font-size: 13px;
+  font-weight: normal;
+  height: 30px;
+  line-height: 15px;
+  margin-bottom: 9px;
+  overflow: hidden;
+  text-align: center;
+  text-decoration: underline;
+  width: 100px;
+  color: #333333;
+}
+.recentlyAdded .goodLink           {color: #1791C0; font-size: 12px; float: left; margin-top: 6px; line-height: 15px; font-size: 11px;width: 100px; text-align: center; text-transform: lowercase;height:30px; overflow:hidden; }
+.recentlyAdded .goodLink:hover     {color: #777;}
+.recentlyAdded .arrPrev            {float: left; width: 21px; height: 32px; position: absolute; top: 95px; left:15px; background: url("../images/arrowPrev.png") no-repeat scroll 0 0 transparent; z-index: 999; }
+.recentlyAdded .arrNext            {float: left; width: 21px; height: 32px; position: absolute; top: 95px; right:10px; background: url(../images/arrowNext.png) no-repeat; z-index: 999; }
+
+.LatesNews                   	{ width: 298px; margin-right: 0; margin-left: 0; margin-top: 23px; float: left; }
+.LatesNews .box             	{}
+.LatesNews .boxHead .rss        {}
+.LatesNews .boxBody 			{overflow:hidden;width:auto; }
+
+.LatesNews .hotNews 			{position: relative; width: 211px; float: left; display: none;}
+.LatesNews .hotNews .hotImg	    {width: 219px; height: 138px; }
+.LatesNews .hotNews .newsDate 	{top: 0; background: rgba(0,0,0, 0.20); position: absolute; width: 100%; height: 14px; padding: 0 4px; color: #FFFFFF; line-height: 14px; font-weight: lighter; font-family: arial; font-size: 10px; left: 0; }
+.LatesNews .hotNews .newsHeadline           {background: none repeat scroll 0 0 #1791c0; position: absolute; width: 220px; height: 46px; float: left; color: #F6F792; line-height: 20px; padding-top: 5px; font-weight: bolder; top: 14px; font-size: 22px; left: -5px; padding: 5px 4px 0px 4px; overflow: hidden; font-size: 20px \9;}
+.LatesNews .hotNews .newsHeadline a         {}
+.LatesNews .hotNews .newsHeadline a:hover   {}
+.LatesNews .hotNews .newsText 			{margin-left: -5px; background: #daede2; height: 84px; text-overflow: ellipsis; width: 212px; padding: 8px 1px 8px 15px; line-height: 18px; margin-top: -3px; white-space: normal; max-height: 120px; position: relative; overflow:hidden; }
+.LatesNews .hotNews .cornerLeft             {display: none; }
+.LatesNews .news 			        {width: 246px; float: left; padding: 20px; }
+.LatesNews .news .newsBox 			{min-height: 70px; width: 262px; float: left; position: relative; overflow-y: hidden; margin-bottom: 10px; margin-top: 0; }
+.LatesNews .news .newsHeadline {
+  float: left;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 18px;
+  margin-top: 12px;
+  max-height: 39px;
+  overflow: hidden;
+  width: 190px;
+}
+.LatesNews .news .newsHeadline:hover{}
+.LatesNews .news .newsText 			{ text-overflow: ellipsis; width: 190px;max-height:45px; line-height: 14px; white-space: normal; margin-top: 7px; font-size: 11px; overflow: hidden;margin-bottom:0px; }
+.LatesNews .news .imgNews 			{right: 0; background: transparent; position: absolute; float: right; padding: 3px; top: 6px; z-index: 9999; }
+.LatesNews .news .imgNews img			{clear: both; margin-top: 3px; float: left;max-height:60px;max-width:60px; }
+.LatesNews .news .imgNews .newsDate 	{font-family: arial; font-size: 11px; width: 100%; line-height: 7px; text-align: right; float: right; font-weight: bolder; }
+
+
+.navCentered ul .prevPage {background-color: #DAEDE2;}
+.navCentered ul .prevPage:before {content: "< " ;}
+.navCentered ul .active {background-color: #DAEDE2;}
+.navCentered ul .nextPage {background-color: #DAEDE2;}
+.navCentered ul .nextPage:after {content: " >";}
+
+
+.mainSlider img {
+    width:934px;
+    height:550px;
+}
+
+
+

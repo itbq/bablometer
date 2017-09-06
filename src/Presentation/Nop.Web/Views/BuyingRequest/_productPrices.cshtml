@@ -1,0 +1,13 @@
+﻿@model IList<Nop.Web.Models.Catalog.ProductDetailsModel.ProductPriceModel>
+<div class="attribs">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="inpBox littleSel">
+            <label for="ProductPrices[@i].Id">@Model[i].Currency.CurrencyCode</label>
+            <span class="field-validation-error" style="display:none;">@T("ETF.Price.Format.Error")</span>
+            <input type="text" name="ProductPrices[@i].PriceValue" id="ProductPrices[@i].Id" class="Price" value="@Model[i].PriceValue" />
+            <input type="hidden" name="@("ProductPrices[" + i + "].Id")" value="@(Model[i].Id.ToString())" />
+            <input type="hidden" name="@("ProductPrices[" + i + "].CurrencyId")" value="@(Model[i].CurrencyId)" />
+        </div>
+    }
+</div>

@@ -1,0 +1,27 @@
+﻿@model Nop.Web.Areas.MiniSite.Models.Common.TextPageModel
+@{
+    Layout = "_RootNoScript";
+    Html.AddTitleParts(Model.Title);
+}
+
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+                    <div class="box p40">
+                        <h1>@Model.Header</h1>
+
+                        @Html.Raw(Model.Html)
+                    </div>
+                </div>
+
+                <div class="rightSide">
+                    @Html.Action("Banners","Common")
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

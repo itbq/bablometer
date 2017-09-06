@@ -1,0 +1,14 @@
+﻿@model IList<Nop.Web.Models.Customer.ProfileModel>
+<div class="recentlyAddedBuyers box">
+    <div class="boxHead">
+        <h2>@T("Home.RecentlyAddedSellers")</h2>
+    </div>
+    <div class="boxBody">
+        <div class="buyersList">
+            @foreach (var company in Model)
+            {
+                <div><a href="@Url.RouteUrl("CompanyInformation",new {seName=company.CompanySeName})">@company.CompanyName</a></div>
+            }
+        </div>
+    </div>
+</div>

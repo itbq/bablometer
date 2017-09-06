@@ -1,0 +1,208 @@
+﻿@model CampaignModel
+
+@using Telerik.Web.Mvc.UI;
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+
+@{
+    var categoryService = EngineContext.Current.Resolve<Nop.Services.Catalog.ICategoryService>();
+}
+@if (Model.Id > 0)
+{
+    <table class="adminContent">
+        <tr>
+            <td colspan="2">
+                <strong>
+                    @T("Admin.Promotions.Campaigns.Warning")
+                </strong>
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.TestEmail):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.TestEmail)
+                @Html.ValidationMessageFor(model => model.TestEmail)
+                &nbsp;&nbsp;
+                <input type="submit" name="send-test-email" class="t-button" value="@T("Admin.Promotions.Campaigns.SendTestEmail")" />
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+            </td>
+            <td class="adminData">
+                <input type="submit" name="send-mass-email" class="t-button" value="@T("Admin.Promotions.Campaigns.SendMassEmail")" />
+            </td>
+        </tr>
+    </table>
+    <hr />
+}
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Name):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.CompaignLanguages)
+        </td>
+        <td class="adminData">
+            @for (int i = 0; i < Model.CompaignLanguages.Count; i++)
+            {
+               @Html.HiddenFor(model => model.CompaignLanguages[i].LanguageId);
+               @Html.CheckBoxFor(model => model.CompaignLanguages[i].Selected);
+               @Html.Label(Model.CompaignLanguages[i].LanguageName);
+            }
+        </td>
+    </tr>
+    <tr id="categories">
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.CategoriesTree)
+        </td>
+        <td class="adminData">
+             @(Html.Telerik().TreeView()
+             .Name("category_treeview")
+             .ClientEvents(events=>events
+                 .OnChecked("CategoryListCheck"))
+             .ShowCheckBox(true)
+             .BindTo(Model.CategoriesTree)
+             )
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.EnableTimePeriod)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.EnableTimePeriod,"CheckBox")
+        </td>
+    </tr>
+    <tr id="start-date">
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.StartDate)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.StartDate)
+            @Html.ValidationMessageFor(model=>model.StartDate)
+        </td>
+    </tr>
+    <tr id="time-period">
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.EndDate)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.EndDate)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.NumberOfItems)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.NumberOfItems)
+        </td>
+    </tr>
+</table>
+@(Html.NoStandartLocalizedEditor<CampaignModel,CompaignLocalizedModel>("campaign-editor",
+@<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Locales[item].Subject):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Locales[item].Subject)
+            @Html.ValidationMessageFor(model => model.Locales[item].Subject)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Locales[item].Body):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Locales[item].Body, "RichEditor")
+            @Html.ValidationMessageFor(model => model.Locales[item].Body)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.AllowedTokens):
+        </td>
+        <td class="adminData">
+            @Html.DisplayFor(model => model.AllowedTokens)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.HiddenFor(model=>model.Locales[item].LanguageId)
+        </td>
+    </tr>
+</table>,
+    @<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Subject):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Subject)
+            @Html.ValidationMessageFor(model => model.Subject)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Body):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Body, "RichEditor")
+            @Html.ValidationMessageFor(model => model.Body)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.AllowedTokens):
+        </td>
+        <td class="adminData">
+            @Html.DisplayFor(model => model.AllowedTokens)
+        </td>
+    </tr>
+</table>))
+@Html.HiddenFor(model=>model.IsBuyingRequest)
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href="#campaign-editor-1"]').parent().hide();
+        if (!$('#EnableTimePeriod').prop("checked")) {
+            $('#time-period').hide();
+            $('#start-date').hide();
+            $('#categories').hide();
+        }
+        $('#EnableTimePeriod').click(function () {
+            if ($('#EnableTimePeriod').prop("checked")) {
+                $('#time-period').show();
+                $('#start-date').show();
+                $('#categories').show();
+            } else {
+                $('#time-period').hide();
+                $('#start-date').hide();
+                $('#categories').hide();
+            }
+        });
+    });
+
+    function CategoryListCheck(e) {
+        var item = $(e.item),
+        isChecked = e.checked,
+        treeView = $(this).data('tTreeView'),
+        childCheckBoxes = item.find(":checkbox");
+
+        $.each(childCheckBoxes, function (index, checkbox) {
+            $(checkbox).attr('checked', isChecked);
+            treeView.nodeCheck(null, checkbox);
+        });
+    }
+</script>

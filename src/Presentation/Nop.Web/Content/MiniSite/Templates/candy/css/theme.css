@@ -1,0 +1,360 @@
+@import url(http://fonts.googleapis.com/css?family=Scada:400,700&subset=latin,cyrillic);
+
+body                    {background: url("../images/candy/bg.png") repeat; font-family: Scada, arial, sans-serif;}
+.header                 {background: url("../images/candy/header.png") repeat-x; height: 88px; }
+.header .logo           {margin-top: 17px;}
+
+.box                    { border-radius: 5px; overflow: hidden;box-shadow: 0 2px 6px -4px #550000; border: 1px solid #ffffff; padding: 0; height: auto; background: none repeat scroll 0 0 #ffffff; }
+.box h2                 {color: #FFF !important; width: 100% !important; font-size: 22px !important; margin: 8px 4px; }
+.box .littleSeeAll      {position: relative; color: #f3f5c4 !important; border: 0; margin: 0 14px; font-size: 12px; margin-left: 19px; text-shadow: 1px 1px 0px #ca8b70; text-align: left; float: left; }
+.box > .boxHead         {border-radius: 0; overflow: hidden;border: 0; height: 95px; }
+.box > .boxBody         {overflow: auto; width: 100%; position: static; height: 100%; padding-bottom: 0; border: 0; }
+.boxHead                {background: url("../images/candy/head.png") repeat-x center center; height: 97px; border-radius: 10px 10px 0 0;background-size: cover; }
+
+.header-links           {margin: 28px 0 0 39px !important; }
+.header-links a         {color: #FFF; font-size: 16px; text-decoration: underline;  text-shadow: 0px 1px 3px #806060; }
+.header-links a:hover   {color: #EA2E49; }
+
+.language-selector      {border-radius: 3px; padding-bottom: 1px; background-color: #f19181; MARGIN: 23px 0; border: 1px solid #e7bb84; height: auto; display: block; }
+.language-selector >a    { font-family: arial; background: none; }
+.language-selector .otherLang   {color: #FFFFFF; position: static; background: none repeat scroll 0px 0px rgb(215, 215, 215); float: left; }
+.language-selector .otherLang a {background-color: #3A4154; color: #FFF; width: 100%; background: url(../images/candy/headLang.png) repeat-x; margin-top: 0; margin-bottom: -1px; }
+.language-selector .otherLang a:hover   {background-color: #5A6174; color: #FFF; }
+
+.mainSlider                     {border: 1px solid #ffffff; border-radius: 5px;box-shadow: 0 1px 8px -4px #550000; overflow: hidden; height: 554px; margin-top: -5px; }
+.nivoSlider                     { overflow: hidden; margin-top: 0; }
+.nivoSlider a                   {font-size: 24px !important; color: #FFF !important ;}
+.nivoSlider a.nivo-imageLink    {}
+.theme-default .nivo-caption    {background: url(../images/candy/h2.png) repeat-x; border: 1px solid #EEFDF5; border-radius: 5px 0 0 5px; min-height: 65px; margin-top: 4px !important;left: auto; right: 0; padding-right: 40px; bottom: 60px; width: auto; min-width: 220px; }
+.theme-default .nivo-caption div{margin-top: 8px;font-size: 12px; }
+
+.layout2-2 .mainSlider          {height: 270px !important;}
+.layout2-2 .tabCatalog          {margin-left: 16px !important; margin-right: 0 !important;margin-top: -4px; height: 270px; }
+
+
+.recentlyAdded .goodCaption     {font-size: 12px; margin-top: 0px; margin-bottom: 5px; }
+
+.LatesNews .news                {}
+
+.tabsMenu                       {background: url("../images/candy/head.png") repeat-x center center; height: 98px; margin-bottom: -1px; }
+.tabCatalog                     {margin-right: 16px !important ;}
+
+.goodLink                       {color: #fc4349 !important;}
+
+.tabCatalog .tabsMenu ul li a                       {color: #F3F5C4; border-bottom: 1px dotted #f3f5c4;  font-family: Scada, arial,sans-serif; font-size: 20px; margin-bottom: 6px; text-shadow: 1px 1px 2px #ca8b70; }
+.tabCatalog .tabsMenu ul li.ui-tabs-active a        {color: #FFF; border: 0; }
+.tabCatalog .tabsMenu ul li a:hover                 {color: #2e3444 !important;  }
+.tabCatalog .tabsMenu ul li.sep                     {color: #FFF; text-shadow: 1px 1px 2px #ca8b70; }
+.tabCatalog .redRibbon                              {left: 21px; font-size: 12px; top: 53px; color: #EA2E49; float: left; clear: both; position: absolute; border-bottom: none; text-align: left;border: none; }
+.tabCatalog .redRibbon a                            {position:relative; font-size: 12px; color: #f3f5c4; text-shadow: 1px 1px 0px #ca8b70; }
+.tabCatalog .redRibbon a:hover                      {color: #f3f5c4; text-decoration: underline;}
+
+.border-line                                        {display: none;}
+.tabCat li a                                        {color: #3cbac8;}
+.tabCat li a:hover                                  {color: #ea2e49;}
+.tabCat li h3 a                                     {color: #222222;}
+.tabCat li h3 a:hover                               {color: #222222;}
+
+.newsHeadline                                       {color: #3CBAC8;margin: 3px 0 !important; }
+.newsHeadline:hover                                 {color: #ea2e49; text-decoration: underline;}
+.LatesNews .news .imgNews .newsDate                 {font-style: normal;font-weight: normal; color: #232323; font-size: 10px; }
+
+.productPicture                                     {height: 100px;}
+
+.footer                                             {background: url(../images/candy/footer.png) repeat-x; box-shadow: none; height: 71px; padding-top: 10px; }
+.footer-menu                                        {color: #d3eee2;}
+.footer-menu a                                      {color: #FFF; font-size: 14px; font-weight: normal; text-shadow: 1px 1px 1px #CA8B70; }
+.footer-menu a:hover                                {color: #EA2E49;}
+
+.footer .fline a                                    {color: #FFF; font-size: 14px; font-weight: normal; float: right; text-decoration: underline; text-shadow: 1px 1px 1px #CA8B70; }
+.footer .fline a:hover                              {color: #EA2E49;}
+.footer .fline span                                 {color: #FFF;font-size: 14px; }
+.footer .fline:last-child a                         {color: #FFF;}
+.footer .fline:last-child a:hover {color: #EA2E49;}
+
+.layout1-3 .recentlyAdded .slideGoods               {margin-left: 35px ;}
+.layout1-3 .arrPrev                                 {top: 0 !important; margin: 188px 5px 0 !important;}
+.layout1-3 .arrNext                                 {top: 0 !important; margin: 188px 5px 0 !important;}
+.recentlyAdded .goods                               {margin-left: 12px;}
+.recentlyAdded .arrPrev                             {background: url(../images/candy/arrowPrev.png) no-repeat;margin: 195px 5px 0; height: 15px; width: 7px; top: 0; }
+.recentlyAdded .arrNext                             {background: url(../images/candy/arrowNext.png) no-repeat;margin: 45px 5px; height: 15px; width: 7px; }
+
+
+.layout1-3 .box                     {}
+.tabCatalog .tabsMenu ul            {border: none;}
+
+
+
+
+.language-selector a img {
+    margin: 6px 17px 3px 4px;
+}
+
+.language-selector .otherLang a img {
+    float: left;
+    margin: 4px 17px 3px 5px;
+}
+
+
+
+.master-wrapper-whiteboard          {background: none repeat scroll 0 0 #FFF; border: 1px solid #FFFFFF !important; box-shadow: 0 0 5px 1px #DDC4BF !important;padding: 0 0 20px; width: 940px !important; padding-bottom: 20px; border-radius: 4px; }
+.ribCategories                      {background: url("../images/candy/bg_com.png") no-repeat scroll 0 bottom transparent; float: left; margin-bottom: 63px; padding-top: 1px; position: relative;top: 0;width: 300px; right: -1px;border-radius: 0 4px;background-size:cover; }
+.ribCategories h1                   {color: #FFF; font-family: Scada, arial,sans-serif; font-size: 24px; text-decoration: none; text-transform: capitalize; text-shadow: 0 2px 3px #AA8080; }
+.rightSide button                   {
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+  border-radius: 0 0 0 0;
+  color: #F19482;
+  display: block;
+  float: none;
+  font-family: Scada,sans-serif;
+  font-size: 18px;
+  height: 44px;
+  line-height: 44px;
+  margin: 5px auto 25px;
+  text-transform: uppercase;
+  width: auto;
+  box-shadow: 0px 2px 9px -5px #000;
+  width: 125px;
+  border-radius: 6px;
+ }
+
+.rightSide                          {float: right !important; margin: 0 0 0 10px; width: 300px;}
+
+
+
+.leftSide .breadcrumb .head                     {background: none repeat scroll 0 0 transparent !important; color: #000;}
+.leftSide .breadcrumb .tail                     {background: none repeat scroll 0 0 transparent !important; color: #000;}
+.leftSide .breadcrumb li::after                 {content: ">"; position: relative; left: 3px; line-height: 27px;}
+.leftSide .breadcrumb li:last-child a           {color: #333; text-decoration: none;}
+.leftSide .breadcrumb li:last-child:after       {content: "";}
+.leftSide .breadcrumb a                         {background: none !important; width: auto; min-width: 0;color:#1791C0}
+.cat a                                          {color: #ea2e49;}
+.cat li:last-child a                            {color: #333745; text-decoration: none;}
+
+.leftSide .breadcrumb li            {margin-left: 3px;margin-bottom:0px;}
+.leftSide .breadcrumb  .tail        {background:none repeat scroll 0 0 transparent;}
+
+.leftSide h1                        {font-family: Scada,roboto,arial,sans-serif; font-size: 36px; font-weight: normal;text-transform: capitalize; padding-left: 40px; color: #f19181;}
+.leftSide .box                      {margin-left: 40px; border: 0;box-shadow: none; float: left; min-width: 92%; width: 93%; }
+
+.catalogue                          {}
+.catalogue .itemBoxHeading          {background: url(../images/candy/head.png) center center; background-size: cover; min-height:72px; padding-bottom:5px; padding-left: 249px; margin-left: -209px; }
+.catalogue .itemImage               {overflow:hidden; left: 0; border: 1px solid #FFF; top: 0; position: relative; float: left; margin: 16px; box-shadow: 0 0 6px -2px #806060 inset;  z-index: 2; border-radius: 7px; }
+.catalogue .itemBoxOuter            {border: 0; margin: 0; }
+.catalogue .itemBoxOuterWrap        { border: 1px solid #F19181; position: relative; left: -9px; overflow: hidden; box-shadow: 0 2px 4px -1px #CC8B81; background: #FFF; border-radius: 3px; }
+.catalogue .cornerLeftBig           {display: none;}
+.catalogue .itemBoxHeading h3 {
+  max-height: 39px;
+  overflow: hidden;
+  padding-bottom: 5px;
+  margin-bottom:5px;
+}
+.catalogue .itemBoxHeading p        {}
+.catalogue .itemBoxInner            {padding-left: 40px; }
+.catalogue .itemBoxInner p          {font-weight: lighter; font-family: roboto, arial, sans-serif; font-size: 13px; }
+.catalogue a.itemView               {background: none !important; height: 24px; border-radius: 0; line-height: 24px; color: #49bfcc; margin: 3px 0; font-size: 12px; font-family: roboto, arial, sans-serif; }
+.catalogue .itemBoxHeading h3 a     {color: #FFF; font-family: Scada,arial,sans-serif;; font-size: 20px; text-decoration: none;font-weight: normal; text-transform: capitalize; text-shadow: 0 2px 3px #AA8080; }
+.catalogue .itemBoxHeading a        {color: #fbe9b2; font-size: 14px; text-decoration: none;text-shadow: 0 2px 3px #AA8080; }
+
+.rightSide .banners img             {border: 1px solid #f19181;border-radius: 4px; }
+
+.cusel                              {border: 1px solid #FFF; border-radius: 3px; background: none repeat scroll 0 0 #f9cda4;color: #FFFFFF; }
+
+.navBox a                           {color: #ea2e49;}
+.navBox .active                     {background: none !important;}
+.navCentered ul .nextPage           {background: none !important;}
+.navCentered ul .prevPage           {background: none !important;}
+
+.layout1-3 .box, .layout1-1-2 .box, .layout2-2 .box   {background: #6dbcdb;}
+
+.contactus .rightSide .box          {border: 1px solid #f19181; box-shadow: none;float: right; padding: 21px; right: -1px; }
+.contactus .contactsForm            {border: none;}
+.contactsForm label span            {color: #ea2e49;}
+.contactus .leftSide                {width: 545px;}
+
+.contactsButton input               {
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+  border-radius: 0 0 0 0;
+  color: #F19482;
+  display: block;
+  float: none;
+  font-family: Scada,sans-serif;
+  font-size: 18px;
+  height: 44px;
+  line-height: 44px;
+  margin: 5px auto 25px;
+  text-transform: uppercase;
+  width: auto;
+  box-shadow: 0px 2px 9px -2px #000;
+  width: 125px;
+  border-radius: 6px;
+ }
+
+.itemSingle .leftSide               {width: 625px;}
+
+.textInfo                           {font-family: roboto,arial,sans-serif; }
+.textInfo h3                        {font-family: Scada,roboto,arial,sans-serif; color: #93edd4; font-size: 24px;text-transform: uppercase; font-weight: normal; }
+
+.itemSingle .gallery .thumbnails .galleryImage.current {border: 1px solid #f19181;}
+.itemSingle .bigImg                 {border: 2px solid #f19181; }
+
+.goodInfo                           {width: 214px !important;margin-top: -10px  !important; }
+.goodInfo li                        {line-height: 20px !important; font-size: 13px !important; min-height: 20px !important; }
+.goodInfo li:nth-last-child(2)      {margin: 10px 0;}
+.goodInfo label                     {font-size: 16px; float: left;  margin-top: 10px; }
+.boxHead .itemName                  {width: 100%; color: #4fbfcc !important; ; margin-top: -7px; margin-left: -5px;font-size: 16px; }
+.boxHead .share                     {float: right !important;  margin-left: -5px;margin-top: 0px; }
+.itemSingle .leftSide h1            {color: #f19181; padding-left: 40px; text-transform: capitalize; margin-top: 0px; }
+
+.bucks          {color: #f19181;}
+.icoPDF         {color: #ea2e49;}
+
+.itemSingle .gallery                {}
+
+.itemSingle .keywords a             {COLOR: #4fbfcc;}
+
+.contactsForm textarea              {border-color: #f19181;overflow:auto;}
+.contactsForm input                 {border-color: #f19181 !important; }
+
+.goBack a, .eventsSingle .goBack a  {background: none;}
+.newsHeading                        {background: url("../images/candy/hBg.png") repeat scroll center center transparent;border-radius: 2px 2px 0 0; }
+.newsSingle .newsBoxOuter           {border: 1px solid #FFFFFF; left: -10px; position: relative;}
+.newsHeading .left                  {color: #FFF;}
+.newsHeading .right                 {color: #FFF;}
+.newsSingle .aboutBlockOuter        {padding-left: 40px;}
+.newsBoxOuterWrap                   {position: relative; left: -10px;}
+.newsHeadingInner                   {background: url(../images/candy/hBg.png) center center;position: relative; height: 72px;  border-radius: 3px 3px 0 0; }
+.newsHeadingOuter                   {top: 0;}
+.newsHeadingInner a                 {color: #FFF;}
+
+.newsView                           {width: auto; padding: 0 0; background: none repeat scroll 0 0 transparent !important; color: #3cbac8; font-family: roboto,arial,sans-serif; font-size: 12px; height: 24px;line-height: 24px; margin: 2px 0;}
+.newsBoxOuter                       {border: 1px solid #FFFFFF;background: none repeat scroll 0 0 #FDFDFD; border-radius: 3px; box-shadow: 0 2px 3px 0 #CC8B81; margin: 0; }
+
+.newsHeadingInner h3{
+    color: #FFFFFF;
+    font-family: Scada ,arial,sans-serif;
+    font-size: 20px;
+    font-weight: normal;
+    text-decoration: none;
+    text-transform: capitalize;
+	text-shadow: 0px 2px 2px#AA8080;
+	line-height: 74px;
+}
+
+.newsInfo .left     {color: #3cbac8;}
+
+.newsImage {
+    min-height: 0;
+    padding-top: 85px;
+}
+
+
+.contactsButton                     {width: 80%; }
+
+
+.cusel span, .cuselText{
+	color:#ffffff;
+}
+
+
+.zoomWindowContainer div{
+z-index:1000 !important; 
+}
+
+
+.box .littleSeeAll:hover{
+  color: #ea2e49;
+}
+
+
+.itemSingle .box > .boxHead{
+height:auto;
+}
+
+.leftSide h1{
+  width:auto;
+}
+
+.littleSeeAll span, .tabCatalog .redRibbon a span {
+  font-size: 11px;
+  position: absolute;
+  right: -10px;
+  text-decoration: none;
+}
+
+.layout2-2 .recentlyAdded .slideGoods{
+ margin-left:21px;
+}
+
+.tabCatalog .redRibbon a span{
+  top:-8px;
+}
+
+
+.newsSingle.leftSide h1{
+  width:530px;
+  font-size:30px;
+}
+
+.itemSingle .box .boxHead{
+  height:auto;
+}
+
+.master-wrapper-main, .box .boxHead h2, .recentlyAdded .goodCaption,h1, h2, h3, h4, h5, h6, .LatesNews .news .newsHeadline, .textInfo, .LatesNews .news .imgNews .newsDate{
+  font-family: Scada, arial, sans-serif !important;
+}
+
+.box .boxHead h2{
+  font-weight:normal;
+}
+
+.cat li.last {
+  color: #333745;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 27px;
+  padding-left: 13px;
+  text-transform: none;
+}
+
+.itemSingle .icoPDF{
+  text-align:left;
+  padding-left:20px;
+}
+
+.leftSide .breadcrumb.cat li a.rootLink{
+  text-decoration:underline;
+  color:#1791C0;
+}
+
+.itemSingle .leftSide .breadcrumb li:last-child a
+{
+  text-decoration:underline;
+  color: #1791C0;
+}
+
+
+.master-wrapper-main .master-wrapper-whiteboard .leftSide .p40{
+  font-size:14px;
+  line-height: 20px;
+}
+
+
+.master-wrapper-main .master-wrapper-whiteboard .leftSide .p40 h2{
+  color:#93ede4 !important;
+  margin:0px;
+}

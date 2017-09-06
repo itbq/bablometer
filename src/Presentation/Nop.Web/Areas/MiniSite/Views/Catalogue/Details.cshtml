@@ -1,0 +1,388 @@
+﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
+
+@using Telerik.Web.Mvc.UI
+@using Nop.Web.Extensions
+@using Nop.Core.Domain.Catalog
+@{
+    Html.AppendTitleParts(Model.Name);
+    Html.AppendScriptParts("~/Scripts/jquery.elevatezoom.js");
+    Layout = "_RootNoScript";
+    var selected_price_item = new Nop.Web.Models.Catalog.ProductDetailsModel.ProductPriceModel();
+    if (Model.ProductPrices.Count > 0)
+    {
+        switch (WorkContext.WorkingLanguage.UniqueSeoCode)
+        {
+            case "ru":
+                {
+                    selected_price_item = Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("byr")).FirstOrDefault() != null ?
+                                     Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("byr")).FirstOrDefault() :
+                                     (Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("usd")).FirstOrDefault() != null ?
+                                     Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("usd")).FirstOrDefault() :
+                                     Model.ProductPrices[0]);
+                    break;
+                }
+            case "de":
+            case "es":
+                {
+                    selected_price_item = Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("eur")).FirstOrDefault() != null ?
+                                     Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("eur")).FirstOrDefault() :
+                                     (Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("usd")).FirstOrDefault() != null ?
+                                     Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("usd")).FirstOrDefault() :
+                                     Model.ProductPrices[0]);
+                    break;
+                }
+            case "en":
+                {
+                    selected_price_item = Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("usd")).FirstOrDefault() != null ?
+                                     Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("usd")).FirstOrDefault() :
+                                     (Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("eur")).FirstOrDefault() != null ?
+                                     Model.ProductPrices.Where(m => m.Currency.CurrencyCode.ToLower().Equals("eur")).FirstOrDefault() :
+                                     Model.ProductPrices[0]);
+                    break;
+                }
+        }
+    }
+}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var params = {
+            changedEl: "select",
+            scrollArrows: true
+        }
+        cuSel(params);
+
+        $("#Request_Quantity").val("@Html.ValueFor(m => m.MinimumOrderQuantity)");
+
+        $("#quantityForRequest").bind("propertychange keyup input paste", function (event) {
+            var quantity = $(this).val();
+            var minimumQuantity = @Html.ValueFor(m => m.MinimumOrderQuantity);
+            if(quantity < minimumQuantity)
+            {
+                quantity=minimumQuantity;
+                $(this).val(quantity);
+            }
+            $("#Request_Quantity").val(quantity);
+        });
+
+        $(".sendRequestButton").click(function () {
+            $(".popupLayerOpacity").fadeIn();
+            $(".sendRequest").fadeIn();
+        });
+
+        $(".sendRequest .exit").click(function () {
+            $(".popupLayerOpacity").fadeOut();
+            $(".sendRequest").fadeOut();
+        });
+        // gallery
+        var i = 0;
+        $(".gallery .bigImg img").each(function() {
+            $(this).attr("id", "bi_"+i);
+            i++;
+        })
+        i = 0;
+        $(".gallery .thumbnails img").each(function() {
+            $(this).attr("id", "ti_"+i);
+            i++;
+            $(this).click(function () {
+                set_gallery_img(this);
+            })
+        })
+        function set_gallery_img(el) {
+            var id =  $(el).attr("id").split("_"); id = id[1];
+            $(".gallery .bigImg img").removeClass("current");
+            $(".gallery .thumbnails img").parent().removeClass("current");
+            $(".gallery .bigImg #bi_"+id).addClass("current");
+            $(".gallery .thumbnails #ti_"+id).parent().addClass("current");
+        }
+        $(window).load(function() {
+            $("#popSlider").css({display: "block", visibility: "hidden"});
+            var mh = 0;
+            setTimeout(function() {
+                mh = 0
+                $("#popSlider img").each(function() {
+                    mh = Math.max(mh, $(this).height());
+                });
+
+                if (mh != 0) {
+                    $("#popSlider").css("height", mh+"px");
+                    $("#popSlider .slider").css("height", mh+"px");
+                }
+                $("#popSlider").css({display: "none", visibility: "visible"});
+                $("#popSlider .prev").css({top: $(window).height()/2+"px"});
+                $("#popSlider .next").css({top: $(window).height()/2+"px"});
+            }, 1);
+
+            mh = "3000";
+            $("#popSlider").css("height", mh+"px");
+            $("#popSlider .slider").diyslider({
+                width: "3000px", // width of the slider
+                height: mh+"px", // height of the slider
+                display: 1, // number of slides you want it to display at once
+                loop: true // disable looping on slides
+            }); // this is all you need!
+
+            // use buttons to change slide
+            $("#popSlider .prev").bind("click", function(){
+                $("#popSlider .slider").diyslider("move", "back");
+                return false;
+            });
+            $("#popSlider .next").bind("click", function(){
+                $("#popSlider .slider").diyslider("move", "forth");
+                return false;
+            });
+
+            //initiate the plugin and pass the id of the div containing gallery images
+            $("#zoom-3").elevateZoom({gallery:'gallery_01', cursor: 'pointer', galleryActiveClass: 'active', loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif'}); 
+            setTimeout(function(){
+                ProcessMainImage();
+            }, 500);
+            
+            var image = $('#gallery_01 a');
+            image.click(function(){
+                var img = $(this).children(":first");
+                var src = img.attr('src');
+                var currentImg = $(this);
+                var newImg = new Image();
+                newImg.onload = function() {
+                    height = newImg.height;
+                    width = newImg.width;
+                    $('.zoomContainer').remove();
+                    $('#zoom-3').removeData('elevateZoom');
+                    if(width < 323 || height < 323)
+                    {
+                        if(width > 323 || height > 323)
+                        {
+                            if(height < 323)
+                            {
+                                // Update source for images
+                                $('#zoom-3').attr('src', $(this).src);
+                                $('#zoom-3').data('zoom-image', currentImg.data('zoom-image'));
+                                // Reinitialize EZ
+                                $('#zoom-3').elevateZoom({cursor: 'pointer', zoomWindowWidth:height,zoomWindowHeight:height });
+                                //$('.zoomContainer').css('height',height);
+                            }
+                        }
+                    }else
+                    {
+                        // Update source for images
+                        $('#zoom-3').attr('src', $(this).src);
+                        $('#zoom-3').data('zoom-image', currentImg.data('zoom-image'));
+                        // Reinitialize EZ
+                        $('#zoom-3').elevateZoom({cursor: 'pointer',loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif', zoomWindowWidth:323,zoomWindowHeight:323 });
+                    }
+                }
+                newImg.src = src;
+            });
+        });
+    });
+
+    function ProcessMainImage()
+    {
+        $.noop;
+        var src = $('#zoom-3').attr('src');
+        var currentImg = $('#gallery_01 a.active');
+        $('.zoomContainer').remove();
+        $('#zoom-3').removeData('elevateZoom');
+        var newImg = new Image();
+        newImg.onload = function() {
+            height = newImg.height;
+            width = newImg.width;
+                    
+            if(width < 323 || height < 323)
+            {
+                if(width > 323 || height > 323)
+                {
+                    if(height < 323)
+                    {
+                        // Update source for images
+                        $('#zoom-3').attr('src', src);
+                        $('#zoom-3').data('zoom-image', currentImg.data('zoom-image'));
+                        // Reinitialize EZ
+                        $('#zoom-3').elevateZoom({cursor: 'pointer', zoomWindowWidth:height,zoomWindowHeight:height });
+                    }
+                }
+            }else
+            {
+                // Update source for images
+                $('#zoom-3').attr('src', src);
+                $('#zoom-3').data('zoom-image', currentImg.data('zoom-image'));
+                // Reinitialize EZ
+                $('#zoom-3').elevateZoom({cursor: 'pointer',loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif', zoomWindowWidth:323,zoomWindowHeight:323 });
+            }
+        }
+        newImg.src = src;
+    }
+</script>
+@Html.Action("GetConversionImages", new { productId = Model.Id })
+<div class="master-wrapper-page itemSingle">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+                    @Html.Action("ProductBreadcrumb", "Catalogue", new { productId = Model.Id, productItemType = Model.ProductItemType })
+                    <h1>@Html.ValueFor(model => model.Name)</h1>
+
+                    <div class="box">
+                        <div class="boxHead">
+                            @if (Model.Brand != null)
+                            {
+                               <a class="itemName" href="/Catalogue/@Html.Raw(((ProductItemTypeEnum)Model.ProductItemType).ToString() + "?BrandId=" + Model.BrandId)">@Model.Brand.Name</a>
+                            }
+                            <div class="share">
+                                <span class="sharetext">@T("ETF.Front.Product.Details.ShareThis"):</span>
+                                @Html.Action("ShareButton", "Common", new { product = true })
+                            </div>
+                        </div>
+                        <div class="boxBody">
+                            @*@if (Model.PictureModels.Count > 0)
+                            {
+                                <div class="gallery">
+
+                                    <div class="bigImg">
+
+
+                                        @for (int i = 0; i < Model.PictureModels.Count; i++)
+                                        {
+                                            var picture = Model.PictureModels[i];                                            
+                                            <img src="@picture.FullSizeImageUrl" @if (picture.Default)
+                                                                                 { <text>class='current'</text> } alt="@picture.AlternateText"
+                                                title="@picture.Title" id="bi_@i" />
+                                        }
+                                    </div>
+                                    <div class="thumbnails">
+
+
+                                        @for (int i = 0; i < Model.PictureModels.Count; i++)
+                                        {
+                                            var picture = Model.PictureModels[i];                                            
+                                            <div class="galleryImage @if (picture.Default)
+                                                                     { @Html.Raw("current") }"><img src="@picture.ImageUrl"  alt="@picture.AlternateText" title="@picture.Title" id="ti_@i"/></div>
+                                        }
+                                    </div>
+                                </div>
+                            }*@
+
+                            @if (Model.PictureModels.Count > 0)
+                            {
+                                <div class="gallery" id="zoom-gallery">
+                                    @{
+                                        var picture = Model.PictureModels.Where(x => x.Default).FirstOrDefault();
+                                        if (picture == null)
+                                        {
+                                            picture = Model.PictureModels.First();
+                                        }
+                                    }
+                                    <img id="zoom-3" src="@picture.FullSizeImageUrl" data-zoom-image="@picture.FullSizeImageUrl"/>
+
+                                    <div id="gallery_01" class="thumbnails">
+                                     
+                                      @for (int i = 0; i < Model.PictureModels.Count; i++)
+                                      {
+                                          <a href="#" class="galleryImage" data-image="@Model.PictureModels[i].FullSizeImageUrl" data-zoom-image="@Model.PictureModels[i].FullSizeImageUrl">
+                                            <img src="@Model.PictureModels[i].FullSizeImageUrl" />
+                                          </a> 
+                                      }
+                                    </div>
+                                </div>
+                            }
+
+                            <ul class="goodInfo">
+                                <li>@if (Model.HaveConversionImages)
+                                    {<script type="text/javascript">
+                                                                        function showMeSlider() {
+                                                                            $("#popUpBg").fadeIn();
+                                                                            $("#popSlider").fadeIn();
+                                                                        }
+                                </script>
+
+                                <a nohref="nohref" class="redRibbon slOpener" onclick="showMeSlider();">
+                                    <div class="cornerRight"></div>
+                                    @T("ETF.ConversionImages")
+
+                                </a>}</li>
+                                @Html.Action("DisplayCategoryAttributes", "Catalogue", new { categoryAttributesModel = Model.CategoryAttributes })
+                                 @if (Model.ProductPrices.Count > 0)
+                                 {
+                                         <li>
+                                             @if(Decimal.Parse(selected_price_item.PriceValue) != 0)
+                                             {
+                                                if (selected_price_item.Currency.CurrencyCode == "BYR")
+                                                {
+                                                   <span class="bucks">@Html.Raw(selected_price_item.PriceValue.Remove(selected_price_item.PriceValue.Length - 3)) @Html.Raw(selected_price_item.Currency.CurrencyCode)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="bucks">@Html.Raw(selected_price_item.PriceValue) @Html.Raw(selected_price_item.Currency.CurrencyCode)</span>
+                                                }
+                                                 @T("ETF.Front.Product.Details.PerOne")
+                                             }
+                                        
+                                        @if (Model.ProductPrices.Count > 1)
+                                        {
+                                            <ul  class="otherCurrency">
+                                                @for (int pi = 0; pi < Model.ProductPrices.Count; pi++)
+                                                {
+                                                    if (Model.ProductPrices[pi] != selected_price_item && Model.ProductPrices[pi].Price != 0)
+                                                    {
+                                                        if (Model.ProductPrices[pi].Currency.CurrencyCode == "BYR")
+                                                        {
+                                                                <li><span class="bucks">@Html.Raw(Model.ProductPrices[pi].PriceValue.Remove(Model.ProductPrices[pi].PriceValue.Length - 3) + " ") @Html.Raw(Model.ProductPrices[pi].Currency.CurrencyCode)  
+                                                                </span><span> @T("ETF.Front.Product.Details.PerOne")</span></li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li><span class="bucks">@Html.Raw(Model.ProductPrices[pi].PriceValue + " ") @Html.Raw(Model.ProductPrices[pi].Currency.CurrencyCode)  
+                                                        </span><span> @T("ETF.Front.Product.Details.PerOne")</span></li>
+                                                        }
+                                                    }
+                                                }
+                                            </ul>
+                                        }
+                                    </li>
+                                 }
+                                
+                                <li><a href="@Url.RouteUrl("GetBroshure", new { productId = Model.Id })" class="textCenter">
+                                    <div class="icoPDF">@T("ETF.Front.Product.Details.SaveAsBrochure")</div>
+                                </a></li>
+                               
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="textInfo">
+                            <h3>@T("ETF.Full")</h3>
+                            @Html.Raw(Model.FullDescription)
+                            @if (Model.OrderingComments != null)
+                            {
+                                <h3>@T("ETF.OrderingComments")</h3>
+                                @Html.Raw(Model.OrderingComments)
+                            }
+                        </div>
+
+                        <div class="keywords">
+                            @if (Model.ProductTags.Count > 0)
+                            {
+                                <text>@T("ETF.Front.Product.Details.Keywords"):</text>
+                                
+                                foreach (var item in Model.ProductTags)
+                                {
+                                <a href="/Catalogue/@Html.Raw(((ProductItemTypeEnum)Model.ProductItemType).ToString() + "?ProductTagId=" + item.Id)">@item.Name</a>
+                                }
+
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rightSide">
+                    @*  @Html.Action("SelectCategory", "Catalogue", new { productId = Model.Id })*@
+                    @Html.Action("CategorySelector", "Catalogue", new { CatalogUrl = "Catalogue", itemtype = Model.ProductItemType })
+                    @Html.Action("Banners", "Common")
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

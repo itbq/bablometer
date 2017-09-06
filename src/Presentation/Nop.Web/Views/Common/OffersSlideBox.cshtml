@@ -1,0 +1,120 @@
+﻿@using Nop.Core.Domain.Customers
+@model Nop.Web.Models.Common.OffersModel
+<script type="text/javascript">
+
+                $(".slideBox").diyslider({
+                    width: "936px", // width of the slider
+                    height: "200px", // height of the slider
+                    display: 1, // number of slides you want it to display at once
+                    loop: true // disable looping on slides
+                }); // this is all you need!
+
+                // use buttons to change slide
+                $(".offersSlideBox .arrowPrev").bind("click", function () {
+                    $(".slideBox").diyslider("move", "back");
+                    return false;
+                });
+                $(".offersSlideBox .arrowNext").bind("click", function () {
+                    $(".slideBox").diyslider("move", "forth");
+                    return false;
+                });
+                
+                function OrderProduct(id) {
+                    $.ajax({
+                        url: "/Catalogue/OrderProduct",
+                        type: "POST",
+                        dataType: "json",
+                        data: { productId: id },
+                    });
+                }
+            </script>
+    <div class="slideBox">
+        <div>
+            @if (Model.Products.Any())
+            {
+                var n = 0;
+                var i = 1;
+                foreach (var product in Model.Products)
+                {
+                    if (n == 0)
+                    {
+                        @:<div>
+                    }
+                    <div class="offerBox bestborderthanever">
+                        <div class="bankLogo">
+                            <img src= "@product.PictureThumbnailUrl"  alt="">
+                        </div>
+                        <div class="percentage">
+                            @if (product.ProductAttributeValue != null)
+                            {
+                                @Html.Raw(product.ProductAttributeValue.RealValue.GetValueOrDefault().ToString()+"%");
+                            }
+                        </div>
+                        <div class="ratings">
+                            @switch (Convert.ToInt32(product.BankRating))
+                            {
+                                case 0:
+                                    <div class="ratingBank stars "></div>
+                                    break;
+                                case 1:
+                                    <div class="ratingBank stars star1"></div>
+                                    break;
+                                case 2:
+                                    <div class="ratingBank stars star2"></div>
+                                    break;
+                                case 3:
+                                    <div class="ratingBank stars star3"></div>
+                                    break;
+                                case 4:
+                                    <div class="ratingBank stars star4"></div>
+                                    break;
+                                case 5:
+                                    <div class="ratingBank stars star5"></div>
+                                    break;
+                            }
+                            @switch (Convert.ToInt32(product.Rating))
+                            {
+                                case 0:
+                                    <div class="ratingOffer stars "></div>
+                                    break;
+                                case 1:
+                                    <div class="ratingOffer stars star1"></div>
+                                    break;
+                                case 2:
+                                    <div class="ratingOffer stars star2"></div>
+                                    break;
+                                case 3:
+                                    <div class="ratingOffer stars star3"></div>
+                                    break;
+                                case 4:
+                                    <div class="ratingOffer stars star4"></div>
+                                    break;
+                                case 5:
+                                    <div class="ratingOffer stars star5"></div>
+                                    break;
+                            }
+                        </div>
+                        @Html.Raw(product.ShortDescription)
+                        <a href="@Url.RouteUrl("Product", new {seName = product.SeName})" class="more">@T("HomePageOffersSlideBlock.MoreInfo")</a>
+                         @if (WorkContext.CurrentCustomer.IsAdmin())
+                         {
+                             <a class="basket" href="@product.OrderingLink" target="_blank" onclick=" OrderProduct(@product.Id) "></a>
+                         }
+                    </div>
+                    if (n == 3 || i == Model.Products.Count)
+                    {
+                        @:</div>
+                        n = 0;
+                    }
+                    else
+                    {
+                        n++;
+                    }
+                    i++;
+                }
+            }
+					        
+        </div>
+    </div>
+    <div class="arrowPrev"></div>
+    <div class="arrowNext"></div>

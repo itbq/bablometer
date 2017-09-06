@@ -1,0 +1,68 @@
+﻿@model Nop.Admin.Models.Bank.BankListModel
+@using Telerik.Web.Mvc.UI
+@{  
+    //page title
+    ViewBag.Title = T("ITB.Admin.Bank.Page.Title").Text;
+    var gridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+        @T("ITB.Admin.Bank.Page.Title")
+    </div>
+</div>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<Nop.Admin.Models.Bank.BankModel>(Model.BankList.Data)
+                    .Name("bank-grid")
+                    .DataKeys(x =>
+                    {
+                        x.Add(y => y.Id).RouteKey("Id"); ;
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.BankTitle)
+                            .Filterable(true)
+                            .Width(200);
+                        
+                        columns.Bound(x => x.PictureId)
+                            .Template(@<text><img src="@item.LogoUrl" /></text>)
+                            .ClientTemplate("<img src=\"<#= LogoUrl #>\" />")
+                            .Width(200);
+                        columns.Bound(x => x.Email)
+                            .Width(200);
+                        columns.Bound(x => x.Rating)
+                            .Width(200);
+                        columns.Command(commands =>
+                            {
+                                commands.Edit().Text("Edit");
+                                commands.Delete().Text("Delete");
+                            }).Width(180).Title(T("ETF.Common.Commands").Text);
+                    })
+                    .ToolBar(commands => commands.Insert().ButtonType(GridButtonType.Text).ImageHtmlAttributes(new {style="margin-left:0"}))
+                    .Editable(x =>
+                    {
+                        x.Mode(GridEditMode.InLine);
+                    })
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax()
+                            .Insert("Insert", "Bank")
+                            .Update("UpdateBank", "Bank")
+                            .Delete("DeleteBank", "Bank")
+                            .Select("List", "Bank");
+                    })
+                    .Pageable(settings => settings.Total(Model.BankList.Total).PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                    .EnableCustomBinding(false)
+                    .Filterable()
+                    .ClientEvents(x => x.OnError("Grid_onError")))
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    function Grid_onError(e) {
+        alert(e.XMLHttpRequest.responseText);
+        e.preventDefault();
+    }
+</script>

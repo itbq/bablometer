@@ -1,0 +1,72 @@
+﻿@model Nop.Web.Models.Event.EventInfoModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    if(Model.CatalogPictureid != 0)
+    {
+        Html.AddOgImageParts(Model.CatalogPictureModel.ImageUrl);
+    }
+    Html.AddTitleParts(Model.Title);
+}
+
+<div class="master-wrapper-page">
+    <div class="master-wrapper-content">
+        <div class="master-wrapper-main">
+            <div class="master-wrapper-whiteboard">
+                <div class="leftSide">
+                    <div class="goBack">
+                        @if (Request.UrlReferrer != null && Request.UrlReferrer.ToString().IndexOf("news") > 0)
+                        {
+                            <a href="@Request.UrlReferrer.ToString()">&larr; @T("Events.Back")</a>
+                        }else
+                        {
+                            <a href="/Event/List">&larr; @T("Events.Back")</a>
+                        }
+                    </div>
+
+                    <h1>@Model.Title</h1>
+                    <div class="eventBoxOuter">
+                        <div class="newsHeading">
+                            @if (Model.StartDate.Hour == 0)
+                            {
+                                if (Model.EndDate.HasValue && Model.EndDate.Value.Hour == 0)
+                                {
+                                    <p class="left">@Html.Raw(Model.StartDate.ToString("d") + (Model.EndDate.HasValue ? " - " + Model.EndDate.Value.ToString("d") : ""))</p>
+                                }else
+                                {
+                                    <p class="left">@Html.Raw(Model.StartDate.ToString("d") + (Model.EndDate.HasValue ? " - " + Model.EndDate.Value.ToString("g") : ""))</p>
+                                }
+                            }else
+                            {
+                                if (Model.EndDate.HasValue && Model.EndDate.Value.Hour == 0)
+                                {
+                                    <p class="left">@Html.Raw(Model.StartDate.ToString("g") + (Model.EndDate.HasValue ? " - " + Model.EndDate.Value.ToString("d") : ""))</p>
+                                }else
+                                {
+                                    <p class="left">@Html.Raw(Model.StartDate.ToString("g") + (Model.EndDate.HasValue ? " - " + Model.EndDate.Value.ToString("g") : ""))</p>
+                                }
+                            }
+                            @Html.Action("ShareButton", new {product = false })
+                            <p class="right">
+                                @T("ETF.Front.Product.Details.ShareThis"):
+                            </p>
+                        </div>
+                        <div class="newsBoxInner">
+                            @if(Model.CatalogPictureid != 0){<img src="@Model.CatalogPictureModel.ImageUrl" alt="@Model.Title" />}
+                        </div>
+                    </div>
+                    <div class="aboutBlockOuter eventdescription">
+                        <div class="aboutBlockInner">
+                            @Html.Raw(Model.FullDescription)
+                        </div>
+                    </div>
+
+                </div>
+                <div class="rightSide">
+                    <div class="banners">
+                         @Html.Action("BannerList", "Common", new { bigImage = true, numberOfBanners = 3 })
+                    </div>
+                </div>
+            </div>
+
+        </div> </div>
+</div>

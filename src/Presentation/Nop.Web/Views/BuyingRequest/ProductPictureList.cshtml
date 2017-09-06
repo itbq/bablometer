@@ -1,0 +1,33 @@
+﻿@model IList<Nop.Web.Models.Media.PictureModel>
+
+<ul>
+     <li id="ProductPictureList_LoaderGif" style="display:none">
+        <div class="boxes">
+            <img src='/@Url.Content("Content/etf/images/ajax_loader_large.gif")' />
+        </div>
+    </li>
+    @foreach (var pic in Model)
+    {
+        <li @if (pic.Default)
+            { <text>class='current'</text> }>
+            <div class="boxes">
+                <a href="javascript:return false;" class="delete" onclick="DeleteProductPicture(@Html.Raw(pic.Id))"></a>
+                <img src="@pic.ImageUrl" />
+            </div>
+            @if (pic.Default)
+            {
+                <span>Default</span>
+            }
+            else
+            {
+                <span onclick="SetDefault(@Html.Raw(pic.Id))">Set as default</span>}
+        </li>
+    }
+   
+</ul>
+<script type="text/ecmascript">
+    var count = $('#product-picture-list li span').length;
+    if (count == 6) {
+        $('.imageUploader .tools').hide();
+    }
+</script>

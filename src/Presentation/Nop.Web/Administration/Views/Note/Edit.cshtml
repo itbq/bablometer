@@ -1,0 +1,52 @@
+﻿@model NoteModel
+
+@using Nop.Admin.Models.Notes_Instructions
+@using Telerik.Web.Mvc.UI
+
+@{
+    //page title
+    ViewBag.Title = T("Admin.ContentManagement.Notes.Edit").Text;
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            @T("Admin.ContentManagement.Notes.Edit") - @Model.Name 
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+            <input type="submit" name="save-continue" class="t-button" value="@T("Admin.Common.SaveContinue")" />
+        </div>
+    </div>
+
+    @(Html.NoStandartLocalizedEditor<NoteModel,NoteLocalizedModel>("note-template-localized",
+        @<table>
+            <tr>
+                <td>@Html.LabelFor(model=>model.Locales[item].TextValue)</td>
+                <td>@Html.EditorFor(model=>model.Locales[item].TextValue,"RichEditor")
+                    @Html.RequiredHint()
+                    @Html.ValidationMessageFor(model=>model.Locales[item].TextValue)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.HiddenFor(model=>model.Locales[item].LanguageId)
+                </td>
+            </tr>
+         </table>,
+    @<table>
+        <tr>
+                <td>@Html.LabelFor(model=>model.Text)</td>
+                <td>@Html.EditorFor(model=>model.Text,"RichEditor")
+                    @Html.RequiredHint()
+                    @Html.ValidationMessageFor(model=>model.Text)
+                </td>
+            </tr>
+     </table>))
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href="#note-template-localized-1"]').parent().hide();
+    });
+</script>

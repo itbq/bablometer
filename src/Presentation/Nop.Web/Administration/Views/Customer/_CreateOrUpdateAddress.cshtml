@@ -1,0 +1,154 @@
+﻿@model AddressModel
+           
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model=>model.CustomerId)
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.PhoneNumber)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.PhoneNumber)
+            @Html.ValidationMessageFor(model => model.PhoneNumber)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.PhoneNumber1)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.PhoneNumber1) 
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.PhoneNumber2)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.PhoneNumber2)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.PhoneNumber3)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.PhoneNumber3)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.Email)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.Email)
+            @Html.ValidationMessageFor(model=>model.Email)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.Email1)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.Email1)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.Email2)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.Email2)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model=>model.Email3)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.Email3)
+        </td>
+    </tr>
+</table>
+@(Html.NoStandartLocalizedEditor<AddressModel, AddressLocalizedModel>("messagetemplate-localized",
+    @<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Locales[item].FirstName):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Locales[item].FirstName)
+            @if (Model.Locales[item].FirstName == null)
+            {
+                Html.ValidationMessageFor(model => model.Locales[item].FirstName);
+            }
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Locales[item].Address1):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.Locales[item].Address1)
+            @if (Model.Locales[item].Address1 == null)
+            {
+                Html.ValidationMessageFor(model => model.Address1);
+            }
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model=>model.Locales[item].City)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.Locales[item].City)
+            @if (Model.Locales[item].City == null)
+            {
+                Html.ValidationMessageFor(model => model.City);
+            }
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            @Html.HiddenFor(model => model.Locales[item].LanguageId)
+        </td>
+    </tr>
+</table>
+,
+@<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.FirstName):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName);
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Address1):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.Address1)
+            @Html.ValidationMessageFor(model => model.Address1);
+
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model=>model.City)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model=>model.City)
+            @Html.ValidationMessageFor(model => model.City);
+        </td>
+    </tr>
+</table>
+))
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[href="#messagetemplate-localized-1"]').parent().hide();
+    });
+</script>

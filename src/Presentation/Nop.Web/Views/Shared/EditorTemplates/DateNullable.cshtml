@@ -1,0 +1,15 @@
+﻿@model System.DateTime?
+@using Telerik.Web.Mvc.UI
+@{
+    var _workContext = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+    Html.AppendScriptParts("~/Themes/ETFTheme/Scripts/jquery-regional-ru.js");
+    Html.AppendScriptParts("~/Themes/ETFTheme/Scripts/jquery.ui.datepicker-de.js");
+    Html.AppendScriptParts("~/Themes/ETFTheme/Scripts/jquery.ui.datepicker-es.js");
+}
+<input type="text" class="calendDate" name="@ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty)" />
+<script>
+    $(document).ready(function () {
+        $('[name="@ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty)"]').datepicker($.datepicker.regional["@_workContext.WorkingLanguage.UniqueSeoCode"]);
+        $('[name="@ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty)"]').datepicker("option", "showAnim", 'slideDown');
+    });
+</script>

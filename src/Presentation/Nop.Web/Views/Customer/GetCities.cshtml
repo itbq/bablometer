@@ -1,0 +1,15 @@
+﻿@model IList<Nop.Web.Models.Regions.CityModel>
+
+<label for="CityId" >@T("ITBSFA.Register.City")</label>
+<select id="CityId" name="CityId" class="dropdown">
+    @foreach (var city in Model)
+    {
+        if (city.Id == 0)
+        {
+            <option value="@city.Id" selected>@city.Title</option>
+        }else
+        {
+            <option value="@city.Id">@city.Title</option>
+        }
+    }
+</select>

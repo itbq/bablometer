@@ -1,0 +1,92 @@
+﻿@model Nop.Web.Models.Common.AddressModel
+@using Nop.Web.Models.Customer;
+    <div class="contactForm">
+@using (Ajax.BeginForm("AddContactPerson", null, new AjaxOptions() { UpdateTargetId = "contact-persons", OnBegin = "return CheckCountry(" + Model.Id + ")", OnSuccess = "ContactAdded" }, new { id = Model.Id, name = "contact-form" + Model.Id }))
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model=>model.LanguageId)
+            <span class="delete button-link" onclick="RemoveAddress(@Model.Id)" id="remove-@Model.Id"></span>
+            <div class="halfLine">
+                <label>@T("Profile.Contact.Person")<span class="asterisk"></span></label>@Html.ValidationMessageFor(model=>model.FirstName)
+                @Html.EditorFor(model => Model.FirstName)
+            </div>
+            <div class="halfLine">
+                <label>@T("Profile.Contact.OfficeAddress")<span class="asterisk"></span></label>@Html.ValidationMessageFor(model=>model.Address1)
+                @Html.EditorFor(model => Model.Address1)
+            </div>
+            <div class="quartLine">
+                <label>@T("account.fields.city")<span class="asterisk"></span></label>@Html.ValidationMessageFor(model=>model.City)
+                @Html.EditorFor(model => Model.City)
+            </div>
+            <div class="quartLine">
+                <label>@T("account.fields.country")<span class="asterisk"></span></label>@Html.ValidationMessageFor(model=>model.CountryId)
+                @Html.DropDownListFor(model => Model.CountryId, Model.AvailableCountries, new { id = "Country-" + Model.Id })
+            </div>
+            <div class="halfLine">
+                <label>@T("address.fields.phonenumber")<span class="asterisk"></span></label>@Html.ValidationMessageFor(model=>model.PhoneNumber)
+                @Html.EditorFor(model => Model.PhoneNumber)
+                <div class="additional-phone @if(Model.PhoneNumber1 == null){@Html.Raw("invisible")}">
+                    <label>@T("address.fields.phonenumber")</label>
+                    @Html.TextBoxFor(model => model.PhoneNumber1)
+                    <span class="clear button-link" onclick="RemovePhone(@Model.Id,1)"></span>
+                </div>
+                <div class="additional-phone @if(Model.PhoneNumber2 == null){@Html.Raw("invisible")}">
+                    <label>@T("address.fields.phonenumber")</label>
+                    @Html.TextBoxFor(model => model.PhoneNumber2)
+                    <span class="clear button-link" onclick="RemovePhone(@Model.Id,2)"></span>
+                </div>
+                <div class="additional-phone @if(Model.PhoneNumber3 == null){@Html.Raw("invisible")}">
+                    <label>@T("address.fields.phonenumber")</label>
+                    @Html.TextBoxFor(model => model.PhoneNumber3)
+                    <span class="clear button-link" onclick="RemovePhone(@Model.Id,3)"></span>
+                </div>
+                <span class="addOneMore button-link" id="add-phone-@Model.Id" onclick="AddPhone(@Model.Id);" @if(!(String.IsNullOrWhiteSpace(Model.PhoneNumber1) || String.IsNullOrWhiteSpace(Model.PhoneNumber2) || String.IsNullOrWhiteSpace(Model.PhoneNumber3))){@Html.Raw("style=\"display:none;\"")} >@T("Profile.Pnone.More")</span>
+            </div>
+            <div class="halfLine">
+                <label>Email<span class="asterisk"></span></label>@Html.ValidationMessageFor(model=>model.Email)
+                @Html.EditorFor(model => Model.Email)
+                <div class="additional-email @if(Model.Email1 == null){@Html.Raw("invisible")}">
+                    <label>Email</label>@Html.ValidationMessageFor(model=>model.Email1)
+                    @Html.TextBoxFor(model => model.Email1)
+                    <span class="clear button-link" onclick="RemoveEmail(@Model.Id,1)"></span>
+                </div>
+                <div class="additional-email @if(Model.Email2 == null){@Html.Raw("invisible")}">
+                    <label>Email</label>@Html.ValidationMessageFor(model=>model.Email2)
+                    @Html.TextBoxFor(model => model.Email2)
+                    <span class="clear button-link" onclick="RemoveEmail(@Model.Id,2)"></span>
+                </div>
+                <div class="additional-email @if(Model.Email3 == null){@Html.Raw("invisible")}">
+                    <label>Email</label>@Html.ValidationMessageFor(model=>model.Email3)
+                    @Html.TextBoxFor(model => model.Email3)
+                    <span class="clear button-link" onclick="RemoveEmail(@Model.Id,3)"></span>
+                </div>
+                <span  class="addOneMore button-link" id="add-email-@Model.Id" onclick="AddEmail(@Model.Id);" @if(!(String.IsNullOrWhiteSpace(Model.Email1) || String.IsNullOrWhiteSpace(Model.Email2) || String.IsNullOrWhiteSpace(Model.Email3))){@Html.Raw("style=\"display:none;\"")}>@T("Profile.Email.More")</span>
+            </div>
+        
+            <div class="center"><button class="upload add save-address">@T("common.save")</button></div>
+
+}        </div>
+<script type="text/javascript">
+    //parce validation messages after postback to make fluent validation work
+    $(function () {
+        var form = $("#@Model.Id");
+        form.removeData('validator');
+        form.removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse(form);
+    });
+</script>
+
+<script type="text/javascript">
+    $('#@Model.Id').submit(function () {
+        if ($(this).valid() && CheckCountry(@Model.Id)) {
+            $(this).find(':submit').attr('disabled', 'disabled');
+        }
+    });
+</script> 
+<script type="text/ecmascript">
+    function ContactAdded() {
+        $('#firstPopOk h2').text('');
+        $('#firstPopOk p').text('@T("TextResource.ContactAdd")');
+        showPop("firstPopOk");
+    }
+</script>
